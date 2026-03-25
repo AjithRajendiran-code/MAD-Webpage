@@ -344,6 +344,109 @@ body::before {
   overflow:hidden;
   background:#0f1a2d;
 }
+
+/* ── ENHANCED WEBVIEW BROWSER SIMULATOR ── */
+.wv-browser {
+  border:1px solid rgba(26,163,155,0.3);
+  border-radius:8px;
+  overflow:hidden;
+  background:#0f1a2d;
+  display:flex;
+  flex-direction:column;
+  height:220px;
+}
+.wv-topbar {
+  display:flex;
+  gap:6px;
+  align-items:center;
+  padding:8px;
+  background:rgba(26,163,155,0.15);
+  border-bottom:1px solid rgba(26,163,155,0.2);
+  flex-shrink:0;
+}
+.wv-navbtn {
+  border:1px solid rgba(26,163,155,0.3);
+  background:rgba(26,163,155,0.1);
+  color:#fff;
+  border-radius:4px;
+  width:32px;
+  height:24px;
+  font-size:12px;
+  cursor:pointer;
+  transition:all .2s;
+  font-weight:700;
+}
+.wv-navbtn:hover {
+  background:rgba(26,163,155,0.2);
+  border-color:var(--webview);
+}
+.wv-addressbar {
+  flex:1;
+  background:#1a3a4a;
+  border:1px solid rgba(26,163,155,0.2);
+  border-radius:4px;
+  padding:5px 10px;
+  font-family:'Space Mono',monospace;
+  font-size:9px;
+  color:#a0dfd5;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.wv-progress {
+  height:2px;
+  background:rgba(255,255,255,0.05);
+  overflow:hidden;
+  flex-shrink:0;
+}
+.wv-progress > div {
+  height:100%;
+  width:0%;
+  background:var(--webview);
+  transition:width .3s ease;
+}
+.wv-content {
+  flex:1;
+  overflow-y:auto;
+  background:#0d1320;
+  position:relative;
+}
+.wv-page {
+  width:100%;
+  height:100%;
+}
+.wv-url-selector {
+  display:flex;
+  gap:6px;
+  padding:8px;
+  background:rgba(26,163,155,0.08);
+  border-top:1px solid rgba(26,163,155,0.15);
+  flex-shrink:0;
+}
+.wv-url-btn {
+  flex:1;
+  padding:6px 10px;
+  border:1px solid rgba(26,163,155,0.2);
+  background:rgba(26,163,155,0.1);
+  color:#a0dfd5;
+  font-family:'Space Mono',monospace;
+  font-size:9px;
+  border-radius:4px;
+  cursor:pointer;
+  transition:all .2s;
+  font-weight:600;
+}
+.wv-url-btn:hover {
+  border-color:var(--webview);
+  background:rgba(26,163,155,0.2);
+}
+.wv-url-btn.active {
+  background:var(--webview);
+  color:#0f1a2d;
+  border-color:var(--webview);
+}
+
+/* ── OLD STYLES (kept for reference) ── */
 .wv-top {
   display:flex;
   gap:6px;
@@ -380,17 +483,6 @@ body::before {
   font-size:11px;
   line-height:1.6;
   background:linear-gradient(135deg,#0d1b2a,#13263d);
-}
-.wv-progress {
-  height:3px;
-  background:rgba(255,255,255,0.08);
-  overflow:hidden;
-}
-.wv-progress > div {
-  height:100%;
-  width:0%;
-  background:var(--webview);
-  transition:width .3s ease;
 }
 
 .wv-lab {
@@ -833,6 +925,138 @@ body::before {
   color:var(--muted);
 }
 
+/* ── GLIDE PROGRESSION INDICATOR ── */
+.glide-progression {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin-bottom:14px;
+  padding:12px;
+  background:rgba(28,154,150,0.08);
+  border-radius:8px;
+  flex-wrap:wrap;
+}
+.prog-stage {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+}
+.prog-dot {
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  border:2px solid var(--glide);
+  background:transparent;
+  transition:all .3s ease;
+}
+.prog-dot.active {
+  background:var(--glide);
+  box-shadow:0 0 12px rgba(28,154,150,0.6);
+}
+.prog-dot.completed {
+  background:var(--gold);
+  border-color:var(--gold);
+  box-shadow:0 0 8px rgba(255,214,10,0.4);
+}
+.prog-label {
+  font-family:'Space Mono',monospace;
+  font-size:9px;
+  color:var(--glide);
+  text-align:center;
+  white-space:nowrap;
+}
+.prog-arrow {
+  color:var(--glide);
+  font-size:14px;
+  opacity:0.5;
+}
+
+/* ── GLIDE COMPARISON CARDS ── */
+.glide-comparison {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(120px, 1fr));
+  gap:10px;
+  margin:12px 0;
+}
+.comparison-card {
+  background:rgba(28,154,150,0.06);
+  border:1px solid rgba(28,154,150,0.2);
+  border-radius:8px;
+  padding:8px;
+  transition:all .3s ease;
+  text-align:center;
+}
+.comparison-card:hover {
+  background:rgba(28,154,150,0.12);
+  border-color:var(--glide);
+}
+.comparison-card.active {
+  background:rgba(28,154,150,0.2);
+  border-color:var(--glide);
+  box-shadow:0 0 12px rgba(28,154,150,0.4);
+}
+.comparison-title {
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  color:var(--glide);
+  font-weight:700;
+  letter-spacing:.06em;
+  margin-bottom:6px;
+}
+.comparison-image {
+  width:100%;
+  aspect-ratio:1;
+  border-radius:6px;
+  overflow:hidden;
+  margin-bottom:6px;
+  background:#0d1322;
+  border:1px solid rgba(28,154,150,0.1);
+}
+.comparison-image svg {
+  width:100%;
+  height:100%;
+}
+.placeholder-preview {
+  background:repeating-linear-gradient(45deg,#2d3e50,#2d3e50 4px,#3d5068 4px,#3d5068 8px);
+}
+.thumbnail-preview {
+  background:linear-gradient(135deg,#2a9d8f,#457b9d);
+}
+.full-preview {
+  background:linear-gradient(135deg,#87CEEB,#4a7c59);
+}
+.override-preview {
+  background:linear-gradient(135deg,#1e1b4b,#312e81);
+}
+.comparison-desc {
+  font-size:9px;
+}
+.desc-label {
+  font-family:'Space Mono',monospace;
+  color:var(--glide);
+  font-weight:700;
+  margin-bottom:3px;
+}
+.desc-text {
+  color:var(--muted);
+  line-height:1.3;
+  margin-bottom:2px;
+}
+.desc-size {
+  font-family:'Space Mono',monospace;
+  color:var(--accent);
+  font-size:8px;
+  margin-top:2px;
+}
+
+/* ── GLIDE IMAGE SVG ── */
+.glide-image-svg {
+  width:100%;
+  height:100%;
+}
+
 /* ── SCORE TOAST ── */
 .toast { position:fixed; bottom:24px; right:24px; z-index:999;
   background:var(--surface); border:1px solid var(--gold);
@@ -1251,16 +1475,168 @@ body::before {
       <div class="sim-title">GLIDE LOAD SIMULATOR — COMPLETE THE CORRECT LOADING FLOW</div>
       <div class="lab-score" id="glide-sim-score">0 / 3 flow steps</div>
     </div>
+    <!-- PROGRESSION INDICATOR -->
+    <div class="glide-progression">
+      <div class="prog-stage">
+        <div class="prog-dot" id="prog-placeholder"></div>
+        <div class="prog-label">placeholder()</div>
+      </div>
+      <div class="prog-arrow">→</div>
+      <div class="prog-stage">
+        <div class="prog-dot" id="prog-thumbnail"></div>
+        <div class="prog-label">thumbnail()</div>
+      </div>
+      <div class="prog-arrow">→</div>
+      <div class="prog-stage">
+        <div class="prog-dot" id="prog-full"></div>
+        <div class="prog-label">into(imageView)</div>
+      </div>
+    </div>
+    
     <div class="sim-steps">
       <button class="sim-btn" onclick="glideSimStep('placeholder')">placeholder()</button>
       <button class="sim-btn" onclick="glideSimStep('thumbnail')">thumbnail(0.1f)</button>
+      <button class="sim-btn" onclick="glideSimStep('override')">override(300,300)</button>
       <button class="sim-btn" onclick="glideSimStep('full')">into(imageView)</button>
       <button class="sim-btn" onclick="glideSimStep('error')">error(drawable)</button>
       <button class="sim-btn" onclick="resetGlideSim()">reset</button>
     </div>
+    
+    <!-- IMAGE COMPARISON VIEW -->
     <div class="sim-screen">
-      <div class="sim-appbar">NETWORK IMAGE CARD</div>
-      <div class="sim-image placeholder" id="glide-sim-image">placeholder</div>
+      <div class="sim-appbar">NETWORK IMAGE LOADING SIMULATION</div>
+      <div class="sim-image placeholder" id="glide-sim-image">
+        <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" class="glide-image-svg">
+          <!-- Placeholder: Pixelated/Low quality -->
+          <defs>
+            <filter id="pixelate-placeholder">
+              <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" result="noise" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="12" />
+            </filter>
+          </defs>
+          <rect width="200" height="120" fill="#2d3e50" filter="url(#pixelate-placeholder)"/>
+          <text x="100" y="65" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.6)" font-family="monospace">placeholder</text>
+        </svg>
+      </div>
+      
+      <!-- COMPARISON CARDS -->
+      <div class="glide-comparison">
+        <div class="comparison-card">
+          <div class="comparison-title">PLACEHOLDER</div>
+          <div class="comparison-image placeholder-preview">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <filter id="pixelate-thumb">
+                  <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="1" result="noise" />
+                  <feDisplacementMap in="SourceGraphic" in2="noise" scale="8" />
+                </filter>
+              </defs>
+              <rect width="100" height="100" fill="#2d3e50" filter="url(#pixelate-thumb)"/>
+              <circle cx="50" cy="40" r="15" fill="rgba(255,255,255,0.4)"/>
+              <rect x="20" y="55" width="60" height="35" fill="rgba(100,150,100,0.3)"/>
+            </svg>
+          </div>
+          <div class="comparison-desc">
+            <div class="desc-label">Low Quality</div>
+            <div class="desc-text">Fast load • Pixelated • Local or cached</div>
+            <div class="desc-size">~5KB</div>
+          </div>
+        </div>
+        
+        <div class="comparison-card">
+          <div class="comparison-title">THUMBNAIL</div>
+          <div class="comparison-image thumbnail-preview">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <filter id="blur-thumb">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="1" />
+                </filter>
+              </defs>
+              <rect width="100" height="100" fill="#2a9d8f" filter="url(#blur-thumb)"/>
+              <circle cx="50" cy="35" r="18" fill="rgba(255,255,150,0.6)"/>
+              <rect x="15" y="55" width="45" height="40" fill="rgba(50,180,100,0.5)"/>
+              <rect x="65" y="60" width="30" height="35" fill="rgba(100,100,150,0.4)"/>
+            </svg>
+          </div>
+          <div class="comparison-desc">
+            <div class="desc-label">Medium Quality</div>
+            <div class="desc-text">Quick preview • Slight blur • Reduced resolution</div>
+            <div class="desc-size">~30KB</div>
+          </div>
+        </div>
+        
+        <div class="comparison-card">
+          <div class="comparison-title">FULL IMAGE</div>
+          <div class="comparison-image full-preview">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <!-- Sky gradient -->
+              <defs>
+                <linearGradient id="sky-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#E0F6FF;stop-opacity:1" />
+                </linearGradient>
+                <linearGradient id="sun-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#FFA500;stop-opacity:1" />
+                </linearGradient>
+              </defs>
+              <rect width="100" height="100" fill="url(#sky-grad)"/>
+              <!-- Sun -->
+              <circle cx="75" cy="25" r="15" fill="url(#sun-grad)"/>
+              <!-- Mountains -->
+              <polygon points="0,65 30,35 60,65" fill="#8B7355"/>
+              <polygon points="35,65 55,40 75,65" fill="#A0826D"/>
+              <!-- Grass -->
+              <rect y="65" width="100" height="35" fill="#4a7c59"/>
+            </svg>
+          </div>
+          <div class="comparison-desc">
+            <div class="desc-label">High Quality</div>
+            <div class="desc-text">Final image • Full resolution • From network</div>
+            <div class="desc-size">~150KB</div>
+          </div>
+        </div>
+        
+        <div class="comparison-card">
+          <div class="comparison-title">OVERRIDE</div>
+          <div class="comparison-image override-preview">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <!-- Before: Large original image -->
+              <defs>
+                <linearGradient id="override-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#6366F1;stop-opacity:1" />
+                </linearGradient>
+              </defs>
+              <!-- Large outline (original) -->
+              <rect x="2" y="2" width="35" height="35" fill="none" stroke="#ff6b6b" stroke-width="1.5" opacity="0.5"/>
+              <text x="19.5" y="42" text-anchor="middle" font-size="6" fill="#ff6b6b" font-family="monospace" font-weight="bold">3000×3000</text>
+              
+              <!-- Arrow -->
+              <g transform="translate(42, 18)">
+                <path d="M 0 0 L 8 0 L 5 -3 M 8 0 L 5 3" stroke="#ffd60a" stroke-width="1" fill="none"/>
+                <text x="4" y="10" text-anchor="middle" font-size="5" fill="#ffd60a" font-family="monospace">resize</text>
+              </g>
+              
+              <!-- After: Scaled to 300×300 -->
+              <rect x="58" y="8" width="40" height="40" fill="url(#override-grad)" stroke="#ffd60a" stroke-width="2"/>
+              <circle cx="78" cy="23" r="8" fill="rgba(255,255,100,0.8)"/>
+              <rect x="65" y="32" width="26" height="12" fill="rgba(50,180,100,0.6)"/>
+              <text x="78" y="58" text-anchor="middle" font-size="6" fill="#ffd60a" font-family="monospace" font-weight="bold">300×300</text>
+              
+              <!-- Bottom explanation -->
+              <text x="50" y="72" text-anchor="middle" font-size="5" fill="#a0aec0" font-family="monospace">Downscaled 10×</text>
+              <text x="50" y="82" text-anchor="middle" font-size="5" fill="#a0aec0" font-family="monospace">Memory saved</text>
+            </svg>
+          </div>
+          <div class="comparison-desc">
+            <div class="desc-label">Size Override</div>
+            <div class="desc-text">Resizes 3000×3000 → 300×300 • Prevents wasted memory • Fixed dimensions</div>
+            <div class="desc-size">Downscaled 10×</div>
+          </div>
+        </div>
+      </div>
+      
       <div class="sim-note" id="glide-sim-note">Start with placeholder(), then thumbnail(), then into(imageView) to complete mission.</div>
     </div>
   </div>
@@ -1289,15 +1665,76 @@ body::before {
           <div class="ml-tag" id="pv-webview-tag">WebView method summary appears here.</div>
           <div class="ml-what" id="pv-webview-what">Interact with browser controls to see real callback flow and Java snippets.</div>
           <div class="ml-visual" id="pv-webview-visual">
-            <div class="wv-shell">
-              <div class="wv-top">
-                <button class="wv-btn" onclick="webviewAction('back')">←</button>
-                <button class="wv-btn" onclick="webviewAction('reload')">⟳</button>
-                <input class="wv-url" id="wv-url" value="https://developer.android.com" readonly>
-                <button class="wv-btn" onclick="webviewAction('go')">GO</button>
+            <!-- INTERACTIVE BROWSER SIMULATOR -->
+            <div class="wv-browser">
+              <!-- Browser Chrome -->
+              <div class="wv-topbar">
+                <button class="wv-navbtn" onclick="webviewAction('back')" title="Back">←</button>
+                <button class="wv-navbtn" onclick="webviewAction('reload')" title="Reload">⟳</button>
+                <div class="wv-addressbar">
+                  <span id="wv-current-url">https://example.com</span>
+                </div>
               </div>
+              
+              <!-- Progress indicator -->
               <div class="wv-progress"><div id="wv-progress-fill"></div></div>
-              <div class="wv-stage" id="wv-stage">Web content area. Tap GO to simulate loadUrl() and WebViewClient callbacks.</div>
+              
+              <!-- Main content area with multiple pages -->
+              <div class="wv-content" id="wv-content">
+                <div class="wv-page" id="wv-page-blank" style="display:flex; align-items:center; justify-content:center; color:#666; padding:20px; text-align:center;">
+                  <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="60" height="60" fill="#1a2a3a" rx="4"/>
+                    <text x="30" y="35" text-anchor="middle" font-size="12" fill="#666">Tap GO to load</text>
+                  </svg>
+                </div>
+                
+                <!-- Page 1: Google-style search -->
+                <div class="wv-page" id="wv-page-google" style="display:none; padding:15px;">
+                  <div style="text-align:center; margin-bottom:20px;">
+                    <div style="font-size:20px; font-weight:bold; color:var(--webview); margin-bottom:8px;">SEARCH</div>
+                    <input type="text" placeholder="Search the web..." style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px; font-size:11px; background:#f0f0f0; color:#333;">
+                  </div>
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:10px;">
+                    <div style="background:#e8f5e9; padding:8px; border-radius:4px; text-align:center;">Google Search</div>
+                    <div style="background:#fce4ec; padding:8px; border-radius:4px; text-align:center;">I'm Feeling Lucky</div>
+                  </div>
+                </div>
+                
+                <!-- Page 2: GitHub-style -->
+                <div class="wv-page" id="wv-page-github" style="display:none; padding:12px;">
+                  <div style="background:#24292e; color:#fff; padding:8px; border-radius:4px; margin-bottom:10px; font-size:10px; font-family:monospace;">
+                    <div style="margin-bottom:4px;"><span style="color:#79b8ff;">♦ Repository:</span> android-app</div>
+                    <div style="margin-bottom:4px;"><span style="color:#79b8ff;">♦ Language:</span> Java</div>
+                    <div><span style="color:#79b8ff;">♦ Stars:</span> 1.2k</div>
+                  </div>
+                  <div style="background:#f6f8fa; padding:8px; border-radius:4px; font-size:9px; color:#333;">
+                    📄 README.md<br>
+                    📄 build.gradle<br>
+                    📁 src/main
+                  </div>
+                </div>
+                
+                <!-- Page 3: YouTube-style -->
+                <div class="wv-page" id="wv-page-youtube" style="display:none; padding:12px;">
+                  <div style="background:#1a1a1a; color:#fff; padding:10px; border-radius:4px; margin-bottom:8px;">
+                    <div style="aspect-ratio:16/9; background:linear-gradient(135deg,#ff0000,#cc0000); display:flex; align-items:center; justify-content:center; border-radius:4px; margin-bottom:6px; font-size:12px;">▶ Watch Video</div>
+                    <div style="font-size:10px; line-height:1.4;">
+                      <div style="font-weight:bold;">Android WebView Tutorial</div>
+                      <div style="color:#aaa; font-size:9px;">by DevChannel • 12K views</div>
+                    </div>
+                  </div>
+                  <div style="background:#272727; color:#aaa; padding:8px; border-radius:4px; font-size:9px;">
+                    ⬇ 234 Comments
+                  </div>
+                </div>
+              </div>
+              
+              <!-- URL selector buttons -->
+              <div class="wv-url-selector">
+                <button class="wv-url-btn active" onclick="webviewNavigate('google')" id="btn-google">Google</button>
+                <button class="wv-url-btn" onclick="webviewNavigate('github')" id="btn-github">GitHub</button>
+                <button class="wv-url-btn" onclick="webviewNavigate('youtube')" id="btn-youtube">YouTube</button>
+              </div>
             </div>
           </div>
           <div class="ml-event" id="pv-webview-event">EVENT: waiting for interaction...</div>
@@ -2041,12 +2478,10 @@ function applyWebNarration() {
   const t = document.getElementById('pv-webview-tag');
   const w = document.getElementById('pv-webview-what');
   const e = document.getElementById('pv-webview-event');
-  const s = document.getElementById('wv-stage');
   if(m) m.textContent = lastWebNarration.method;
   if(t) t.textContent = lastWebNarration.tag;
   if(w) w.textContent = pickExplainText(lastWebNarration.what);
   if(e) e.textContent = lastWebNarration.eventText;
-  if(s) s.textContent = pickExplainText(lastWebNarration.stageText);
   setWebviewCode(lastWebNarration.codeTitle, lastWebNarration.javaCode);
 }
 
@@ -2055,32 +2490,141 @@ function setWebviewNarration(method, tag, what, eventText, stageText, codeTitle,
   applyWebNarration();
 }
 
+let currentWebPage = 'blank';
+const webPageURLs = {
+  'google': 'https://www.google.com',
+  'github': 'https://github.com',
+  'youtube': 'https://www.youtube.com'
+};
+
+function webviewNavigate(pageName) {
+  const pages = document.querySelectorAll('.wv-page');
+  const buttons = document.querySelectorAll('.wv-url-btn');
+  const progress = document.getElementById('wv-progress-fill');
+  const addressbar = document.querySelector('.wv-addressbar');
+  
+  // Hide all pages
+  pages.forEach(p => p.style.display = 'none');
+  
+  // Remove active state from all buttons
+  buttons.forEach(b => b.classList.remove('active'));
+  
+  // Show loading animation
+  if(progress) progress.style.width = '10%';
+  
+  // Simulate loading
+  setTimeout(() => {
+    if(progress) progress.style.width = '50%';
+  }, 150);
+  
+  // Display page
+  setTimeout(() => {
+    const page = document.getElementById(`wv-page-${pageName}`);
+    if(page) page.style.display = 'block';
+    if(progress) progress.style.width = '100%';
+    currentWebPage = pageName;
+    
+    // Update button states
+    document.getElementById(`btn-${pageName}`).classList.add('active');
+    
+    // Update address bar
+    if(addressbar) addressbar.textContent = webPageURLs[pageName];
+    
+    // Update explanation
+    setWebviewNarration(
+      `WebView loaded: ${pageName.toUpperCase()}`,
+      'loadUrl() with WebViewClient callbacks',
+      {
+        beginner:`WebView rendered ${pageName} webpage via loadUrl(). WebViewClient intercepted page load callbacks for monitoring.`,
+        exam:'Exam: WebViewClient callbacks: onPageStarted(), onPageFinished(), onReceivedError() all triggered during load.'
+      },
+      `EVENT: loadUrl('${webPageURLs[pageName]}') started`,
+      {
+        beginner:'WebView loads web content asynchronously. Client callbacks inform app of progress.',
+        exam:'Callback sequence: onPageStarted → onPageFinished → render complete'
+      },
+      'JAVA: WebViewClient Callbacks',
+      `wv.setWebViewClient(new WebViewClient() {
+    @Override
+    public void onPageStarted(WebView webView, String url, Bitmap favicon) {
+        // Show loading spinner
+    }
+    @Override
+    public void onPageFinished(WebView webView, String url) {
+        // Hide loading spinner
+    }
+});
+wv.loadUrl("${webPageURLs[pageName]}"):`
+    );
+    
+    addXP(2, 'Navigated page');
+  }, 400);
+  
+  // Reset progress after animation
+  setTimeout(() => {
+    if(progress) progress.style.width = '0%';
+  }, 1200);
+}
+
 function webviewAction(action) {
-  const stage = document.getElementById('wv-stage');
   const bar = document.getElementById('wv-progress-fill');
   const eventEl = document.getElementById('pv-webview-event');
   const info = webviewEventMap[action];
-  if(!stage || !bar || !eventEl || !info) return;
+  if(!bar || !eventEl || !info) return;
 
-  if(action === 'go') {
-    bar.style.width = '20%';
-    stage.textContent = 'Loading https://developer.android.com ...';
-    setTimeout(()=>{ bar.style.width = '75%'; }, 220);
-    setTimeout(()=>{
-      bar.style.width = '100%';
-      stage.textContent = 'Page loaded: Android Developer docs rendered inside app WebView.';
-    }, 520);
+  if(action === 'back') {
+    bar.style.width = '30%';
+    setTimeout(() => bar.style.width = '0%', 400);
+    setWebviewNarration(
+      'Navigation: goBack()',
+      'History traversal',
+      {
+        beginner:'WebView navigated back to previous page in history using goBack(). Check history with canGoBack().',
+        exam:'Exam: canGoBack() returns true if history available; goBack() is used in onBackPressed() override.'
+      },
+      info.event,
+      {
+        beginner:'Previous page restored from history. WebViewClient callbacks fire again.',
+        exam:'goBack() triggers onPageStarted() and onPageFinished()'
+      },
+      'JAVA: Back Navigation',
+      `@Override
+public void onBackPressed() {
+    if (webView.canGoBack()) {
+        webView.goBack();
+    } else {
+        super.onBackPressed();
+    }
+}`
+    );
   }
 
   if(action === 'reload') {
-    bar.style.width = '15%';
-    stage.textContent = 'Reloading current page from cache/network...';
-    setTimeout(()=>{ bar.style.width = '100%'; }, 350);
-  }
+    bar.style.width = '20%';
+    setTimeout(() => bar.style.width = '60%', 200);
+    setTimeout(() => bar.style.width = '0%', 600);
+    setWebviewNarration(
+      'Navigation: reload()',
+      'Cache/Network refresh',
+      {
+        beginner:'WebView reloads current page. Can use reload() or reload(LOAD_NO_CACHE) to bypass cache.',
+        exam:'Exam: reload() respects cache settings; use LOAD_NO_CACHE flag to force fresh fetch.'
+      },
+      info.event,
+      {
+        beginner:'Current page refreshed from network or cache based on WebSettings.setCacheMode().',
+        exam:'Cache mode controls reload behavior: LOAD_DEFAULT uses cache, LOAD_NO_CACHE ignores cache'
+      },
+      'JAVA: Reload Page',
+      `WebSettings ws = webView.getSettings();
+// Cache-first reload
+ws.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+webView.reload();
 
-  if(action === 'back') {
-    bar.style.width = '0%';
-    stage.textContent = 'Navigated to previous history entry using goBack().';
+// Force network reload
+ws.setCacheMode(WebSettings.LOAD_NO_CACHE);
+webView.reload();`
+    );
   }
 
   eventEl.textContent = info.event;
@@ -2614,12 +3158,22 @@ function resetGlideSim() {
   const score = document.getElementById('glide-sim-score');
   if(!img || !note || !score) return;
   img.className = 'sim-image placeholder';
-  img.textContent = 'placeholder';
+  img.innerHTML = '<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" class="glide-image-svg"><defs><filter id="pixelate-placeholder"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" result="noise" /><feDisplacementMap in="SourceGraphic" in2="noise" scale="12" /></filter></defs><rect width="200" height="120" fill="#2d3e50" filter="url(#pixelate-placeholder)"/><text x="100" y="65" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.6)" font-family="monospace">placeholder</text></svg>';
   note.textContent = modeText({
     beginner: 'Start with placeholder(), then thumbnail(), then into(imageView) to complete mission.',
     exam: 'Exam flow: placeholder -> thumbnail -> into(imageView).'
   });
   score.textContent = '0 / 3 flow steps';
+  
+  // Reset progression indicators
+  document.querySelectorAll('.prog-dot').forEach(dot => {
+    dot.classList.remove('active', 'completed');
+  });
+  document.querySelectorAll('.comparison-card').forEach((card, i) => {
+    // Only consider cards 0-2 for main flow; card 3 is override
+    if(i < 3) card.classList.remove('active');
+  });
+  
   setGlideNarration(
     'Glide Simulator reset',
     {
@@ -2636,15 +3190,53 @@ function glideSimStep(step) {
   const score = document.getElementById('glide-sim-score');
   if(!img || !note || !score) return;
 
+  // Override is optional and can be applied independently
+  if(step === 'override') {
+    // Show the resizing effect: Original size → Override size
+    img.innerHTML = '<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" class="glide-image-svg"><defs><linearGradient id="orig-grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#ff6b6b;stop-opacity:0.3" /><stop offset="100%" style="stop-color:#ff8c42;stop-opacity:0.3" /></linearGradient></defs><rect width="200" height="120" fill="#1e1b4b"/><text x="100" y="25" text-anchor="middle" font-size="12" fill="#ffd60a" font-family="monospace" font-weight="bold">Image Resize Operation</text><line x1="20" y1="40" x2="180" y2="40" stroke="#666" stroke-width="1"/><g><rect x="15" y="45" width="65" height="65" fill="url(#orig-grad)" stroke="#ff6b6b" stroke-width="2"/><text x="47.5" y="85" text-anchor="middle" font-size="10" fill="#ff6b6b" font-family="monospace" font-weight="bold">3000×3000</text><text x="47.5" y="100" text-anchor="middle" font-size="8" fill="#ff8c42" font-family="monospace">~9MB</text></g><g transform="translate(110, 50)"><path d="M -15 5 L 15 5 L 12 2 M 15 5 L 12 8" stroke="#ffd60a" stroke-width="2" fill="none"/><text x="0" y="25" text-anchor="middle" font-size="9" fill="#ffd60a" font-family="monospace">downscale</text></g><g><rect x="120" y="45" width="65" height="65" fill="#2a9d8f" stroke="#ffd60a" stroke-width="2"/><text x="152.5" y="85" text-anchor="middle" font-size="10" fill="#ffd60a" font-family="monospace" font-weight="bold">300×300</text><text x="152.5" y="100" text-anchor="middle" font-size="8" fill="#a0aec0" font-family="monospace">~100KB</text></g></svg>';
+    
+    // Highlight override card
+    document.querySelectorAll('.comparison-card').forEach((card, i) => {
+      if(i === 3) { // Override is the 4th card
+        card.classList.add('active');
+      }
+    });
+    
+    note.textContent = modeText({
+      beginner: 'override(300,300) resizes the image FROM original size (e.g. 3000×3000) TO 300×300. Saves 90% memory!',
+      exam: 'Exam point: override(300,300) downscales large network images to fit exact view dimensions.'
+    });
+    
+    setGlideNarration(
+      'Glide override() resizing',
+      {
+        beginner:'If Glide loads a 3000×3000 image but your ImageView only shows 300×300, override() downsizes it to match. Wastes less RAM!',
+        exam:'Exam point: override(width,height) forces Glide to downscale at-fetch time, not post-fetch. Memory efficient.'
+      },
+      'EVENT: Glide override(300,300) resizes image'
+    );
+    addXP(5, 'Override applied');
+    return;
+  }
+
   if(step === 'error') {
     img.className = 'sim-image error';
-    img.textContent = 'error fallback';
+    img.innerHTML = '<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" class="glide-image-svg"><rect width="200" height="120" fill="#7f1d1d"/><text x="100" y="65" text-anchor="middle" font-size="10" fill="#fff" font-family="monospace">⚠ error fallback</text></svg>';
     note.textContent = modeText({
       beginner: 'Network failed. Glide shows error(drawable). Use reset and try ideal flow again.',
       exam: 'Exam point: error(drawable) handles failed URL requests gracefully.'
     });
     glideFlow = [];
     score.textContent = '0 / 3 flow steps';
+    
+    // Reset progression
+    document.querySelectorAll('.prog-dot').forEach(dot => {
+      dot.classList.remove('active', 'completed');
+    });
+    document.querySelectorAll('.comparison-card').forEach(card => {
+      card.classList.remove('active');
+    });
+    
     setGlideNarration(
       'Glide error() fallback',
       {
@@ -2658,17 +3250,34 @@ function glideSimStep(step) {
 
   glideFlow.push(step);
   const progress = glideFlow.filter((s, i) => glideTargetFlow[i] === s).length;
+  
+  // Update main image display
+  const svgMap = {
+    'placeholder': '<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" class="glide-image-svg"><defs><filter id="pixelate-placeholder"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" result="noise" /><feDisplacementMap in="SourceGraphic" in2="noise" scale="12" /></filter></defs><rect width="200" height="120" fill="#2d3e50" filter="url(#pixelate-placeholder)"/><text x="100" y="65" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.6)" font-family="monospace">placeholder</text></svg>',
+    'thumbnail': '<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" class="glide-image-svg"><defs><filter id="blur-thumb"><feGaussianBlur in="SourceGraphic" stdDeviation="2" /></filter></defs><rect width="200" height="120" fill="#2a9d8f" filter="url(#blur-thumb)"/><circle cx="100" cy="50" r="30" fill="rgba(255,255,100,0.5)"/><rect x="40" y="70" width="80" height="40" fill="rgba(100,180,100,0.4)"/><text x="100" y="120" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.5)" font-family="monospace">thumbnail preview</text></svg>',
+    'full': '<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" class="glide-image-svg"><defs><linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" /><stop offset="100%" style="stop-color:#E0F6FF;stop-opacity:1" /></linearGradient><linearGradient id="sun" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" /><stop offset="100%" style="stop-color:#FFA500;stop-opacity:1" /></linearGradient></defs><rect width="200" height="120" fill="url(#sky)"/><circle cx="150" cy="25" r="20" fill="url(#sun)"/><polygon points="0,80 50,40 100,80" fill="#8B7355"/><polygon points="70,80 110,50 150,80" fill="#A0826D"/><rect y="80" width="200" height="40" fill="#4a7c59"/></svg>'
+  };
+  
   img.className = 'sim-image ' + step;
-  img.textContent = step === 'full' ? 'full image' : step;
+  img.innerHTML = svgMap[step] || '';
   score.textContent = `${Math.min(progress, 3)} / 3 flow steps`;
 
   if(progress !== glideFlow.length) {
     note.textContent = modeText({
-      beginner: 'Flow order broken. Correct sequence is placeholder -> thumbnail -> into(imageView).',
-      exam: 'Wrong order. Remember: placeholder -> thumbnail -> into(imageView).'
+      beginner: 'Flow order broken. Correct sequence is placeholder → thumbnail → into(imageView).',
+      exam: 'Wrong order. Remember: placeholder → thumbnail → into(imageView).'
     });
     glideFlow = [];
     addXP(1, 'Retry bonus');
+    
+    // Reset progression on error
+    document.querySelectorAll('.prog-dot').forEach(dot => {
+      dot.classList.remove('active', 'completed');
+    });
+    document.querySelectorAll('.comparison-card').forEach((card, i) => {
+      if(i < 3) card.classList.remove('active');
+    });
+    
     setGlideNarration(
       'Glide chain order mismatch',
       {
@@ -2680,9 +3289,35 @@ function glideSimStep(step) {
     return;
   }
 
+  // Update progression indicators
+  const stepIndexMap = { 'placeholder': 0, 'thumbnail': 1, 'full': 2 };
+  const stepIndex = stepIndexMap[step];
+  const progDots = document.querySelectorAll('.prog-dot');
+  const compCards = document.querySelectorAll('.comparison-card');
+  
+  progDots.forEach((dot, i) => {
+    if(i < stepIndex) {
+      dot.classList.add('completed');
+      dot.classList.remove('active');
+    } else if(i === stepIndex) {
+      dot.classList.add('active');
+      dot.classList.remove('completed');
+    } else {
+      dot.classList.remove('active', 'completed');
+    }
+  });
+  
+  compCards.forEach((card, i) => {
+    if(i <= stepIndex && i < 3) {
+      card.classList.add('active');
+    } else if(i < 3) {
+      card.classList.remove('active');
+    }
+  });
+
   note.textContent = modeText({
-    beginner: 'Great flow. Continue until full image loads.',
-    exam: 'Correct chain so far. Finish into(imageView) for final bind.'
+    beginner: 'Great flow. Continue until full image loads. (Tip: try override() anytime)',
+    exam: 'Correct chain so far. Finish into(imageView) for final bind. override() optional.'
   });
   setGlideNarration(
     `Glide step: ${step}`,
@@ -2692,6 +3327,7 @@ function glideSimStep(step) {
     },
     `EVENT: Glide ${step} applied`
   );
+  
   if(progress === 3 && !glideSimDone) {
     glideSimDone = true;
     addXP(20, 'Glide simulator mission complete!');
@@ -2940,6 +3576,8 @@ renderAttrTable();
 resetGlideSim();
 buildWebSettingsLab();
 buildWebStepsLab();
+// Initialize WebView browser with first page
+webviewNavigate('google');
 if(glideSimDone) {
   const img = document.getElementById('glide-sim-image');
   const note = document.getElementById('glide-sim-note');
