@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fragments Academy — Learn Android Fragments</title>
+<title>Mobile Application Development — Interactive Android Learning</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -843,6 +843,17 @@ body::before {
 }
 .toast.show { transform:translateY(0); opacity:1; }
 
+.site-footer {
+  text-align:center;
+  padding:18px 24px 28px;
+  color:var(--muted);
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+  letter-spacing:.04em;
+  position:relative;
+  z-index:1;
+}
+
 .burst {
   position:fixed; left:0; top:0; width:10px; height:10px; pointer-events:none; z-index:1200;
   border-radius:2px; opacity:.9;
@@ -874,7 +885,7 @@ body::before {
 
 <!-- HUD -->
 <div class="hud">
-  <div class="hud-title">▶ FRAGMENTS ACADEMY</div>
+  <div class="hud-title">▶ MOBILE APPLICATION DEVELOPMENT</div>
   <div class="hud-stat">XP <span id="xp-val">0</span></div>
   <div class="xp-track"><div class="xp-fill" id="xp-fill"></div></div>
   <div class="hud-stat">Cards <span id="cards-val">0</span></div>
@@ -887,7 +898,7 @@ body::before {
 <!-- HERO -->
 <div class="hero">
   <div class="hero-eyebrow">ANDROID DEVELOPMENT · BCA SEM 6</div>
-  <h1>Fragments<br>Academy</h1>
+  <h1>Mobile Application<br>Development</h1>
   <p>Unlock each concept. Answer quizzes. Match features. Simulate Menus and Glide behavior. Level up your Android knowledge in a gamified way.</p>
   <button class="start-btn" onclick="scrollToSection('list')">Start Learning ↓</button>
 </div>
@@ -1337,6 +1348,8 @@ body::before {
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
+
+<footer class="site-footer">Copyright 2026 Ajith Rajendiran</footer>
 
 <script>
 // ── XP SYSTEM ──────────────────────────────────────────
