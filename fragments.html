@@ -1,0 +1,2947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fragments Academy — Learn Android Fragments</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #12121a;
+  --surface2: #1a1a26;
+  --border: rgba(255,255,255,0.08);
+  --text: #f0f0f8;
+  --muted: #8888aa;
+  --accent: #ff4d6d;
+  --list: #e85d04;
+  --dialog: #7b2d8b;
+  --pref: #0f7173;
+  --fmgr: #2d6a4f;
+  --lifecycle: #c77dff;
+  --imageview: #f4a261;
+  --menu: #1c8f49;
+  --glide: #1c9a96;
+  --webview: #1aa39b;
+  --gold: #ffd60a;
+  --xp-bar: #00b4d8;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── SCANLINE overlay ── */
+body::before {
+  content:'';
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+}
+
+/* ── HUD BAR ── */
+.hud {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,10,15,0.92);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  padding: 10px 24px;
+  display: flex; align-items: center; gap: 16px;
+  flex-wrap: wrap;
+}
+.hud-title { font-family:'Space Mono',monospace; font-size:13px; color:var(--accent); font-weight:700; letter-spacing:.1em; flex:1; }
+.hud-stat { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); font-family:'Space Mono',monospace; }
+.hud-stat span { color:var(--gold); font-weight:700; }
+.xp-track { width:90px; height:6px; background:rgba(255,255,255,0.1); border-radius:99px; overflow:hidden; }
+.xp-fill { height:100%; background:var(--xp-bar); border-radius:99px; transition: width .5s cubic-bezier(.4,0,.2,1); width:0%; }
+.level-badge { background:var(--accent); color:#fff; font-family:'Space Mono',monospace; font-size:10px; font-weight:700; padding:3px 8px; border-radius:4px; letter-spacing:.05em; }
+.hud-btn {
+  font-family:'Space Mono',monospace; font-size:10px; letter-spacing:.06em;
+  border:1px solid rgba(255,255,255,0.24); background:transparent; color:var(--text);
+  padding:6px 10px; border-radius:6px; cursor:pointer; transition:all .2s;
+}
+.hud-btn:hover { border-color:var(--accent); color:var(--accent); }
+
+/* ── HERO ── */
+.hero {
+  text-align:center; padding: 56px 24px 40px;
+  position:relative; z-index:1;
+}
+.hero-eyebrow { font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.2em; color:var(--accent); margin-bottom:16px; }
+.hero h1 { font-size: clamp(32px,6vw,72px); font-weight:800; line-height:1.05; margin-bottom:16px;
+  background: linear-gradient(135deg,#fff 30%,var(--accent));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.hero p { font-size:15px; color:var(--muted); max-width:480px; margin:0 auto 32px; line-height:1.7; }
+.start-btn {
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--accent); color:#fff; border:none;
+  font-family:'Syne',sans-serif; font-weight:700; font-size:14px;
+  padding:12px 28px; border-radius:8px; cursor:pointer;
+  transition: transform .15s, box-shadow .15s;
+  box-shadow: 0 0 24px rgba(255,77,109,0.4);
+}
+.start-btn:hover { transform:translateY(-2px); box-shadow: 0 0 36px rgba(255,77,109,0.6); }
+
+/* ── PROGRESS MAP ── */
+.progress-map { padding: 0 24px 24px; position:relative; z-index:1; }
+.map-title { font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.15em; color:var(--muted); margin-bottom:14px; text-align:center; }
+.map-row { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+.map-node {
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+  padding:10px 14px; border-radius:10px; border:1px solid var(--border);
+  background:var(--surface); cursor:pointer; transition:all .2s;
+  min-width:80px; text-align:center;
+  font-size:11px; color:var(--muted); font-family:'Space Mono',monospace;
+}
+.map-node:hover { border-color:rgba(255,255,255,0.2); transform:translateY(-2px); }
+.map-node.active { border-color:currentColor; }
+.map-node.done .node-icon::after { content:'✓'; position:absolute; right:-4px; top:-4px; background:var(--gold); color:#000; font-size:8px; font-weight:700; width:14px;height:14px; border-radius:50%; display:flex;align-items:center;justify-content:center; }
+.map-node.current { box-shadow:0 0 0 1px currentColor inset, 0 0 18px color-mix(in srgb, currentColor 28%, transparent); }
+.node-icon { width:36px;height:36px; border-radius:8px; display:flex;align-items:center;justify-content:center; font-size:18px; position:relative; margin-bottom:2px; }
+.node-label { font-size:10px; }
+
+/* ── SECTION PANELS ── */
+.section { padding: 24px; position:relative; z-index:1; max-width:960px; margin:0 auto; }
+.section.is-reveal { opacity:1; transform:translateY(0); transition:opacity .5s ease, transform .5s ease; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .section { opacity:0; transform:translateY(24px); }
+}
+
+.section-header {
+  display:flex; align-items:center; gap:12px; margin-bottom:20px;
+  padding-bottom:12px; border-bottom:1px solid var(--border);
+}
+.section-badge { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:.1em; padding:4px 10px; border-radius:4px; font-weight:700; }
+.section-title { font-size:22px; font-weight:800; }
+.section-xp { margin-left:auto; font-family:'Space Mono',monospace; font-size:11px; color:var(--gold); }
+
+/* ── FEATURE CARDS ── */
+.cards-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:12px; margin-bottom:24px; }
+
+.feature-stage {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 300px;
+  gap:14px;
+  align-items:start;
+  margin-bottom:24px;
+}
+.feature-stage .cards-grid { margin-bottom:0; }
+
+.mobile-live {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:10px;
+  position:sticky;
+  top:84px;
+}
+.ml-top {
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  letter-spacing:.08em;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+.ml-phone {
+  border:1px solid var(--border);
+  border-radius:14px;
+  overflow:hidden;
+  background:#0f1118;
+}
+.ml-appbar {
+  background:color-mix(in srgb, var(--live-accent) 22%, #111826);
+  color:#fff;
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  letter-spacing:.08em;
+  padding:8px 10px;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.ml-body { padding:10px; }
+.ml-method {
+  color:var(--live-accent);
+  font-family:'Space Mono',monospace;
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:6px;
+}
+.ml-tag {
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5;
+  margin-bottom:8px;
+}
+.ml-what {
+  font-size:11px;
+  color:var(--text);
+  line-height:1.5;
+  margin-bottom:8px;
+}
+.ml-event {
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  color:var(--gold);
+  border:1px dashed rgba(255,214,10,0.35);
+  border-radius:6px;
+  padding:6px 8px;
+  background:rgba(255,214,10,0.06);
+}
+
+.ml-visual {
+  margin:8px 0;
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:8px;
+  padding:8px;
+  background:#121722;
+}
+
+.ml-visual-list .ml-row {
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:6px;
+  padding:6px 8px;
+  font-size:10px;
+  color:var(--muted);
+  margin-bottom:6px;
+  transition:all .25s;
+}
+.ml-visual-list .ml-row:last-child { margin-bottom:0; }
+.ml-visual-list .ml-row.active {
+  border-color:var(--live-accent);
+  color:#fff;
+  background:color-mix(in srgb, var(--live-accent) 18%, transparent);
+  transform:translateX(4px);
+}
+
+.menu-phone {
+  position:relative;
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:8px;
+  overflow:hidden;
+  background:#101726;
+}
+.menu-toolbar {
+  height:34px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 8px;
+  background:color-mix(in srgb, var(--menu) 20%, #142033);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.menu-title {
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  color:#fff;
+  letter-spacing:.06em;
+}
+.menu-actions {
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+.m-btn {
+  width:22px;
+  height:22px;
+  border-radius:6px;
+  border:1px solid rgba(255,255,255,0.2);
+  background:rgba(255,255,255,0.04);
+  color:#fff;
+  font-size:12px;
+  cursor:pointer;
+  line-height:1;
+}
+.m-btn:hover,
+.m-btn.active {
+  border-color:var(--menu);
+  background:rgba(28,143,73,0.2);
+}
+.menu-body {
+  padding:8px;
+  min-height:78px;
+}
+.menu-chip {
+  display:inline-block;
+  border:1px solid rgba(255,255,255,0.14);
+  border-radius:999px;
+  padding:4px 8px;
+  margin:0 6px 6px 0;
+  font-size:10px;
+  color:var(--muted);
+}
+.menu-chip.focus {
+  border-color:var(--menu);
+  color:#fff;
+  background:rgba(28,143,73,0.16);
+}
+.menu-dropdown {
+  position:absolute;
+  right:8px;
+  top:38px;
+  width:140px;
+  border:1px solid rgba(255,255,255,0.14);
+  border-radius:8px;
+  background:#1a2234;
+  box-shadow:0 8px 20px rgba(0,0,0,0.35);
+  padding:4px;
+  display:none;
+  z-index:4;
+}
+.menu-dropdown.open { display:block; }
+.menu-item {
+  width:100%;
+  text-align:left;
+  border:none;
+  background:transparent;
+  color:#d7e3f4;
+  font-size:11px;
+  padding:7px 8px;
+  border-radius:6px;
+  cursor:pointer;
+}
+.menu-item:hover,
+.menu-item.active {
+  background:rgba(28,143,73,0.2);
+  color:#fff;
+}
+
+.menu-code {
+  margin-top:8px;
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:8px;
+  overflow:hidden;
+  background:#0f1624;
+}
+.menu-code-head {
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  letter-spacing:.08em;
+  color:#9be7b2;
+  background:rgba(28,143,73,0.16);
+  border-bottom:1px solid rgba(255,255,255,0.1);
+  padding:6px 8px;
+}
+.menu-code pre {
+  margin:0;
+  padding:8px;
+  white-space:pre-wrap;
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  line-height:1.5;
+  color:#e1f3ea;
+  max-height:160px;
+  overflow:auto;
+}
+
+.wv-shell {
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:8px;
+  overflow:hidden;
+  background:#0f1a2d;
+}
+.wv-top {
+  display:flex;
+  gap:6px;
+  align-items:center;
+  padding:7px;
+  background:rgba(26,163,155,0.18);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.wv-btn {
+  border:1px solid rgba(255,255,255,0.2);
+  background:rgba(255,255,255,0.04);
+  color:#fff;
+  border-radius:6px;
+  width:24px;
+  height:22px;
+  font-size:11px;
+  cursor:pointer;
+}
+.wv-btn:hover { border-color:var(--webview); }
+.wv-url {
+  flex:1;
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  color:#d5f3ef;
+  background:#13243b;
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:6px;
+  padding:4px 6px;
+}
+.wv-stage {
+  min-height:88px;
+  padding:10px;
+  color:#d7e0ed;
+  font-size:11px;
+  line-height:1.6;
+  background:linear-gradient(135deg,#0d1b2a,#13263d);
+}
+.wv-progress {
+  height:3px;
+  background:rgba(255,255,255,0.08);
+  overflow:hidden;
+}
+.wv-progress > div {
+  height:100%;
+  width:0%;
+  background:var(--webview);
+  transition:width .3s ease;
+}
+
+.wv-lab {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:20px;
+}
+.wv-lab-title {
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+  letter-spacing:.08em;
+  color:var(--webview);
+  margin-bottom:10px;
+}
+.wv-pill-row { display:flex; flex-wrap:wrap; gap:8px; }
+.wv-pill {
+  border:1px solid rgba(255,255,255,0.2);
+  background:var(--surface2);
+  color:var(--muted);
+  border-radius:999px;
+  padding:6px 10px;
+  font-size:11px;
+  cursor:pointer;
+}
+.wv-pill.active {
+  border-color:var(--webview);
+  color:#fff;
+  background:rgba(26,163,155,0.2);
+}
+
+
+.ml-visual-dialog {
+  position:relative;
+  height:92px;
+  overflow:hidden;
+}
+.ml-dim {
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.25);
+  opacity:0;
+  transition:opacity .25s;
+}
+.ml-dialog-card {
+  position:absolute;
+  left:10px;
+  right:10px;
+  bottom:8px;
+  background:#1b202d;
+  border:1px solid rgba(255,255,255,0.14);
+  border-radius:8px;
+  padding:8px;
+  transform:translateY(80px) scale(.95);
+  transition:transform .28s cubic-bezier(.2,.8,.2,1);
+}
+.ml-dialog-card .line {
+  height:6px;
+  border-radius:99px;
+  background:rgba(255,255,255,0.2);
+  margin-bottom:6px;
+}
+.ml-dialog-card .line:last-child { margin-bottom:0; width:68%; }
+.ml-visual-dialog.open .ml-dim { opacity:1; }
+.ml-visual-dialog.open .ml-dialog-card { transform:translateY(0) scale(1); }
+
+.ml-pref-item {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:6px;
+  padding:6px 8px;
+  margin-bottom:6px;
+  font-size:10px;
+  color:var(--muted);
+}
+.ml-pref-item:last-child { margin-bottom:0; }
+.ml-pref-item.active {
+  border-color:var(--live-accent);
+  color:#fff;
+  background:color-mix(in srgb, var(--live-accent) 18%, transparent);
+}
+.ml-toggle {
+  width:26px;
+  height:14px;
+  border-radius:99px;
+  background:rgba(255,255,255,0.18);
+  position:relative;
+}
+.ml-toggle::after {
+  content:'';
+  position:absolute;
+  left:2px;
+  top:2px;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:#fff;
+  transition:transform .2s;
+}
+.ml-pref-item.active .ml-toggle { background:color-mix(in srgb, var(--live-accent) 50%, #1a2630); }
+.ml-pref-item.active .ml-toggle::after { transform:translateX(12px); }
+
+.ml-image-frame {
+  height:78px;
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:8px;
+  overflow:hidden;
+  background:#0e1520;
+  position:relative;
+}
+.ml-image-content {
+  position:absolute;
+  inset:8px;
+  border-radius:6px;
+  background:linear-gradient(135deg,#5e7ce2 0%,#64dfdf 45%,#ffd166 100%);
+  transition:all .25s;
+}
+.ml-image-content.fit { inset:14px 20px; }
+.ml-image-content.crop { inset:2px -6px; }
+.ml-image-content.alpha { opacity:.42; }
+.ml-image-content.tint { box-shadow:inset 0 0 0 999px rgba(244,162,97,0.24); }
+.ml-image-content.tap { animation:tapPulse .35s ease; }
+.ml-image-caption {
+  margin-top:6px;
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  color:var(--muted);
+}
+
+@keyframes tapPulse {
+  0% { transform:scale(1); }
+  50% { transform:scale(1.04); }
+  100% { transform:scale(1); }
+}
+
+.feat-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:12px; padding:16px; cursor:pointer;
+  transition: all .2s; position:relative; overflow:hidden;
+}
+.feat-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:currentColor; opacity:0.6;
+}
+.feat-card:hover { transform:translateY(-3px); border-color:rgba(255,255,255,0.15); }
+.feat-card.revealed { border-color:currentColor; }
+.feat-card.revealed::before { opacity:1; }
+
+.card-num { font-family:'Space Mono',monospace; font-size:10px; color:var(--muted); margin-bottom:8px; }
+.card-method { font-family:'Space Mono',monospace; font-size:12px; font-weight:700; margin-bottom:6px; }
+.card-tagline { font-size:12px; color:var(--muted); line-height:1.5; margin-bottom:10px; }
+.card-body { font-size:12px; color:var(--text); line-height:1.6; display:none; }
+.card-example { font-size:11px; padding:8px 10px; border-radius:6px; margin-top:8px; line-height:1.6; border-left:2px solid currentColor; }
+.card-reveal-btn {
+  font-family:'Space Mono',monospace; font-size:10px; letter-spacing:.05em;
+  padding:5px 12px; border-radius:6px; border:1px solid currentColor;
+  background:transparent; cursor:pointer; color:currentColor;
+  transition:all .15s; margin-top:8px;
+}
+.card-reveal-btn:hover { background:currentColor; color:#000; }
+.card-xp-badge { position:absolute; top:12px; right:12px; font-family:'Space Mono',monospace; font-size:9px; color:var(--gold); background:rgba(255,214,10,0.1); padding:2px 6px; border-radius:4px; }
+
+/* ── QUIZ ── */
+.quiz-zone {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:16px; padding:24px; margin-bottom:20px;
+}
+.quiz-q { font-size:15px; font-weight:600; margin-bottom:16px; line-height:1.5; }
+.quiz-opts { display:flex; flex-direction:column; gap:8px; }
+.quiz-opt {
+  padding:12px 16px; border-radius:8px; border:1px solid var(--border);
+  background:var(--surface2); cursor:pointer; font-size:13px;
+  transition:all .15s; text-align:left;
+  font-family:'Syne',sans-serif; color:var(--text);
+}
+.quiz-opt:hover:not(:disabled) { border-color:rgba(255,255,255,0.2); background:#1e1e2e; }
+.quiz-opt.correct { background:rgba(0,180,100,0.15); border-color:#00b464; color:#00ff88; }
+.quiz-opt.wrong { background:rgba(255,77,109,0.12); border-color:var(--accent); color:var(--accent); }
+.quiz-opt:disabled { cursor:default; }
+.quiz-feedback { margin-top:14px; font-size:13px; padding:10px 14px; border-radius:8px; display:none; }
+.quiz-feedback.correct { background:rgba(0,180,100,0.1); color:#00ff88; border:1px solid rgba(0,255,136,0.2); }
+.quiz-feedback.wrong { background:rgba(255,77,109,0.1); color:#ff8fa3; border:1px solid rgba(255,77,109,0.2); }
+.next-btn {
+  margin-top:14px; font-family:'Space Mono',monospace; font-size:11px;
+  padding:8px 18px; border-radius:6px; border:1px solid var(--accent);
+  background:transparent; color:var(--accent); cursor:pointer;
+  display:none; transition:all .15s;
+}
+.next-btn:hover { background:var(--accent); color:#fff; }
+
+/* ── MATCH GAME ── */
+.match-game { margin-bottom:20px; }
+.match-cols { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.match-col-title { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:.1em; color:var(--muted); margin-bottom:8px; }
+.match-item {
+  padding:10px 14px; border-radius:8px; border:1px solid var(--border);
+  background:var(--surface2); cursor:pointer; font-size:12px;
+  transition:all .15s; margin-bottom:6px; font-family:'Space Mono',monospace;
+  user-select:none;
+}
+.match-item:hover { border-color:rgba(255,255,255,0.2); }
+.match-item.selected { border-color:var(--xp-bar); background:rgba(0,180,216,0.1); color:var(--xp-bar); }
+.match-item.matched-ok { border-color:#00b464; background:rgba(0,180,100,0.1); color:#00ff88; pointer-events:none; }
+.match-item.matched-fail { border-color:var(--accent); background:rgba(255,77,109,0.1); color:var(--accent); }
+.match-score { font-family:'Space Mono',monospace; font-size:13px; text-align:center; padding:12px; color:var(--gold); }
+
+/* ── LIFECYCLE STEPPER ── */
+.stepper-wrap { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:20px; margin-bottom:20px; }
+.stepper-dots { display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap; }
+.s-dot { width:28px;height:28px; border-radius:50%; background:var(--surface2); border:1px solid var(--border); display:flex;align-items:center;justify-content:center; font-family:'Space Mono',monospace; font-size:9px; cursor:pointer; transition:all .2s; color:var(--muted); }
+.s-dot.active { background:var(--lifecycle); border-color:var(--lifecycle); color:#000; font-weight:700; }
+.s-dot.done { background:rgba(199,125,255,0.2); border-color:var(--lifecycle); color:var(--lifecycle); }
+.stepper-card { background:var(--surface2); border-radius:12px; padding:18px; }
+.step-num { font-family:'Space Mono',monospace; font-size:10px; color:var(--lifecycle); letter-spacing:.1em; margin-bottom:6px; }
+.step-method { font-family:'Space Mono',monospace; font-size:16px; font-weight:700; color:#fff; margin-bottom:6px; }
+.step-what { font-size:13px; color:var(--muted); line-height:1.6; margin-bottom:10px; }
+.step-wa { font-size:12px; padding:10px 12px; border-radius:8px; background:rgba(199,125,255,0.08); border-left:2px solid var(--lifecycle); color:var(--lifecycle); line-height:1.6; }
+.stepper-btns { display:flex; gap:8px; margin-top:14px; }
+.s-btn { font-family:'Space Mono',monospace; font-size:11px; padding:7px 16px; border-radius:6px; border:1px solid var(--border); background:var(--surface); color:var(--text); cursor:pointer; transition:all .15s; }
+.s-btn:hover { border-color:var(--lifecycle); color:var(--lifecycle); }
+.s-btn.primary { background:var(--lifecycle); border-color:var(--lifecycle); color:#000; font-weight:700; }
+.stepper-counter { margin-left:auto; font-family:'Space Mono',monospace; font-size:11px; color:var(--muted); align-self:center; }
+
+/* ── SCALETYPE CANVAS DEMO ── */
+.scale-section { margin-bottom:20px; }
+.scale-grid-g { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:14px; }
+.sc-card { border:1px solid var(--border); border-radius:8px; overflow:hidden; cursor:pointer; transition:all .15s; background:var(--surface2); }
+.sc-card.active { border-color:var(--imageview); }
+.sc-canvas { width:100%; aspect-ratio:1; display:block; background:#0d1117; }
+.sc-name { font-family:'Space Mono',monospace; font-size:9px; padding:5px 6px 4px; color:var(--muted); }
+.sc-card.active .sc-name { color:var(--imageview); }
+.scale-detail { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; }
+.sd-method { font-family:'Space Mono',monospace; font-size:14px; font-weight:700; color:var(--imageview); margin-bottom:6px; }
+.sd-desc { font-size:13px; color:var(--muted); line-height:1.6; margin-bottom:10px; }
+.sd-canvas-wrap { background:#0d1117; border-radius:8px; overflow:hidden; height:140px; display:flex;align-items:center;justify-content:center; margin-bottom:10px; }
+.sd-example { font-size:12px; padding:8px 12px; border-radius:6px; background:rgba(244,162,97,0.08); border-left:2px solid var(--imageview); color:var(--imageview); line-height:1.6; }
+
+.scale-compare {
+  margin-top:12px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:12px;
+}
+.scmp-title {
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  letter-spacing:.1em;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+.scmp-grid {
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
+}
+.scmp-row {
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:8px 10px;
+  background:var(--surface2);
+  transition:all .18s;
+}
+.scmp-row.active {
+  border-color:var(--imageview);
+  box-shadow:0 0 0 1px rgba(244,162,97,0.2);
+  background:rgba(244,162,97,0.08);
+}
+.scmp-type {
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+  color:var(--imageview);
+  font-weight:700;
+  margin-bottom:4px;
+}
+.scmp-diff {
+  font-size:11px;
+  color:var(--text);
+  line-height:1.45;
+  margin-bottom:4px;
+}
+.scmp-ex {
+  font-size:10px;
+  color:var(--muted);
+  line-height:1.45;
+}
+
+/* ── MENU ATTRIBUTE LAB ── */
+.lab-wrap {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:20px;
+}
+.lab-top {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:10px;
+}
+.lab-title {
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+  letter-spacing:.08em;
+  color:var(--menu);
+  font-weight:700;
+}
+.lab-input {
+  flex:1;
+  min-width:200px;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:8px;
+  color:var(--text);
+  padding:8px 10px;
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+}
+.lab-score {
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+  color:var(--gold);
+}
+.attr-table {
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:hidden;
+}
+.attr-head,
+.attr-row {
+  display:grid;
+  grid-template-columns:1.2fr 1fr 1.6fr;
+}
+.attr-head {
+  background:#0f1728;
+  color:#ffb703;
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+  font-weight:700;
+}
+.attr-head div,
+.attr-row div { padding:9px 10px; border-right:1px solid var(--border); }
+.attr-head div:last-child,
+.attr-row div:last-child { border-right:none; }
+.attr-row {
+  background:var(--surface2);
+  border-top:1px solid var(--border);
+  cursor:pointer;
+  transition:all .18s;
+}
+.attr-row:nth-child(even) { background:#202535; }
+.attr-row:hover { background:rgba(28,143,73,0.12); }
+.attr-row.learned {
+  border-left:3px solid var(--menu);
+  background:rgba(28,143,73,0.14);
+}
+.attr-row .mono {
+  font-family:'Space Mono',monospace;
+  color:var(--menu);
+  font-weight:700;
+}
+
+/* ── GLIDE SIMULATOR ── */
+.sim-wrap {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:20px;
+}
+.sim-top {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:10px;
+}
+.sim-title {
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+  letter-spacing:.08em;
+  color:var(--glide);
+  font-weight:700;
+}
+.sim-steps {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:10px;
+}
+.sim-btn {
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  color:var(--glide);
+  border:1px solid var(--glide);
+  background:transparent;
+  border-radius:6px;
+  padding:6px 10px;
+  cursor:pointer;
+}
+.sim-btn:hover { background:rgba(28,154,150,0.16); }
+.sim-screen {
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:hidden;
+  background:#0d1322;
+}
+.sim-appbar {
+  background:rgba(28,154,150,0.2);
+  color:#fff;
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  letter-spacing:.08em;
+  padding:8px 10px;
+}
+.sim-image {
+  height:130px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Space Mono',monospace;
+  font-size:12px;
+  color:#fff;
+  background:linear-gradient(135deg,#1b2a41,#324a5f);
+  position:relative;
+}
+.sim-image.placeholder { background:repeating-linear-gradient(45deg,#2d3e50,#2d3e50 10px,#3d5068 10px,#3d5068 20px); }
+.sim-image.thumbnail { background:linear-gradient(135deg,#2a9d8f,#457b9d); }
+.sim-image.full { background:linear-gradient(135deg,#06d6a0,#118ab2,#ffd166); }
+.sim-image.error { background:linear-gradient(135deg,#7f1d1d,#b91c1c); }
+.sim-note {
+  border-top:1px solid var(--border);
+  padding:9px 10px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* ── SCORE TOAST ── */
+.toast { position:fixed; bottom:24px; right:24px; z-index:999;
+  background:var(--surface); border:1px solid var(--gold);
+  border-radius:10px; padding:12px 18px;
+  font-family:'Space Mono',monospace; font-size:13px; color:var(--gold);
+  transform:translateY(80px); opacity:0;
+  transition: all .4s cubic-bezier(.4,0,.2,1);
+}
+.toast.show { transform:translateY(0); opacity:1; }
+
+.burst {
+  position:fixed; left:0; top:0; width:10px; height:10px; pointer-events:none; z-index:1200;
+  border-radius:2px; opacity:.9;
+  animation:burst-move .7s ease-out forwards;
+}
+
+@keyframes burst-move {
+  0% { transform:translate(0,0) scale(1); opacity:.95; }
+  100% { transform:translate(var(--dx), var(--dy)) scale(0); opacity:0; }
+}
+
+/* ── DIVIDER ── */
+.section-divider { border:none; border-top:1px solid var(--border); margin:8px 24px; }
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px) {
+  .cards-grid { grid-template-columns:1fr; }
+  .match-cols { grid-template-columns:1fr; }
+  .scale-grid-g { grid-template-columns:repeat(3,1fr); }
+  .hero h1 { font-size:32px; }
+  .feature-stage { grid-template-columns:1fr; }
+  .mobile-live { position:relative; top:0; }
+  .attr-head,
+  .attr-row { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- HUD -->
+<div class="hud">
+  <div class="hud-title">▶ FRAGMENTS ACADEMY</div>
+  <div class="hud-stat">XP <span id="xp-val">0</span></div>
+  <div class="xp-track"><div class="xp-fill" id="xp-fill"></div></div>
+  <div class="hud-stat">Cards <span id="cards-val">0</span></div>
+  <div class="hud-stat">Quiz <span id="quiz-val">0/0</span></div>
+  <div class="hud-stat">Streak <span id="streak-val">0</span></div>
+  <div class="level-badge" id="level-badge">LVL 1</div>
+  <button class="hud-btn" onclick="resetProgress()">RESET</button>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">ANDROID DEVELOPMENT · BCA SEM 6</div>
+  <h1>Fragments<br>Academy</h1>
+  <p>Unlock each concept. Answer quizzes. Match features. Simulate Menus and Glide behavior. Level up your Android knowledge in a gamified way.</p>
+  <button class="start-btn" onclick="scrollToSection('list')">Start Learning ↓</button>
+</div>
+
+<!-- PROGRESS MAP -->
+<div class="progress-map">
+  <div class="map-title">LEARNING MAP</div>
+  <div class="map-row">
+    <div class="map-node active" id="map-list" data-target="list" onclick="scrollToSection('list')" style="color:var(--list)">
+      <div class="node-icon" style="background:rgba(232,93,4,0.15); font-size:20px">📋</div>
+      <div class="node-label">ListFragment</div>
+    </div>
+    <div class="map-node" id="map-dialog" data-target="dialog" onclick="scrollToSection('dialog')" style="color:var(--dialog)">
+      <div class="node-icon" style="background:rgba(123,45,139,0.15); font-size:20px">💬</div>
+      <div class="node-label">DialogFragment</div>
+    </div>
+    <div class="map-node" id="map-pref" data-target="pref" onclick="scrollToSection('pref')" style="color:var(--pref)">
+      <div class="node-icon" style="background:rgba(15,113,115,0.15); font-size:20px">⚙️</div>
+      <div class="node-label">PreferenceFragment</div>
+    </div>
+    <div class="map-node" id="map-lifecycle" data-target="lifecycle" onclick="scrollToSection('lifecycle')" style="color:var(--lifecycle)">
+      <div class="node-icon" style="background:rgba(199,125,255,0.15); font-size:20px">🔄</div>
+      <div class="node-label">Lifecycle</div>
+    </div>
+    <div class="map-node" id="map-imageview" data-target="imageview" onclick="scrollToSection('imageview')" style="color:var(--imageview)">
+      <div class="node-icon" style="background:rgba(244,162,97,0.15); font-size:20px">🖼️</div>
+      <div class="node-label">ImageView</div>
+    </div>
+    <div class="map-node" id="map-menus" data-target="menus" onclick="scrollToSection('menus')" style="color:var(--menu)">
+      <div class="node-icon" style="background:rgba(28,143,73,0.15); font-size:20px">☰</div>
+      <div class="node-label">Menus</div>
+    </div>
+    <div class="map-node" id="map-glide" data-target="glide" onclick="scrollToSection('glide')" style="color:var(--glide)">
+      <div class="node-icon" style="background:rgba(28,154,150,0.15); font-size:20px">🚀</div>
+      <div class="node-label">Glide</div>
+    </div>
+    <div class="map-node" id="map-webview" data-target="webview" onclick="scrollToSection('webview')" style="color:var(--webview)">
+      <div class="node-icon" style="background:rgba(26,163,155,0.15); font-size:20px">🌐</div>
+      <div class="node-label">WebView</div>
+    </div>
+    <div class="map-node" id="map-quiz-zone" data-target="quiz-zone" onclick="scrollToSection('quiz-zone')" style="color:var(--gold)">
+      <div class="node-icon" style="background:rgba(255,214,10,0.15); font-size:20px">🏆</div>
+      <div class="node-label">Final Quiz</div>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════
+     SECTION 1 — LISTFRAGMENT
+════════════════════════════════════════════ -->
+<div class="section" id="list">
+  <div class="section-header">
+    <div class="section-badge" style="background:rgba(232,93,4,0.15);color:var(--list)">01</div>
+    <div class="section-title" style="color:var(--list)">ListFragment</div>
+    <div class="section-xp">+80 XP</div>
+  </div>
+
+  <div class="feature-stage">
+    <div class="cards-grid" id="list-cards"></div>
+    <div class="mobile-live" style="--live-accent:var(--list)">
+      <div class="ml-top">LIVE MOBILE UI</div>
+      <div class="ml-phone">
+        <div class="ml-appbar">LISTFRAGMENT PREVIEW</div>
+        <div class="ml-body">
+          <div class="ml-method" id="pv-list-method">Tap a feature card</div>
+          <div class="ml-tag" id="pv-list-tag">Real-time card summary appears here.</div>
+          <div class="ml-what" id="pv-list-what">Use reveal/hide to see this panel change live as your feature interaction changes.</div>
+          <div class="ml-visual ml-visual-list" id="pv-list-visual">
+            <div class="ml-row">Primary Inbox</div>
+            <div class="ml-row">Starred</div>
+            <div class="ml-row">Promotions</div>
+            <div class="ml-row">Sent Mail</div>
+          </div>
+          <div class="ml-event" id="pv-list-event">EVENT: waiting for interaction...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MATCH GAME -->
+  <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;">MATCH GAME — connect the method to its role</div>
+  <div class="match-game" id="list-match"></div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════
+     SECTION 2 — DIALOGFRAGMENT
+════════════════════════════════════════════ -->
+<div class="section" id="dialog">
+  <div class="section-header">
+    <div class="section-badge" style="background:rgba(123,45,139,0.15);color:var(--dialog)">02</div>
+    <div class="section-title" style="color:var(--dialog)">DialogFragment</div>
+    <div class="section-xp">+80 XP</div>
+  </div>
+  <div class="feature-stage">
+    <div class="cards-grid" id="dialog-cards"></div>
+    <div class="mobile-live" style="--live-accent:var(--dialog)">
+      <div class="ml-top">LIVE MOBILE UI</div>
+      <div class="ml-phone">
+        <div class="ml-appbar">DIALOG PREVIEW</div>
+        <div class="ml-body">
+          <div class="ml-method" id="pv-dialog-method">Tap a feature card</div>
+          <div class="ml-tag" id="pv-dialog-tag">Dialog method summary appears here.</div>
+          <div class="ml-what" id="pv-dialog-what">Open/close any feature to preview behavior as if it is happening in a phone screen.</div>
+          <div class="ml-visual ml-visual-dialog" id="pv-dialog-visual">
+            <div class="ml-dim"></div>
+            <div class="ml-dialog-card">
+              <div class="ml-image-caption" id="pv-dialog-caption" style="margin-bottom:6px">Dialog state: idle</div>
+              <div class="line"></div>
+              <div class="line"></div>
+              <div class="line"></div>
+            </div>
+          </div>
+          <div class="ml-event" id="pv-dialog-event">EVENT: waiting for interaction...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;">MATCH GAME</div>
+  <div class="match-game" id="dialog-match"></div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════
+     SECTION 3 — PREFERENCEFRAGMENT
+════════════════════════════════════════════ -->
+<div class="section" id="pref">
+  <div class="section-header">
+    <div class="section-badge" style="background:rgba(15,113,115,0.15);color:var(--pref)">03</div>
+    <div class="section-title" style="color:var(--pref)">PreferenceFragment</div>
+    <div class="section-xp">+80 XP</div>
+  </div>
+  <div class="feature-stage">
+    <div class="cards-grid" id="pref-cards"></div>
+    <div class="mobile-live" style="--live-accent:var(--pref)">
+      <div class="ml-top">LIVE MOBILE UI</div>
+      <div class="ml-phone">
+        <div class="ml-appbar">SETTINGS PREVIEW</div>
+        <div class="ml-body">
+          <div class="ml-method" id="pv-pref-method">Tap a feature card</div>
+          <div class="ml-tag" id="pv-pref-tag">Preference summary appears here.</div>
+          <div class="ml-what" id="pv-pref-what">This side panel mirrors your current feature selection in real time.</div>
+          <div class="ml-visual" id="pv-pref-visual">
+            <div class="ml-pref-item"><span>Notifications</span><span class="ml-toggle"></span></div>
+            <div class="ml-pref-item"><span>Dark Theme</span><span class="ml-toggle"></span></div>
+            <div class="ml-pref-item"><span>Auto Backup</span><span class="ml-toggle"></span></div>
+          </div>
+          <div class="ml-event" id="pv-pref-event">EVENT: waiting for interaction...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;">MATCH GAME</div>
+  <div class="match-game" id="pref-match"></div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════
+     SECTION 4 — LIFECYCLE
+════════════════════════════════════════════ -->
+<div class="section" id="lifecycle">
+  <div class="section-header">
+    <div class="section-badge" style="background:rgba(199,125,255,0.15);color:var(--lifecycle)">04</div>
+    <div class="section-title" style="color:var(--lifecycle)">Fragment Lifecycle</div>
+    <div class="section-xp">+100 XP</div>
+  </div>
+  <div class="stepper-wrap">
+    <div class="stepper-dots" id="lc-dots"></div>
+    <div class="stepper-card" id="lc-card">
+      <div class="step-num" id="lc-num"></div>
+      <div class="step-method" id="lc-method"></div>
+      <div class="step-what" id="lc-what"></div>
+      <div class="step-wa" id="lc-wa"></div>
+    </div>
+    <div class="stepper-btns">
+      <button class="s-btn" onclick="lcPrev()">← Prev</button>
+      <button class="s-btn primary" onclick="lcNext()">Next →</button>
+      <div class="stepper-counter" id="lc-counter"></div>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════
+     SECTION 5 — IMAGEVIEW + SCALETYPE
+════════════════════════════════════════════ -->
+<div class="section" id="imageview">
+  <div class="section-header">
+    <div class="section-badge" style="background:rgba(244,162,97,0.15);color:var(--imageview)">05</div>
+    <div class="section-title" style="color:var(--imageview)">ImageView</div>
+    <div class="section-xp">+80 XP</div>
+  </div>
+  <div class="feature-stage">
+    <div class="cards-grid" id="iv-cards"></div>
+    <div class="mobile-live" style="--live-accent:var(--imageview)">
+      <div class="ml-top">LIVE MOBILE UI</div>
+      <div class="ml-phone">
+        <div class="ml-appbar">IMAGEVIEW PREVIEW</div>
+        <div class="ml-body">
+          <div class="ml-method" id="pv-imageview-method">Tap a feature card</div>
+          <div class="ml-tag" id="pv-imageview-tag">ImageView summary appears here.</div>
+          <div class="ml-what" id="pv-imageview-what">Use card interactions to watch this mobile panel update with the active concept.</div>
+          <div class="ml-visual" id="pv-imageview-visual">
+            <div class="ml-image-frame">
+              <div class="ml-image-content" id="pv-image-box"></div>
+            </div>
+            <div class="ml-image-caption" id="pv-image-caption">Render mode: default</div>
+          </div>
+          <div class="ml-event" id="pv-imageview-event">EVENT: waiting for interaction...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--muted);margin:0 0 10px;">SCALETYPE VISUAL LAB — tap each to see real rendering</div>
+  <div class="scale-section">
+    <div class="scale-grid-g" id="scale-grid"></div>
+    <div class="scale-detail" id="scale-detail">
+      <div class="sd-method" id="sd-name">centerCrop</div>
+      <div class="sd-desc" id="sd-desc"></div>
+      <div class="sd-canvas-wrap"><canvas id="big-cv" width="280" height="140" style="display:block"></canvas></div>
+      <div class="sd-example" id="sd-ex"></div>
+    </div>
+    <div class="scale-compare">
+      <div class="scmp-title">DIFFERENCE + EXAMPLE (ALL SCALETYPES)</div>
+      <div class="scmp-grid" id="scale-diff-grid"></div>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════
+     SECTION 6 — MENUS
+════════════════════════════════════════════ -->
+<div class="section" id="menus">
+  <div class="section-header">
+    <div class="section-badge" style="background:rgba(28,143,73,0.15);color:var(--menu)">06</div>
+    <div class="section-title" style="color:var(--menu)">Menus + Options Menu</div>
+    <div class="section-xp">+110 XP</div>
+  </div>
+
+  <div class="feature-stage">
+    <div class="cards-grid" id="menu-cards"></div>
+    <div class="mobile-live" style="--live-accent:var(--menu)">
+      <div class="ml-top">LIVE MOBILE UI</div>
+      <div class="ml-phone">
+        <div class="ml-appbar">OPTIONS MENU PREVIEW</div>
+        <div class="ml-body">
+          <div class="ml-method" id="pv-menu-method">Tap a feature card</div>
+          <div class="ml-tag" id="pv-menu-tag">Menu behavior summary appears here.</div>
+          <div class="ml-what" id="pv-menu-what">Preview how Android options menu methods and attributes affect toolbar behavior.</div>
+          <div class="ml-visual" id="pv-menu-visual">
+            <div class="menu-phone">
+              <div class="menu-toolbar">
+                <div class="menu-title">Inbox</div>
+                <div class="menu-actions">
+                  <button class="m-btn" id="m-search" onclick="menuActionTap('action_search', 'toolbar')" title="Search">⌕</button>
+                  <button class="m-btn" id="m-overflow" onclick="toggleMenuOverflow()" title="More">⋮</button>
+                </div>
+              </div>
+              <div class="menu-body" id="menu-body">
+                <span class="menu-chip" id="chip-search">Search (always)</span>
+                <span class="menu-chip" id="chip-sort">Sort (ifRoom)</span>
+                <span class="menu-chip" id="chip-filter">Filter (overflow)</span>
+                <span class="menu-chip" id="chip-settings">Settings (overflow)</span>
+              </div>
+              <div class="menu-dropdown" id="menu-dropdown">
+                <button class="menu-item" id="mi-sort" onclick="menuActionTap('action_sort', 'overflow')">Sort</button>
+                <button class="menu-item" id="mi-filter" onclick="menuActionTap('action_filter', 'overflow')">Filter</button>
+                <button class="menu-item" id="mi-settings" onclick="menuActionTap('action_settings', 'overflow')">Settings</button>
+              </div>
+            </div>
+          </div>
+          <div class="ml-event" id="pv-menu-event">EVENT: waiting for interaction...</div>
+          <div class="menu-code" id="pv-menu-code-wrap">
+            <div class="menu-code-head" id="pv-menu-code-head">JAVA CALLBACK SNIPPET</div>
+            <pre id="pv-menu-code">Tap Search or overflow items to see exact Java callback code.</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;">MATCH GAME</div>
+  <div class="match-game" id="menu-match"></div>
+
+  <div class="lab-wrap">
+    <div class="lab-top">
+      <div class="lab-title">XML ATTRIBUTE LAB — TAP A ROW TO MARK AS LEARNED</div>
+      <input class="lab-input" id="attr-search" placeholder="Filter attribute, value, or meaning..." oninput="renderAttrTable()">
+      <div class="lab-score" id="attr-score">0 / 10 learned</div>
+    </div>
+    <div class="attr-table">
+      <div class="attr-head">
+        <div>ATTRIBUTE</div>
+        <div>VALUE / EXAMPLE</div>
+        <div>DESCRIPTION</div>
+      </div>
+      <div id="attr-body"></div>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════
+     SECTION 7 — GLIDE
+════════════════════════════════════════════ -->
+<div class="section" id="glide">
+  <div class="section-header">
+    <div class="section-badge" style="background:rgba(28,154,150,0.15);color:var(--glide)">07</div>
+    <div class="section-title" style="color:var(--glide)">Glide Library</div>
+    <div class="section-xp">+110 XP</div>
+  </div>
+
+  <div class="feature-stage">
+    <div class="cards-grid" id="glide-cards"></div>
+    <div class="mobile-live" style="--live-accent:var(--glide)">
+      <div class="ml-top">LIVE MOBILE UI</div>
+      <div class="ml-phone">
+        <div class="ml-appbar">GLIDE PREVIEW</div>
+        <div class="ml-body">
+          <div class="ml-method" id="pv-glide-method">Tap a feature card</div>
+          <div class="ml-tag" id="pv-glide-tag">Glide pipeline summary appears here.</div>
+          <div class="ml-what" id="pv-glide-what">Watch how placeholder, thumbnail, and full image loading behave in sequence.</div>
+          <div class="ml-visual" id="pv-glide-visual">
+            <div class="ml-image-frame">
+              <div class="ml-image-content" id="pv-glide-box"></div>
+            </div>
+            <div class="ml-image-caption" id="pv-glide-caption">State: idle</div>
+          </div>
+          <div class="ml-event" id="pv-glide-event">EVENT: waiting for interaction...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;">MATCH GAME</div>
+  <div class="match-game" id="glide-match"></div>
+
+  <div class="sim-wrap">
+    <div class="sim-top">
+      <div class="sim-title">GLIDE LOAD SIMULATOR — COMPLETE THE CORRECT LOADING FLOW</div>
+      <div class="lab-score" id="glide-sim-score">0 / 3 flow steps</div>
+    </div>
+    <div class="sim-steps">
+      <button class="sim-btn" onclick="glideSimStep('placeholder')">placeholder()</button>
+      <button class="sim-btn" onclick="glideSimStep('thumbnail')">thumbnail(0.1f)</button>
+      <button class="sim-btn" onclick="glideSimStep('full')">into(imageView)</button>
+      <button class="sim-btn" onclick="glideSimStep('error')">error(drawable)</button>
+      <button class="sim-btn" onclick="resetGlideSim()">reset</button>
+    </div>
+    <div class="sim-screen">
+      <div class="sim-appbar">NETWORK IMAGE CARD</div>
+      <div class="sim-image placeholder" id="glide-sim-image">placeholder</div>
+      <div class="sim-note" id="glide-sim-note">Start with placeholder(), then thumbnail(), then into(imageView) to complete mission.</div>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════
+     SECTION 8 — WEBVIEW
+════════════════════════════════════════════ -->
+<div class="section" id="webview">
+  <div class="section-header">
+    <div class="section-badge" style="background:rgba(26,163,155,0.15);color:var(--webview)">08</div>
+    <div class="section-title" style="color:var(--webview)">WebView + WebSettings</div>
+    <div class="section-xp">+130 XP</div>
+  </div>
+
+  <div class="feature-stage">
+    <div class="cards-grid" id="webview-cards"></div>
+    <div class="mobile-live" style="--live-accent:var(--webview)">
+      <div class="ml-top">LIVE MOBILE UI</div>
+      <div class="ml-phone">
+        <div class="ml-appbar">WEBVIEW PREVIEW</div>
+        <div class="ml-body">
+          <div class="ml-method" id="pv-webview-method">Tap a feature card</div>
+          <div class="ml-tag" id="pv-webview-tag">WebView method summary appears here.</div>
+          <div class="ml-what" id="pv-webview-what">Interact with browser controls to see real callback flow and Java snippets.</div>
+          <div class="ml-visual" id="pv-webview-visual">
+            <div class="wv-shell">
+              <div class="wv-top">
+                <button class="wv-btn" onclick="webviewAction('back')">←</button>
+                <button class="wv-btn" onclick="webviewAction('reload')">⟳</button>
+                <input class="wv-url" id="wv-url" value="https://developer.android.com" readonly>
+                <button class="wv-btn" onclick="webviewAction('go')">GO</button>
+              </div>
+              <div class="wv-progress"><div id="wv-progress-fill"></div></div>
+              <div class="wv-stage" id="wv-stage">Web content area. Tap GO to simulate loadUrl() and WebViewClient callbacks.</div>
+            </div>
+          </div>
+          <div class="ml-event" id="pv-webview-event">EVENT: waiting for interaction...</div>
+          <div class="menu-code">
+            <div class="menu-code-head" id="pv-webview-code-head">JAVA CALLBACK SNIPPET</div>
+            <pre id="pv-webview-code">Tap GO to see Java WebView callback flow.</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;">MATCH GAME</div>
+  <div class="match-game" id="webview-match"></div>
+
+  <div class="wv-lab">
+    <div class="wv-lab-title">WEBSETTINGS LAB — ACTIVATE ALL 8 SETTINGS (EACH TAP EXPLAINS IN MOBILE UI)</div>
+    <div class="wv-pill-row" id="wv-settings-pills"></div>
+    <div class="lab-score" id="wv-settings-score" style="margin-top:10px;">0 / 8 enabled</div>
+  </div>
+
+  <div class="wv-lab">
+    <div class="wv-lab-title">IMPLEMENTATION ORDER MISSION — CLICK STEPS IN CORRECT ORDER (LIVE EXPLANATION)</div>
+    <div class="wv-pill-row" id="wv-steps-pills"></div>
+    <div class="lab-score" id="wv-steps-score" style="margin-top:10px;">Step 1 of 8</div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════
+     FINAL QUIZ
+════════════════════════════════════════════ -->
+<div class="section" id="quiz-zone">
+  <div class="section-header">
+    <div class="section-badge" style="background:rgba(255,214,10,0.15);color:var(--gold)">QUIZ</div>
+    <div class="section-title" style="color:var(--gold)">Final Boss Quiz</div>
+    <div class="section-xp">+150 XP</div>
+  </div>
+  <div class="quiz-zone">
+    <div class="quiz-q" id="quiz-q">Loading...</div>
+    <div class="quiz-opts" id="quiz-opts"></div>
+    <div class="quiz-feedback" id="quiz-feedback"></div>
+    <button class="next-btn" id="next-btn" onclick="nextQuiz()">Next Question →</button>
+  </div>
+  <div class="match-score" id="quiz-score" style="display:none"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── XP SYSTEM ──────────────────────────────────────────
+let xp = 0, cardsRevealed = 0, quizCorrect = 0, quizTotal = 0;
+const XP_MAX = 1100;
+let streak = 0;
+const unlockedCards = new Set();
+const sectionCardUnlocks = { list:0, dialog:0, pref:0, imageview:0, menus:0, glide:0, webview:0 };
+const sectionDone = { list:false, dialog:false, pref:false, lifecycle:false, imageview:false, menus:false, glide:false, webview:false, 'quiz-zone':false };
+const matchCompleted = { 'list-match':false, 'dialog-match':false, 'pref-match':false, 'menu-match':false, 'glide-match':false, 'webview-match':false };
+const viewedScaleTypes = new Set();
+const learnedAttrRows = new Set();
+let menuAttrMastered = false;
+let glideSimDone = false;
+const webSettingsUnlocked = new Set();
+let webStepsIndex = 0;
+let webSettingsDone = false;
+let webStepsDone = false;
+
+function addXP(amount, label) {
+  xp = Math.min(xp + amount, XP_MAX);
+  document.getElementById('xp-val').textContent = xp;
+  document.getElementById('xp-fill').style.width = (xp / XP_MAX * 100) + '%';
+  const lvl = xp < 100 ? 1 : xp < 250 ? 2 : xp < 450 ? 3 : 4;
+  document.getElementById('level-badge').textContent = 'LVL ' + lvl;
+  showToast('+' + amount + ' XP — ' + label);
+  persistProgress();
+}
+function updateCards() {
+  cardsRevealed++;
+  document.getElementById('cards-val').textContent = cardsRevealed;
+  persistProgress();
+}
+function updateQuiz(correct) {
+  quizTotal++;
+  if(correct) quizCorrect++;
+  document.getElementById('quiz-val').textContent = quizCorrect + '/' + quizTotal;
+  streak = correct ? streak + 1 : 0;
+  document.getElementById('streak-val').textContent = streak;
+  if(streak > 0 && streak % 3 === 0) {
+    addXP(5, 'Streak bonus!');
+    burst(document.body.clientWidth - 80, 86, '#ffd60a');
+  }
+  persistProgress();
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function markSectionDone(sectionId) {
+  if(sectionDone[sectionId]) return;
+  sectionDone[sectionId] = true;
+  const node = document.getElementById('map-' + sectionId);
+  if(node) node.classList.add('done');
+  addXP(10, sectionId + ' complete');
+  burst(window.innerWidth / 2, 140, '#ffd60a');
+  persistProgress();
+}
+
+function updateMapCurrent(sectionId) {
+  document.querySelectorAll('.map-node').forEach((n)=>n.classList.remove('current'));
+  const node = document.getElementById('map-' + sectionId);
+  if(node) node.classList.add('current');
+}
+
+function checkSectionProgress() {
+  if(sectionCardUnlocks.list >= listFeatures.length && matchCompleted['list-match']) markSectionDone('list');
+  if(sectionCardUnlocks.dialog >= dialogFeatures.length && matchCompleted['dialog-match']) markSectionDone('dialog');
+  if(sectionCardUnlocks.pref >= prefFeatures.length && matchCompleted['pref-match']) markSectionDone('pref');
+  if(lcCurrent === lcSteps.length - 1) markSectionDone('lifecycle');
+  if(sectionCardUnlocks.imageview >= ivFeatures.length && viewedScaleTypes.size === scaleTypes.length) markSectionDone('imageview');
+  if(sectionCardUnlocks.menus >= menuFeatures.length && matchCompleted['menu-match'] && menuAttrMastered) markSectionDone('menus');
+  if(sectionCardUnlocks.glide >= glideFeatures.length && matchCompleted['glide-match'] && glideSimDone) markSectionDone('glide');
+  if(sectionCardUnlocks.webview >= webviewFeatures.length && matchCompleted['webview-match'] && webSettingsDone && webStepsDone) markSectionDone('webview');
+  if(quizIdx >= quizQuestions.length) markSectionDone('quiz-zone');
+}
+
+function burst(x, y, color) {
+  for(let i=0;i<16;i++) {
+    const p = document.createElement('div');
+    p.className = 'burst';
+    p.style.left = x + 'px';
+    p.style.top = y + 'px';
+    p.style.background = color;
+    p.style.setProperty('--dx', (Math.random()*160-80) + 'px');
+    p.style.setProperty('--dy', (Math.random()*-140-30) + 'px');
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 760);
+  }
+}
+
+function persistProgress() {
+  const state = {
+    xp, cardsRevealed, quizCorrect, quizTotal, streak, lcCurrent, quizIdx,
+    sectionDone, sectionCardUnlocks, matchCompleted,
+    unlockedCards: Array.from(unlockedCards),
+    viewedScaleTypes: Array.from(viewedScaleTypes),
+    learnedAttrRows: Array.from(learnedAttrRows),
+    menuAttrMastered,
+    glideSimDone,
+    webSettingsUnlocked: Array.from(webSettingsUnlocked),
+    webStepsIndex,
+    webSettingsDone,
+    webStepsDone
+  };
+  localStorage.setItem('fragmentsAcademyState', JSON.stringify(state));
+}
+
+function loadProgress() {
+  const raw = localStorage.getItem('fragmentsAcademyState');
+  if(!raw) return;
+  try {
+    const s = JSON.parse(raw);
+    xp = s.xp || 0;
+    cardsRevealed = s.cardsRevealed || 0;
+    quizCorrect = s.quizCorrect || 0;
+    quizTotal = s.quizTotal || 0;
+    streak = s.streak || 0;
+    lcCurrent = Number.isInteger(s.lcCurrent) ? s.lcCurrent : 0;
+    quizIdx = Number.isInteger(s.quizIdx) ? s.quizIdx : 0;
+    Object.assign(sectionDone, s.sectionDone || {});
+    Object.assign(sectionCardUnlocks, s.sectionCardUnlocks || {});
+    Object.assign(matchCompleted, s.matchCompleted || {});
+    (s.unlockedCards || []).forEach((k)=>unlockedCards.add(k));
+    (s.viewedScaleTypes || []).forEach((t)=>viewedScaleTypes.add(t));
+    (s.learnedAttrRows || []).forEach((a)=>learnedAttrRows.add(a));
+    menuAttrMastered = !!s.menuAttrMastered;
+    glideSimDone = !!s.glideSimDone;
+    (s.webSettingsUnlocked || []).forEach((k)=>webSettingsUnlocked.add(k));
+    webStepsIndex = Number.isInteger(s.webStepsIndex) ? s.webStepsIndex : 0;
+    webSettingsDone = !!s.webSettingsDone;
+    webStepsDone = !!s.webStepsDone;
+  } catch (e) {}
+}
+
+function paintHudFromState() {
+  document.getElementById('xp-val').textContent = xp;
+  document.getElementById('xp-fill').style.width = (xp / XP_MAX * 100) + '%';
+  document.getElementById('cards-val').textContent = cardsRevealed;
+  document.getElementById('quiz-val').textContent = quizCorrect + '/' + quizTotal;
+  document.getElementById('streak-val').textContent = streak;
+  const lvl = xp < 100 ? 1 : xp < 250 ? 2 : xp < 450 ? 3 : 4;
+  document.getElementById('level-badge').textContent = 'LVL ' + lvl;
+  Object.keys(sectionDone).forEach((id)=> {
+    if(sectionDone[id]) {
+      const node = document.getElementById('map-' + id);
+      if(node) node.classList.add('done');
+    }
+  });
+}
+
+function resetProgress() {
+  localStorage.removeItem('fragmentsAcademyState');
+  location.reload();
+}
+
+// ── FEATURE CARDS ──────────────────────────────────────
+function buildCards(containerId, features, color) {
+  const c = document.getElementById(containerId);
+  features.forEach((f, i) => {
+    const div = document.createElement('div');
+    div.className = 'feat-card';
+    div.style.color = color;
+    div.innerHTML = `
+      <div class="card-xp-badge">+10 XP</div>
+      <div class="card-num">FEATURE ${String(i+1).padStart(2,'0')}</div>
+      <div class="card-method" style="color:${color}">${f.method}</div>
+      <div class="card-tagline">${f.tagline}</div>
+      <div class="card-body" id="cb-${containerId}-${i}">
+        <div>${f.what}</div>
+        <div class="card-example" style="background:${color}11;color:${color};border-color:${color}">${f.example}</div>
+      </div>
+      <button class="card-reveal-btn" id="btn-${containerId}-${i}" style="color:${color};border-color:${color}" onclick="revealCard('${containerId}',${i})">REVEAL ▶</button>
+    `;
+    div.onclick = (event) => {
+      if(event.target.closest('.card-reveal-btn')) return;
+      updateFeaturePreview(containerId, i, 'Previewing');
+    };
+    c.appendChild(div);
+  });
+}
+
+function revealCard(cid, i) {
+  const body = document.getElementById(`cb-${cid}-${i}`);
+  const btn = document.getElementById(`btn-${cid}-${i}`);
+  const unlockKey = `${cid}-${i}`;
+  if(body.style.display !== 'block') {
+    body.style.display = 'block';
+    btn.textContent = 'HIDE ▼';
+    updateFeaturePreview(cid, i, 'Applied');
+    if(!unlockedCards.has(unlockKey)) {
+      unlockedCards.add(unlockKey);
+      addXP(10, 'Card unlocked!');
+      updateCards();
+      if(cid === 'list-cards') sectionCardUnlocks.list++;
+      if(cid === 'dialog-cards') sectionCardUnlocks.dialog++;
+      if(cid === 'pref-cards') sectionCardUnlocks.pref++;
+      if(cid === 'iv-cards') sectionCardUnlocks.imageview++;
+      if(cid === 'menu-cards') sectionCardUnlocks.menus++;
+      if(cid === 'glide-cards') sectionCardUnlocks.glide++;
+      if(cid === 'webview-cards') sectionCardUnlocks.webview++;
+      checkSectionProgress();
+    }
+    btn.closest('.feat-card').classList.add('revealed');
+  } else {
+    body.style.display = 'none';
+    btn.textContent = 'REVEAL ▶';
+    updateFeaturePreview(cid, i, 'Collapsed');
+    btn.closest('.feat-card').classList.remove('revealed');
+  }
+}
+
+// ── DATA ───────────────────────────────────────────────
+const listFeatures = [
+  { method:'Encapsulation', tagline:'Built-in ListView — no XML needed', what:'ListFragment already contains a ListView. You do not need to create a layout XML file or manually place a ListView inside it.', example:'Gmail: Like a smart classroom that already has chairs, board and projector. You just walk in and teach — no setup needed.' },
+  { method:'Lifecycle Management', tagline:'onCreate → onCreateView → onResume', what:'ListFragment has its own complete lifecycle — it knows when it is created, shown, paused and destroyed.', example:'Like a teacher\'s daily routine — enters class (onCreate), writes on board (onCreateView), teaches (onResume), leaves (onDestroy). All automatic.' },
+  { method:'setListAdapter()', tagline:'Connects data to the list', what:'This method binds an ArrayAdapter or CursorAdapter directly to the built-in ListView, filling each row with your data.', example:'Gmail inbox: Office staff pinning notices on the board one by one. setListAdapter() = handing the notices and saying "go, pin them".' },
+  { method:'onListItemClick()', tagline:'Handles tap on a list row', what:'Override this method to define what happens when the user taps any row. Android calls it automatically — you never call it yourself.', example:'Gmail: You tap an email → onListItemClick fires → full email screen opens. Like a watchman who wakes up the moment anyone touches a notice.' },
+  { method:'onActivityCreated()', tagline:'Safe place to load data', what:'Called after both the Activity and Fragment are fully ready. The safest and best time to create the adapter and fill the list.', example:'Gmail: Staff waits until the notice board is fully fixed on the wall AND the office is open — only then starts pinning. That waiting = onActivityCreated().' },
+  { method:'Built-in Empty View', tagline:'Auto message when list is empty', what:'If there are no items to show, ListFragment automatically displays a default empty message instead of a blank screen.', example:'Gmail "No conversations" message — you did not code that. ListFragment shows it automatically when the inbox is empty.' },
+  { method:'Modular and Reusable', tagline:'Same fragment, multiple Activities', what:'You write the ListFragment once and reuse it across many different screens of your app without rewriting anything.', example:'Gmail uses the same list design for Primary, Social and Promotions tabs — one fragment class, three different places.' },
+  { method:'getListAdapter()', tagline:'Fetch current adapter attached', what:'Returns the adapter currently connected to the ListView — useful when you need to check or modify the data after initial setup.', example:'Gmail: New email arrives → getListAdapter() retrieves the current adapter → new email is added to the top. Like asking "who is managing the board right now?"' },
+];
+
+const dialogFeatures = [
+  { method:'Encapsulation', tagline:'Wraps dialog as a Fragment — survives rotation', what:'DialogFragment wraps the dialog window inside a Fragment. This means it survives screen rotation — normal AlertDialogs vanish on rotation.', example:'Gmail: "Delete email?" popup is open, you rotate phone — the popup stays. That is DialogFragment. A normal dialog would have disappeared.' },
+  { method:'onCreateDialog()', tagline:'Builds the dialog using AlertDialog.Builder', what:'Override this method to build your dialog. You use AlertDialog.Builder inside it to set title, message, icon and buttons.', example:'Gmail: The "Delete email?" popup with its title, message and two buttons is all assembled inside onCreateDialog(). It is the construction site of the dialog.' },
+  { method:'Lifecycle Management', tagline:'onCreateDialog → onStart → onResume', what:'DialogFragment has its own lifecycle. It is born, appears, becomes active, pauses and dies — all managed automatically.', example:'Dialog appears (onCreateDialog), becomes visible (onStart), you interact (onResume), you tap a button (onPause → onDestroy). No memory leaks.' },
+  { method:'setPositiveButton()', tagline:'"OK / Confirm" button with listener', what:'Adds the confirm action button to the dialog. The listener inside runs when the user taps it.', example:'Gmail: The red "Delete" button in the "Delete email?" popup. When tapped, email is moved to trash. That button = setPositiveButton().' },
+  { method:'setNegativeButton()', tagline:'"Cancel" button with listener', what:'Adds the cancel button to the dialog. Usually dismisses the dialog without doing anything.', example:'Gmail: The "Cancel" button next to "Delete". Tapping it closes the popup and nothing happens. That = setNegativeButton().' },
+  { method:'show()', tagline:'Displays dialog from any Activity', what:'Call this method to make the DialogFragment appear on screen. Pass the FragmentManager and a tag string.', example:'Gmail: You tap the delete icon → Activity calls show(getSupportFragmentManager(), "delete_dialog") → popup appears instantly.' },
+  { method:'dismiss()', tagline:'Programmatically closes the dialog', what:'Closes the dialog cleanly from inside a button listener. Called automatically when positive or negative button is tapped.', example:'Gmail: After tapping "Delete" or "Cancel", dismiss() fires automatically — dialog closes cleanly with no crash or freeze.' },
+  { method:'AlertDialog.Builder', tagline:'Assembles title, message, icon, buttons', what:'The builder pattern used inside onCreateDialog(). Chain methods to construct the dialog piece by piece.', example:'WhatsApp: "Clear chat?" dialog — setTitle("Clear chat?"), setMessage("This cannot be undone"), setPositiveButton("Clear"), setNegativeButton("Cancel") — all chained on the Builder.' },
+];
+
+const prefFeatures = [
+  { method:'XML-Based', tagline:'All settings defined in preferences.xml', what:'Every preference item is declared in a res/xml/preferences.xml file. No Java code needed to define the UI — the XML does it all.', example:'WhatsApp Settings: Every row — name, theme, notifications — is declared in XML, just like how a layout XML defines button positions.' },
+  { method:'PreferenceScreen', tagline:'Root container wrapping all settings', what:'The outermost element in preferences.xml. It is the container that holds all your preference categories and items.', example:'WhatsApp: The entire Settings page is one PreferenceScreen — it wraps the Account, Notifications and Appearance sections.' },
+  { method:'EditTextPreference', tagline:'Text field — saved as String automatically', what:'Tapping it opens a text input dialog. Whatever you type is saved automatically as a String in SharedPreferences.', example:'WhatsApp Settings: "Your name" row. You tap it, a dialog opens, you type your name, tap OK — saved as String. No code for saving needed.' },
+  { method:'CheckBoxPreference', tagline:'Toggle — saved as true/false automatically', what:'A boolean toggle switch. When the user toggles it, the true/false value is saved to SharedPreferences instantly.', example:'WhatsApp: Message notifications, Read receipts, Group notifications — each toggle saves true or false the moment you flick it.' },
+  { method:'ListPreference', tagline:'Dropdown — android:entries define options', what:'Shows a list dialog with multiple options. The selected value is saved automatically. Options are defined via android:entries in XML.', example:'WhatsApp: "Theme" — Light/Dark/System. "Font size" — Small/Medium/Large. Both are ListPreferences with their options listed in XML.' },
+  { method:'onCreatePreferences()', tagline:'Loads XML file into the screen', what:'Override this method and call setPreferencesFromResource() inside it. This loads your preferences.xml and builds the settings UI.', example:'WhatsApp Settings: When you open Settings, onCreatePreferences() runs, reads the XML and instantly builds all the rows you see.' },
+  { method:'Auto-Save', tagline:'All changes saved to SharedPreferences', what:'You never need to write a "Save" button. Every time the user changes a preference, it is automatically saved to SharedPreferences.', example:'WhatsApp: You toggle notifications OFF. No Save button. PreferenceFragment saved it to SharedPreferences the instant you flicked the toggle.' },
+  { method:'PreferenceFragmentCompat', tagline:'Modern class — not the deprecated version', what:'Always extend PreferenceFragmentCompat, not the old deprecated PreferenceFragment. It works with all Android versions.', example:'Like using RecyclerView instead of old ListView. PreferenceFragmentCompat is the modern, supported version your students must use.' },
+];
+
+const ivFeatures = [
+  { method:'Loading Images', tagline:'Supports drawable, Bitmap, URI, URL', what:'ImageView can display images from any source — a drawable file in your project, a Bitmap object in memory, a file on the device, or a URL from the internet.', example:'Instagram: Profile photo loaded from internet URL. WhatsApp: received photo loaded from local file URI. Same ImageView widget, different sources.' },
+  { method:'scaleType attribute', tagline:'7 options — controls how image fits frame', what:'Controls whether the image is cropped, stretched, fitted or centered inside the ImageView bounds. The most important attribute for getting images to look right.', example:'Instagram uses centerCrop — photo fills the square, edges get cropped. WhatsApp uses fitCenter — full photo visible with possible letterbox bars.' },
+  { method:'android:src', tagline:'Sets image directly from drawable in XML', what:'Used directly in the layout XML file to set which drawable resource should appear in the ImageView — no Java code required.', example:'Instagram app: The camera icon, heart icon and bookmark icon are all set using android:src in the layout XML file.' },
+  { method:'contentDescription', tagline:'Text label for accessibility screen readers', what:'A text description of the image read aloud by TalkBack for visually impaired users. Required for accessibility compliance.', example:'A blind student uses TalkBack on Instagram. They touch a photo — phone reads "Sunset at Marina Beach photo by ajith_photography". That text = contentDescription.' },
+  { method:'adjustViewBounds', tagline:'Resizes ImageView to match aspect ratio', what:'When set to true, the ImageView itself resizes to match the exact aspect ratio of the image. No ugly white space above or below.', example:'WhatsApp received a portrait photo. With adjustViewBounds=true, the ImageView height adjusts exactly to the photo. No blank space anywhere.' },
+  { method:'android:alpha', tagline:'Transparency from 0.0 to 1.0', what:'Controls how transparent or opaque the image appears. 0.0 = completely invisible. 1.0 = fully visible. Values in between create fade effects.', example:'Instagram Stories: When a story is "seen", the profile ring and avatar fade. That gradual fading = alpha value reducing from 1.0 to 0.3.' },
+  { method:'android:tint', tagline:'Applies color filter over the image', what:'Overlays a colour on top of the image. Commonly used to change icon colours — especially switching between light and dark mode.', example:'Instagram dark mode: All icons (heart, comment, share) change from black to white. That colour change = tint attribute changing from black to white.' },
+  { method:'setOnClickListener()', tagline:'Makes ImageView a clickable button', what:'Attaches a click listener to the ImageView so the user can tap it and trigger an action — making the image itself act as a button.', example:'Instagram: Double-tap a photo → heart animation appears. WhatsApp: Tap a received image → opens full screen. The image IS the button.' },
+];
+
+const menuFeatures = [
+  { method:'Visibility', tagline:'Open from overflow icon or menu key', what:'Options menu is shown by tapping the three-dot overflow icon in toolbar, or through the hardware/menu key on some devices.', example:'If Search is not pinned in toolbar, user opens overflow and still reaches it quickly.' },
+  { method:'Contextual Actions', tagline:'Actions relevant to current Activity', what:'Menu content changes based on current screen. A Mail list screen and Mail detail screen can show totally different actions.', example:'Inbox shows Sort/Filter, while email detail shows Reply/Archive/Delete.' },
+  { method:'Icon Support', tagline:'showAsAction controls icon placement', what:'Menu items can include icons and placement rules using app:showAsAction values such as always and ifRoom.', example:'Search icon appears in toolbar as always; Help stays in overflow as never.' },
+  { method:'Overflow Menu', tagline:'Extra items move to overflow list', what:'When toolbar space is limited, Android automatically shifts low-priority items into overflow.', example:'On small phones, only Search icon stays visible while Settings and About move into overflow.' },
+  { method:'Customization', tagline:'Update in onPrepareOptionsMenu()', what:'You can dynamically show, hide, enable or rename menu items in runtime depending on app state.', example:'Hide "Save" until user edits content, then call invalidateOptionsMenu().' },
+  { method:'onCreateOptionsMenu()', tagline:'Inflates menu XML into toolbar', what:'Override this method to inflate your XML menu file with getMenuInflater().inflate().', example:'Inflate main_menu.xml once when Activity starts.' },
+  { method:'onOptionsItemSelected()', tagline:'Handles selected menu item', what:'Override this method and use item id to execute action for each selected menu item.', example:'When action_search is selected, open search dialog immediately.' },
+  { method:'invalidateOptionsMenu()', tagline:'Rebuild menu at runtime', what:'Forces Android to recreate the options menu so latest visibility/enabled state takes effect.', example:'After user login, call invalidateOptionsMenu() to show Profile and Logout items.' },
+];
+
+const glideFeatures = [
+  { method:'Glide.with(ctx).load(url).into(imageView)', tagline:'Loads remote image into ImageView', what:'Core Glide pipeline for loading internet image directly into view with caching and decoding optimizations.', example:'Load user avatar URL into profile ImageView with one line.' },
+  { method:'.placeholder(R.drawable.loading)', tagline:'Shows local image while loading', what:'Displays a temporary drawable while the network image fetch is in progress.', example:'Grey shimmer avatar appears first, then real avatar fades in.' },
+  { method:'.error(R.drawable.error_img)', tagline:'Fallback if loading fails', what:'If URL fails or network errors occur, Glide shows error drawable instead of blank space.', example:'Broken image icon appears for invalid product image links.' },
+  { method:'.circleCrop()', tagline:'Clips image into perfect circle', what:'Transforms the decoded image into a circle shape, ideal for profile pictures.', example:'Chat app contact photos become circular without manual bitmap code.' },
+  { method:'.centerCrop() / .fitCenter()', tagline:'Applies scaling behavior', what:'Chooses how image fills bounds: centerCrop fills and trims edges, fitCenter keeps whole image.', example:'Feed cards use centerCrop; document previews use fitCenter.' },
+  { method:'.override(width, height)', tagline:'Resize before cache', what:'Downsamples image to target size before storing and rendering, reducing memory pressure.', example:'Load 1200x900 image as 300x225 thumbnail to save RAM.' },
+  { method:'.thumbnail(0.1f)', tagline:'Instant low-res preview first', what:'Loads a quick small preview first, then upgrades to full image when ready.', example:'Slow network still feels fast because tiny preview shows immediately.' },
+  { method:'Automatic Caching', tagline:'Memory + disk cache enabled', what:'Glide caches decoded and original data so repeated loads are very fast.', example:'Scrolling feed back up instantly restores images from cache without re-download.' },
+];
+
+const webviewFeatures = [
+  { method:'loadUrl(url)', tagline:'Loads web page from internet URL', what:'Primary API to load a remote web page into WebView.', example:'wv.loadUrl("https://developer.android.com");' },
+  { method:'loadData(html, mimeType, encoding)', tagline:'Loads raw HTML string', what:'Render custom HTML content directly without hitting network URL.', example:'wv.loadData("<h2>Hello</h2>", "text/html", "UTF-8");' },
+  { method:'JavaScript Support', tagline:'setJavaScriptEnabled(true)', what:'Enable JavaScript in WebSettings when site depends on dynamic scripts.', example:'wv.getSettings().setJavaScriptEnabled(true);' },
+  { method:'Navigation APIs', tagline:'goBack / goForward / reload / stopLoading', what:'Browser-like navigation controls for user interaction and history stack.', example:'if (wv.canGoBack()) wv.goBack();' },
+  { method:'Zoom Controls', tagline:'setBuiltInZoomControls(true)', what:'Enables pinch-to-zoom gestures inside rendered web pages.', example:'ws.setBuiltInZoomControls(true); ws.setDisplayZoomControls(false);' },
+  { method:'WebViewClient', tagline:'Keeps links inside app', what:'Attach WebViewClient so URL clicks open in WebView, not external browser.', example:'wv.setWebViewClient(new WebViewClient());' },
+  { method:'Caching', tagline:'setCacheMode(LOAD_CACHE_ELSE_NETWORK)', what:'Use cached content first when available for faster and offline-friendly behavior.', example:'ws.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);' },
+  { method:'onPageFinished()', tagline:'Called when page fully loads', what:'WebViewClient callback to hide loaders and enable UI after load completes.', example:'public void onPageFinished(WebView view, String url) { progressBar.setVisibility(View.GONE); }' },
+];
+
+const previewMeta = {
+  'list-cards': { prefix:'list', label:'ListFragment', features:listFeatures },
+  'dialog-cards': { prefix:'dialog', label:'DialogFragment', features:dialogFeatures },
+  'pref-cards': { prefix:'pref', label:'PreferenceFragment', features:prefFeatures },
+  'iv-cards': { prefix:'imageview', label:'ImageView', features:ivFeatures },
+  'menu-cards': { prefix:'menu', label:'OptionsMenu', features:menuFeatures },
+  'glide-cards': { prefix:'glide', label:'Glide', features:glideFeatures },
+  'webview-cards': { prefix:'webview', label:'WebView', features:webviewFeatures }
+};
+
+const menuEventMap = {
+  action_search: {
+    method: 'onOptionsItemSelected(item)',
+    event: 'EVENT: onOptionsItemSelected(MenuItem item) -> R.id.action_search',
+    explain: {
+      beginner: 'Toolbar Search tapped. Android routes click to onOptionsItemSelected(). You check item.getItemId() and launch search UI.',
+      exam: 'Exam point: Toolbar action click is handled in onOptionsItemSelected() using R.id.action_search.'
+    },
+    java: `@Override
+public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    if (item.getItemId() == R.id.action_search) {
+        openSearch();
+        return true;
+    }
+    return super.onOptionsItemSelected(item);
+}`
+  },
+  action_sort: {
+    method: 'onOptionsItemSelected(item)',
+    event: 'EVENT: onOptionsItemSelected(MenuItem item) -> R.id.action_sort',
+    explain: {
+      beginner: 'Overflow Sort tapped. Callback is still onOptionsItemSelected(). Typical action is sorting list and refreshing adapter.',
+      exam: 'Exam point: Overflow item selection also reaches onOptionsItemSelected() via action id matching.'
+    },
+    java: `@Override
+public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    if (item.getItemId() == R.id.action_sort) {
+        applySortMode();
+        return true;
+    }
+    return super.onOptionsItemSelected(item);
+}`
+  },
+  action_filter: {
+    method: 'onOptionsItemSelected(item)',
+    event: 'EVENT: onOptionsItemSelected(MenuItem item) -> R.id.action_filter',
+    explain: {
+      beginner: 'Overflow Filter tapped. onOptionsItemSelected() receives action_filter and applies selected filter state.',
+      exam: 'Exam point: Use item.getItemId() == R.id.action_filter branch for runtime filtering logic.'
+    },
+    java: `@Override
+public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    if (item.getItemId() == R.id.action_filter) {
+        showFilterDialog();
+        return true;
+    }
+    return super.onOptionsItemSelected(item);
+}`
+  },
+  action_settings: {
+    method: 'onOptionsItemSelected(item)',
+    event: 'EVENT: onOptionsItemSelected(MenuItem item) -> R.id.action_settings',
+    explain: {
+      beginner: 'Overflow Settings tapped. Handler opens Settings screen or fragment from the selected item id.',
+      exam: 'Exam point: Settings menu item usually navigates using explicit intent inside onOptionsItemSelected().' 
+    },
+    java: `@Override
+public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    if (item.getItemId() == R.id.action_settings) {
+        startActivity(new Intent(this, SettingsActivity.class));
+        return true;
+    }
+    return super.onOptionsItemSelected(item);
+}`
+  }
+};
+
+const menuLifecycleCode = {
+  create: `@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.main_menu, menu);
+    return true;
+}`,
+  prepare: `@Override
+public boolean onPrepareOptionsMenu(Menu menu) {
+    MenuItem settings = menu.findItem(R.id.action_settings);
+    settings.setVisible(isUserLoggedIn);
+    return super.onPrepareOptionsMenu(menu);
+}`,
+  opened: `@Override
+public boolean onMenuOpened(int featureId, Menu menu) {
+    return super.onMenuOpened(featureId, menu);
+}`
+};
+
+let menuOverflowOpen = false;
+let lastMenuNarration = null;
+let lastGlideNarration = null;
+
+function modeText(value) {
+  if(value && typeof value === 'object') {
+    return value.beginner || value.exam || '';
+  }
+  return value || '';
+}
+
+function setMenuNarration(method, tag, explain, eventText, codeTitle, code) {
+  lastMenuNarration = { method, tag, explain, eventText, codeTitle, code };
+  applyMenuNarration();
+}
+
+function applyMenuNarration() {
+  if(!lastMenuNarration) return;
+  const methodEl = document.getElementById('pv-menu-method');
+  const tagEl = document.getElementById('pv-menu-tag');
+  const whatEl = document.getElementById('pv-menu-what');
+  const eventEl = document.getElementById('pv-menu-event');
+  if(methodEl) methodEl.textContent = lastMenuNarration.method;
+  if(tagEl) tagEl.textContent = lastMenuNarration.tag;
+  if(whatEl) whatEl.textContent = modeText(lastMenuNarration.explain);
+  if(eventEl) eventEl.textContent = lastMenuNarration.eventText;
+  setMenuCodeSnippet(lastMenuNarration.codeTitle, lastMenuNarration.code);
+}
+
+function setGlideNarration(tag, explain, eventText) {
+  lastGlideNarration = { tag, explain, eventText };
+  applyGlideNarration();
+}
+
+function applyGlideNarration() {
+  if(!lastGlideNarration) return;
+  const tagEl = document.getElementById('pv-glide-tag');
+  const whatEl = document.getElementById('pv-glide-what');
+  const eventEl = document.getElementById('pv-glide-event');
+  if(tagEl) tagEl.textContent = lastGlideNarration.tag;
+  if(whatEl) whatEl.textContent = modeText(lastGlideNarration.explain);
+  if(eventEl) eventEl.textContent = lastGlideNarration.eventText;
+}
+
+function setMenuCodeSnippet(title, code) {
+  const head = document.getElementById('pv-menu-code-head');
+  const pre = document.getElementById('pv-menu-code');
+  if(head) head.textContent = title;
+  if(pre) pre.textContent = code;
+}
+
+function toggleMenuOverflow(forceOpen) {
+  const dd = document.getElementById('menu-dropdown');
+  const overflowBtn = document.getElementById('m-overflow');
+  if(!dd || !overflowBtn) return;
+  menuOverflowOpen = typeof forceOpen === 'boolean' ? forceOpen : !menuOverflowOpen;
+  dd.classList.toggle('open', menuOverflowOpen);
+  overflowBtn.classList.toggle('active', menuOverflowOpen);
+  if(menuOverflowOpen) {
+    setMenuNarration(
+      'onMenuOpened(featureId, menu)',
+      'Overflow panel opened',
+      {
+        beginner:'Overflow menu is now visible. The user can pick items like Sort, Filter, and Settings.',
+        exam:'Exam point: Overflow reveal maps to onMenuOpened(...) callback.'
+      },
+      'EVENT: onMenuOpened(FEATURE_OPTIONS_PANEL, menu)',
+      'JAVA: onMenuOpened(...)',
+      menuLifecycleCode.opened
+    );
+  }
+}
+
+function setMenuFocus(actionId) {
+  document.querySelectorAll('#pv-menu-visual .menu-chip').forEach((n)=>n.classList.remove('focus'));
+  document.querySelectorAll('#pv-menu-visual .menu-item').forEach((n)=>n.classList.remove('active'));
+  const chipMap = {
+    action_search: 'chip-search',
+    action_sort: 'chip-sort',
+    action_filter: 'chip-filter',
+    action_settings: 'chip-settings'
+  };
+  const itemMap = {
+    action_sort: 'mi-sort',
+    action_filter: 'mi-filter',
+    action_settings: 'mi-settings'
+  };
+  const chip = document.getElementById(chipMap[actionId]);
+  if(chip) chip.classList.add('focus');
+  const item = document.getElementById(itemMap[actionId]);
+  if(item) item.classList.add('active');
+}
+
+function menuActionTap(actionId, source) {
+  const info = menuEventMap[actionId];
+  if(!info) return;
+  setMenuFocus(actionId);
+  toggleMenuOverflow(false);
+  setMenuNarration(
+    info.method,
+    `Clicked: ${actionId}`,
+    info.explain,
+    info.event,
+    `JAVA: ${info.method}`,
+    info.java
+  );
+}
+
+function initMenuPreview() {
+  setMenuFocus('action_search');
+  toggleMenuOverflow(false);
+  setMenuNarration(
+    'onCreateOptionsMenu(menu)',
+    'Menu initialized',
+    {
+      beginner:'Activity inflates menu XML before user starts tapping actions.',
+      exam:'Exam point: Options menu creation is handled in onCreateOptionsMenu(menu).'
+    },
+    'EVENT: onCreateOptionsMenu(menu)',
+    'JAVA: onCreateOptionsMenu(...)',
+    menuLifecycleCode.create
+  );
+}
+
+const webviewEventMap = {
+  go: {
+    event: 'EVENT: loadUrl(url) -> shouldOverrideUrlLoading() -> onPageFinished()',
+    java: `WebView wv = findViewById(R.id.wv);
+wv.setWebViewClient(new WebViewClient() {
+    @Override
+    public void onPageFinished(WebView view, String url) {
+        progressBar.setVisibility(View.GONE);
+    }
+});
+wv.loadUrl("https://developer.android.com");`
+  },
+  reload: {
+    event: 'EVENT: reload() -> onPageStarted() -> onPageFinished()',
+    java: `if (wv != null) {
+    progressBar.setVisibility(View.VISIBLE);
+    wv.reload();
+}`
+  },
+  back: {
+    event: 'EVENT: onBackPressed() -> canGoBack() -> goBack()',
+    java: `@Override
+public void onBackPressed() {
+    if (wv.canGoBack()) {
+        wv.goBack();
+    } else {
+        super.onBackPressed();
+    }
+}`
+  }
+};
+
+const webSettingsMethods = [
+  'setJavaScriptEnabled(true)',
+  'setBuiltInZoomControls(true)',
+  'setDisplayZoomControls(false)',
+  'setCacheMode(LOAD_CACHE_ELSE_NETWORK)',
+  'setDomStorageEnabled(true)',
+  'setAllowFileAccess(true)',
+  'setUserAgentString(ua)',
+  'setMixedContentMode(...)'
+];
+
+const webSettingsExplain = [
+  {
+    event:'EVENT: WebSettings#setJavaScriptEnabled(true)',
+    stage:{
+      beginner:'JavaScript execution enabled. Dynamic pages and JS-driven UI now work inside WebView.',
+      exam:'Exam point: JS was disabled by default; enabled via WebSettings for dynamic websites.'
+    },
+    java:`WebSettings ws = wv.getSettings();
+ws.setJavaScriptEnabled(true);`
+  },
+  {
+    event:'EVENT: WebSettings#setBuiltInZoomControls(true)',
+    stage:{
+      beginner:'Pinch-to-zoom gestures enabled for web content.',
+      exam:'Exam point: Enables in-content zoom controls for readability.'
+    },
+    java:`WebSettings ws = wv.getSettings();
+ws.setBuiltInZoomControls(true);`
+  },
+  {
+    event:'EVENT: WebSettings#setDisplayZoomControls(false)',
+    stage:{
+      beginner:'On-screen +/- zoom buttons hidden; pinch gesture remains active.',
+      exam:'Exam point: Hides default zoom UI while retaining gesture zoom.'
+    },
+    java:`WebSettings ws = wv.getSettings();
+ws.setDisplayZoomControls(false);`
+  },
+  {
+    event:'EVENT: WebSettings#setCacheMode(LOAD_CACHE_ELSE_NETWORK)',
+    stage:{
+      beginner:'WebView tries cache first and falls back to network if cache is unavailable.',
+      exam:'Exam point: Cache-first strategy improves offline behavior and load speed.'
+    },
+    java:`WebSettings ws = wv.getSettings();
+ws.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);`
+  },
+  {
+    event:'EVENT: WebSettings#setDomStorageEnabled(true)',
+    stage:{
+      beginner:'HTML5 localStorage support enabled for modern websites.',
+      exam:'Exam point: Required by many modern web apps using DOM storage APIs.'
+    },
+    java:`WebSettings ws = wv.getSettings();
+ws.setDomStorageEnabled(true);`
+  },
+  {
+    event:'EVENT: WebSettings#setAllowFileAccess(true)',
+    stage:{
+      beginner:'Local file access enabled. Use only when required and trusted.',
+      exam:'Exam point: File access increases attack surface; enable conditionally.'
+    },
+    java:`WebSettings ws = wv.getSettings();
+ws.setAllowFileAccess(true);`
+  },
+  {
+    event:'EVENT: WebSettings#setUserAgentString(ua)',
+    stage:{
+      beginner:'Custom user-agent applied so server can return app-specific web content.',
+      exam:'Exam point: UA customization helps server-side content negotiation.'
+    },
+    java:`WebSettings ws = wv.getSettings();
+ws.setUserAgentString("MyAppWebView/1.0");`
+  },
+  {
+    event:'EVENT: WebSettings#setMixedContentMode(...)',
+    stage:{
+      beginner:'Mixed content policy updated to control HTTP resources inside HTTPS pages.',
+      exam:'Exam point: Controls secure-context policy for HTTP assets under HTTPS.'
+    },
+    java:`WebSettings ws = wv.getSettings();
+ws.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);`
+  }
+];
+
+const webImplSteps = [
+  'Manifest INTERNET permission',
+  'Layout add <WebView>',
+  'findViewById(R.id.wv)',
+  'setJavaScriptEnabled(true)',
+  'setWebViewClient(new WebViewClient())',
+  'loadUrl("https://...")',
+  'onBackPressed with canGoBack()',
+  'Security checks for trusted URLs'
+];
+
+const webImplJava = [
+  `<!-- AndroidManifest.xml -->
+<uses-permission android:name="android.permission.INTERNET" />`,
+  `<!-- activity_main.xml -->
+<WebView
+    android:id="@+id/wv"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />`,
+  `WebView wv = findViewById(R.id.wv);`,
+  `WebSettings ws = wv.getSettings();
+ws.setJavaScriptEnabled(true);`,
+  `wv.setWebViewClient(new WebViewClient());`,
+  `wv.loadUrl("https://www.google.com");`,
+  `@Override
+public void onBackPressed() {
+    if (wv.canGoBack()) {
+        wv.goBack();
+    } else {
+        super.onBackPressed();
+    }
+}`,
+  `// Security practice
+// Enable JS only for trusted sources
+// Validate URLs before loading`
+];
+
+function setWebviewCode(title, code) {
+  const head = document.getElementById('pv-webview-code-head');
+  const pre = document.getElementById('pv-webview-code');
+  if(head) head.textContent = title;
+  if(pre) pre.textContent = code;
+}
+
+function pickExplainText(value) {
+  if(value && typeof value === 'object') {
+    return value.beginner || value.exam || '';
+  }
+  return value || '';
+}
+
+let lastWebNarration = null;
+
+function applyWebNarration() {
+  if(!lastWebNarration) return;
+  const m = document.getElementById('pv-webview-method');
+  const t = document.getElementById('pv-webview-tag');
+  const w = document.getElementById('pv-webview-what');
+  const e = document.getElementById('pv-webview-event');
+  const s = document.getElementById('wv-stage');
+  if(m) m.textContent = lastWebNarration.method;
+  if(t) t.textContent = lastWebNarration.tag;
+  if(w) w.textContent = pickExplainText(lastWebNarration.what);
+  if(e) e.textContent = lastWebNarration.eventText;
+  if(s) s.textContent = pickExplainText(lastWebNarration.stageText);
+  setWebviewCode(lastWebNarration.codeTitle, lastWebNarration.javaCode);
+}
+
+function setWebviewNarration(method, tag, what, eventText, stageText, codeTitle, javaCode) {
+  lastWebNarration = { method, tag, what, eventText, stageText, codeTitle, javaCode };
+  applyWebNarration();
+}
+
+function webviewAction(action) {
+  const stage = document.getElementById('wv-stage');
+  const bar = document.getElementById('wv-progress-fill');
+  const eventEl = document.getElementById('pv-webview-event');
+  const info = webviewEventMap[action];
+  if(!stage || !bar || !eventEl || !info) return;
+
+  if(action === 'go') {
+    bar.style.width = '20%';
+    stage.textContent = 'Loading https://developer.android.com ...';
+    setTimeout(()=>{ bar.style.width = '75%'; }, 220);
+    setTimeout(()=>{
+      bar.style.width = '100%';
+      stage.textContent = 'Page loaded: Android Developer docs rendered inside app WebView.';
+    }, 520);
+  }
+
+  if(action === 'reload') {
+    bar.style.width = '15%';
+    stage.textContent = 'Reloading current page from cache/network...';
+    setTimeout(()=>{ bar.style.width = '100%'; }, 350);
+  }
+
+  if(action === 'back') {
+    bar.style.width = '0%';
+    stage.textContent = 'Navigated to previous history entry using goBack().';
+  }
+
+  eventEl.textContent = info.event;
+  setWebviewCode('JAVA CALLBACK SNIPPET', info.java);
+}
+
+function buildWebSettingsLab() {
+  const host = document.getElementById('wv-settings-pills');
+  if(!host) return;
+  host.innerHTML = webSettingsMethods.map((m, i)=>
+    `<button class="wv-pill" id="wsp-${i}" onclick="toggleWebSetting(${i})">${m}</button>`
+  ).join('');
+  syncWebSettingsLab();
+}
+
+function syncWebSettingsLab() {
+  webSettingsMethods.forEach((_, i)=> {
+    const pill = document.getElementById(`wsp-${i}`);
+    if(pill) pill.classList.toggle('active', webSettingsUnlocked.has(i));
+  });
+  const score = document.getElementById('wv-settings-score');
+  if(score) score.textContent = `${webSettingsUnlocked.size} / ${webSettingsMethods.length} enabled`;
+}
+
+function toggleWebSetting(i) {
+  const detail = webSettingsExplain[i];
+  if(detail) {
+    const progress = document.getElementById('wv-progress-fill');
+    if(progress) progress.style.width = ((i + 1) / webSettingsMethods.length * 100) + '%';
+    setWebviewNarration(
+      'WebSettings Lab',
+      webSettingsMethods[i],
+      {
+        beginner:'This setting now reflects in the mobile WebView preview on the right.',
+        exam:'Exam point: This API updates WebView behavior and is frequently asked in setup questions.'
+      },
+      detail.event,
+      detail.stage,
+      `JAVA: ${webSettingsMethods[i]}`,
+      detail.java
+    );
+  }
+
+  if(webSettingsUnlocked.has(i)) return;
+  webSettingsUnlocked.add(i);
+  addXP(3, 'WebSettings learned');
+  syncWebSettingsLab();
+  if(webSettingsUnlocked.size === webSettingsMethods.length && !webSettingsDone) {
+    webSettingsDone = true;
+    addXP(18, 'WebSettings lab complete!');
+    setWebviewNarration(
+      'WebSettings Lab Complete',
+      '8 / 8 settings enabled',
+      {
+        beginner:'All core WebSettings configured. Your WebView is now feature-complete and safer for production.',
+        exam:'Exam summary: JavaScript, zoom, cache, DOM storage, file access, UA, and mixed-content policy configured.'
+      },
+      'EVENT: WebSettings configuration finished',
+      {
+        beginner:'WebView preview updated with final settings profile.',
+        exam:'Final profile ready: mention only required settings in answer to avoid security penalties.'
+      },
+      'JAVA: Combined WebSettings setup',
+      `WebSettings ws = wv.getSettings();
+ws.setJavaScriptEnabled(true);
+ws.setBuiltInZoomControls(true);
+ws.setDisplayZoomControls(false);
+ws.setDomStorageEnabled(true);
+ws.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);`
+    );
+    checkSectionProgress();
+  }
+  persistProgress();
+}
+
+function buildWebStepsLab() {
+  const host = document.getElementById('wv-steps-pills');
+  if(!host) return;
+  host.innerHTML = webImplSteps.map((m, i)=>
+    `<button class="wv-pill" id="wst-${i}" onclick="clickWebStep(${i})">${i+1}. ${m}</button>`
+  ).join('');
+  syncWebStepsLab();
+}
+
+function syncWebStepsLab() {
+  webImplSteps.forEach((_, i)=> {
+    const pill = document.getElementById(`wst-${i}`);
+    if(!pill) return;
+    pill.classList.toggle('active', i < webStepsIndex);
+  });
+  const score = document.getElementById('wv-steps-score');
+  if(score) score.textContent = webStepsDone ? 'Mission complete: 8 / 8 in order' : `Step ${Math.min(webStepsIndex + 1, 8)} of 8`;
+}
+
+function clickWebStep(i) {
+  if(webStepsDone) return;
+  if(i === webStepsIndex) {
+    const progress = document.getElementById('wv-progress-fill');
+    if(progress) progress.style.width = ((i + 1) / webImplSteps.length * 100) + '%';
+    setWebviewNarration(
+      'Implementation Mission',
+      `Step ${i + 1}: ${webImplSteps[i]}`,
+      {
+        beginner:'Correct step. Continue in order to complete full WebView integration flow.',
+        exam:'Exam point: Correct sequence matters; mention lifecycle-safe order when writing answers.'
+      },
+      `EVENT: Step ${i + 1} accepted`,
+      {
+        beginner:`Pipeline advanced to Step ${Math.min(i + 2, webImplSteps.length)}.`,
+        exam:`Progress note: Step ${i + 1} validated in implementation sequence.`
+      },
+      `JAVA: Step ${i + 1}`,
+      webImplJava[i]
+    );
+    webStepsIndex++;
+    addXP(3, 'Implementation step correct');
+    if(webStepsIndex === webImplSteps.length) {
+      webStepsDone = true;
+      addXP(20, 'WebView implementation mastered!');
+      setWebviewNarration(
+        'Implementation Mission Complete',
+        '8 / 8 correct order',
+        {
+          beginner:'You completed manifest, setup, client, loading, navigation, and security in the right sequence.',
+          exam:'Exam summary: INTERNET permission, layout, binding, settings, client, loadUrl, back handling, security.'
+        },
+        'EVENT: Full WebView setup sequence complete',
+        {
+          beginner:'Mobile preview now represents a fully configured WebView screen.',
+          exam:'Use this exact sequence in long-answer implementation questions.'
+        },
+        'JAVA: Full implementation summary',
+        `WebView wv = findViewById(R.id.wv);
+WebSettings ws = wv.getSettings();
+ws.setJavaScriptEnabled(true);
+wv.setWebViewClient(new WebViewClient());
+wv.loadUrl("https://www.google.com");`
+      );
+      checkSectionProgress();
+    }
+  } else {
+    const expected = webStepsIndex + 1;
+    webStepsIndex = 0;
+    showToast('Wrong order. Restart from Step 1.');
+    const progress = document.getElementById('wv-progress-fill');
+    if(progress) progress.style.width = '0%';
+    setWebviewNarration(
+      'Implementation Mission',
+      'Order mismatch',
+      {
+        beginner:'Steps must be clicked in exact sequence from 1 to 8.',
+        exam:'Exam warning: incorrect order loses marks; restart sequence from Step 1.'
+      },
+      `EVENT: Wrong step selected (expected Step ${expected})`,
+      {
+        beginner:'Mission reset to Step 1 in mobile preview.',
+        exam:'Sequence reset: begin again with INTERNET permission.'
+      },
+      'JAVA: Correct starting point',
+      webImplJava[0]
+    );
+  }
+  syncWebStepsLab();
+  persistProgress();
+}
+
+function updateFeaturePreview(containerId, featureIndex, stateLabel) {
+  const meta = previewMeta[containerId];
+  if(!meta) return;
+  const feature = meta.features[featureIndex];
+  if(!feature) return;
+  const methodEl = document.getElementById(`pv-${meta.prefix}-method`);
+  const tagEl = document.getElementById(`pv-${meta.prefix}-tag`);
+  const whatEl = document.getElementById(`pv-${meta.prefix}-what`);
+  const eventEl = document.getElementById(`pv-${meta.prefix}-event`);
+  if(!methodEl || !tagEl || !whatEl || !eventEl) return;
+  methodEl.textContent = feature.method;
+  tagEl.textContent = feature.tagline;
+  whatEl.textContent = feature.what;
+  eventEl.textContent = `EVENT: ${stateLabel} ${meta.label} FEATURE ${String(featureIndex + 1).padStart(2,'0')}`;
+  animateFeaturePreview(meta.prefix, featureIndex, feature.method, stateLabel);
+}
+
+function animateFeaturePreview(prefix, featureIndex, methodName, stateLabel) {
+  if(prefix === 'list') {
+    const rows = document.querySelectorAll('#pv-list-visual .ml-row');
+    rows.forEach((r)=>r.classList.remove('active'));
+    if(rows.length) rows[featureIndex % rows.length].classList.add('active');
+    return;
+  }
+
+  if(prefix === 'dialog') {
+    const shell = document.getElementById('pv-dialog-visual');
+    const caption = document.getElementById('pv-dialog-caption');
+    if(!shell) return;
+    const shouldOpen = stateLabel !== 'Collapsed';
+    if(caption) {
+      caption.textContent = shouldOpen ? 'Dialog state: open' : 'Dialog state: closed';
+    }
+    // Retrigger animation every interaction so the modal motion is always visible.
+    shell.classList.remove('open');
+    void shell.offsetWidth;
+    if(shouldOpen) shell.classList.add('open');
+    return;
+  }
+
+  if(prefix === 'pref') {
+    const items = document.querySelectorAll('#pv-pref-visual .ml-pref-item');
+    items.forEach((it)=>it.classList.remove('active'));
+    if(items.length) items[featureIndex % items.length].classList.add('active');
+    return;
+  }
+
+  if(prefix === 'imageview') {
+    const box = document.getElementById('pv-image-box');
+    const caption = document.getElementById('pv-image-caption');
+    if(!box || !caption) return;
+    box.className = 'ml-image-content';
+    let mode = 'default';
+    if(methodName.includes('scaleType')) { box.classList.add('crop'); mode = 'centerCrop'; }
+    if(methodName.includes('adjustViewBounds')) { box.classList.add('fit'); mode = 'fitCenter'; }
+    if(methodName.includes('alpha')) { box.classList.add('alpha'); mode = 'alpha 0.4'; }
+    if(methodName.includes('tint')) { box.classList.add('tint'); mode = 'warm tint'; }
+    if(methodName.includes('setOnClickListener')) {
+      box.classList.remove('tap');
+      void box.offsetWidth;
+      box.classList.add('tap');
+      mode = 'tap animation';
+    }
+    caption.textContent = `Render mode: ${mode}`;
+    return;
+  }
+
+  if(prefix === 'menu') {
+    if(featureIndex <= 1) {
+      setMenuFocus('action_search');
+      toggleMenuOverflow(false);
+      setMenuNarration(
+        'onCreateOptionsMenu(menu)',
+        'Toolbar action setup',
+        {
+          beginner:'Toolbar items are created first, then user taps trigger onOptionsItemSelected().',
+          exam:'Exam point: menu inflation occurs before action handling branches.'
+        },
+        'EVENT: onCreateOptionsMenu(menu) then onOptionsItemSelected(action_search)',
+        'JAVA: onCreateOptionsMenu(...)',
+        menuLifecycleCode.create
+      );
+    } else if(featureIndex <= 4) {
+      toggleMenuOverflow(true);
+      setMenuFocus('action_sort');
+      setMenuNarration(
+        'onPrepareOptionsMenu(menu)',
+        'Overflow preparation',
+        {
+          beginner:'Android prepares menu visibility/state before showing overflow options.',
+          exam:'Exam point: dynamic visibility is usually done in onPrepareOptionsMenu(menu).'
+        },
+        'EVENT: onMenuOpened(...) -> onOptionsItemSelected(action_sort)',
+        'JAVA: onPrepareOptionsMenu(...)',
+        menuLifecycleCode.prepare
+      );
+    } else {
+      toggleMenuOverflow(true);
+      setMenuFocus('action_settings');
+      setMenuNarration(
+        'onOptionsItemSelected(item)',
+        'Settings branch',
+        {
+          beginner:'Selected item id is matched and settings screen navigation runs.',
+          exam:'Exam point: action id check in onOptionsItemSelected(item) drives final behavior.'
+        },
+        'EVENT: onCreateOptionsMenu(menu) / onPrepareOptionsMenu(menu) / onOptionsItemSelected(action_settings)',
+        'JAVA: onOptionsItemSelected(...)',
+        menuEventMap.action_settings.java
+      );
+    }
+    return;
+  }
+
+  if(prefix === 'glide') {
+    const box = document.getElementById('pv-glide-box');
+    const caption = document.getElementById('pv-glide-caption');
+    if(!box || !caption) return;
+    box.className = 'ml-image-content';
+    let mode = 'loading pipeline';
+    if(methodName.includes('placeholder')) { box.classList.add('fit'); mode = 'placeholder'; }
+    if(methodName.includes('error')) { box.classList.add('alpha'); mode = 'error fallback'; }
+    if(methodName.includes('circleCrop')) { box.style.borderRadius = '50%'; mode = 'circle crop'; } else { box.style.borderRadius = ''; }
+    if(methodName.includes('thumbnail')) { box.classList.add('tint'); mode = 'thumbnail then full'; }
+    if(methodName.includes('Caching')) { box.classList.add('tap'); mode = 'cache hit reload'; }
+    caption.textContent = `State: ${mode}`;
+    setGlideNarration(
+      `Glide mode: ${mode}`,
+      {
+        beginner:'This Glide option changes how image loading feels to users in real app UI.',
+        exam:`Exam point: ${methodName} affects transformation, placeholder/error, or caching pipeline.`
+      },
+      document.getElementById('pv-glide-event')?.textContent || `EVENT: ${stateLabel} Glide FEATURE`
+    );
+    return;
+  }
+
+  if(prefix === 'webview') {
+    const ev = document.getElementById('pv-webview-event');
+    const stage = document.getElementById('wv-stage');
+    if(featureIndex <= 1) {
+      if(ev) ev.textContent = 'EVENT: loadUrl(url) / loadData(html, mimeType, encoding)';
+      if(stage) stage.textContent = 'Rendering remote URL or raw HTML content inside WebView.';
+      setWebviewCode('JAVA: loadUrl() + loadData()', `wv.loadUrl("https://developer.android.com");\nwv.loadData("<h2>Hello</h2>", "text/html", "UTF-8");`);
+    } else if(featureIndex <= 5) {
+      if(ev) ev.textContent = 'EVENT: getSettings() / setWebViewClient(...)';
+      if(stage) stage.textContent = 'Applying WebSettings and keeping navigation in-app with WebViewClient.';
+      setWebviewCode('JAVA: WebSettings + WebViewClient', `WebSettings ws = wv.getSettings();\nws.setJavaScriptEnabled(true);\nwv.setWebViewClient(new WebViewClient());`);
+    } else {
+      if(ev) ev.textContent = 'EVENT: setCacheMode(...) / onPageFinished(...)';
+      if(stage) stage.textContent = 'Cache strategy and final page-finished callback update UI state.';
+      setWebviewCode('JAVA: Cache + onPageFinished()', `ws.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);\n@Override\npublic void onPageFinished(WebView view, String url) {\n    progressBar.setVisibility(View.GONE);\n}`);
+    }
+    return;
+  }
+}
+
+function initFeaturePreviews() {
+  updateFeaturePreview('list-cards', 0, 'Ready');
+  updateFeaturePreview('dialog-cards', 0, 'Ready');
+  updateFeaturePreview('pref-cards', 0, 'Ready');
+  updateFeaturePreview('iv-cards', 0, 'Ready');
+  updateFeaturePreview('menu-cards', 0, 'Ready');
+  updateFeaturePreview('glide-cards', 0, 'Ready');
+  updateFeaturePreview('webview-cards', 0, 'Ready');
+  initMenuPreview();
+  webviewAction('go');
+}
+
+// ── LIFECYCLE DATA ──────────────────────────────────────
+const lcSteps = [
+  { method:'onAttach(Activity)', what:'Fragment connects to its host Activity. The Activity reference becomes available for the first time here.', wa:'WhatsApp Chats fragment learns which Activity it belongs to — like a student finding out which classroom they are assigned to.' },
+  { method:'onCreate(Bundle)', what:'Fragment is created. Initialize non-UI data here — variables, ViewModels, arguments passed to the fragment.', wa:'WhatsApp: Chats fragment loads its chat list data and checks saved scroll position — all before the screen is drawn.' },
+  { method:'onCreateView(LayoutInflater)', what:'The fragment\'s XML layout is inflated here and returned as a View object. Do not set click listeners here yet.', wa:'WhatsApp: Chat list XML inflated — each row with avatar, name, message. Like building the notice board frame before pinning anything.' },
+  { method:'onViewCreated(View, Bundle)', what:'The View is now fully ready. Set up click listeners, fill TextViews, attach RecyclerView adapters — all UI wiring happens here.', wa:'WhatsApp: Chat rows filled with data. FAB gets its click listener. Search bar connected. The screen is now fully alive.' },
+  { method:'onStart()', what:'Fragment becomes visible to the user. The Activity is also in the started state.', wa:'WhatsApp Chats screen appears on phone. You can see names and last messages — but have not tapped anything yet.' },
+  { method:'onResume()', what:'Fragment is in the foreground. User can now interact — tap, scroll, type.', wa:'You actively scroll the chat list, tap chats, read previews. Fragment is fully alive and responding to your touches.' },
+  { method:'onPause()', what:'Another fragment or dialog is partially covering this one. Still visible but not focused. Save unsaved data here immediately.', wa:'You tap a chat — chat screen slides in. Chats list fragment pauses. It saves scroll position to restore later.' },
+  { method:'onStop()', what:'Fragment is completely hidden. Release heavy resources — camera, location updates, heavy network calls.', wa:'You press Home. App goes background. Chats fragment stops. Camera (if open) is released to save battery.' },
+  { method:'onDestroyView()', what:'The fragment\'s View is destroyed. Fragment object still exists but its UI is gone. Set all View references to null to avoid memory leaks.', wa:'You navigate away — chat list View removed from memory. Fragment remembers your data so it can rebuild the View when you return.' },
+  { method:'onDetach()', what:'Fragment completely removed from the Activity. Activity reference no longer available. Do final cleanup here.', wa:'Chats fragment fully gone — like a student leaving classroom, returning the key. Room is now free.' },
+];
+
+let lcCurrent = 0;
+function buildLifecycle() {
+  const dotsEl = document.getElementById('lc-dots');
+  lcSteps.forEach((s,i) => {
+    const d = document.createElement('div');
+    d.className = 's-dot' + (i===0?' active':'');
+    d.id = 'lcdot'+i; d.textContent = i+1;
+    d.onclick = () => lcGo(i);
+    dotsEl.appendChild(d);
+  });
+  lcRender();
+}
+function lcRender() {
+  const s = lcSteps[lcCurrent];
+  document.getElementById('lc-num').textContent = `METHOD ${lcCurrent+1} OF 10`;
+  document.getElementById('lc-method').textContent = s.method;
+  document.getElementById('lc-what').textContent = s.what;
+  document.getElementById('lc-wa').textContent = '📱 WhatsApp: ' + s.wa;
+  document.getElementById('lc-counter').textContent = (lcCurrent+1)+'/'+lcSteps.length;
+  lcSteps.forEach((_,i) => {
+    const d = document.getElementById('lcdot'+i);
+    d.className = 's-dot' + (i<lcCurrent?' done':i===lcCurrent?' active':'');
+  });
+}
+function lcNext() { if(lcCurrent<lcSteps.length-1){lcCurrent++;lcRender();if(lcCurrent===lcSteps.length-1){addXP(20,'Lifecycle mastered!');checkSectionProgress();} persistProgress();} }
+function lcPrev() { if(lcCurrent>0){lcCurrent--;lcRender(); persistProgress();} }
+function lcGo(i) { lcCurrent=i; lcRender(); checkSectionProgress(); persistProgress(); }
+
+// ── MATCH GAME ──────────────────────────────────────────
+function buildMatch(containerId, pairs, color) {
+  const c = document.getElementById(containerId);
+  const shuffled = [...pairs].sort(()=>Math.random()-.5);
+  const rightShuffled = [...pairs].sort(()=>Math.random()-.5);
+  let selected = null; let matches = 0;
+
+  c.innerHTML = `<div class="match-cols">
+    <div>
+      <div class="match-col-title">METHOD / FEATURE</div>
+      ${shuffled.map((p,i)=>`<div class="match-item" id="ml-${containerId}-${i}" onclick="matchClick(this,'${containerId}','left','${p.key}','${color}')">${p.left}</div>`).join('')}
+    </div>
+    <div>
+      <div class="match-col-title">WHAT IT DOES</div>
+      ${rightShuffled.map((p,i)=>`<div class="match-item" id="mr-${containerId}-${i}" onclick="matchClick(this,'${containerId}','right','${p.key}','${color}')">${p.right}</div>`).join('')}
+    </div>
+  </div>
+  <div class="match-score" id="ms-${containerId}">0 / ${pairs.length} matched</div>`;
+}
+
+let matchState = {};
+function matchClick(el, cid, side, key, color) {
+  if(el.classList.contains('matched-ok')) return;
+  const stateKey = cid + '-' + side;
+  if(!matchState[cid]) matchState[cid] = {left:null, right:null, count:0};
+  matchState[cid][side] = {el, key};
+  el.classList.add('selected');
+
+  const other = side === 'left' ? matchState[cid]['right'] : matchState[cid]['left'];
+  if(other && matchState[cid]['left'] && matchState[cid]['right']) {
+    const l = matchState[cid]['left'], r = matchState[cid]['right'];
+    if(l.key === r.key) {
+      l.el.classList.remove('selected'); l.el.classList.add('matched-ok');
+      r.el.classList.remove('selected'); r.el.classList.add('matched-ok');
+      matchState[cid].count++;
+      const total = document.querySelectorAll(`#${cid} .match-item`).length / 2;
+      document.getElementById('ms-'+cid).textContent = matchState[cid].count + ' / ' + total + ' matched';
+      if(matchState[cid].count === total) {
+        addXP(15, 'Match complete!');
+        matchCompleted[cid] = true;
+        checkSectionProgress();
+        const rect = el.getBoundingClientRect();
+        burst(rect.left + rect.width / 2, rect.top + 20, '#00b4d8');
+      }
+    } else {
+      l.el.classList.remove('selected'); l.el.classList.add('matched-fail');
+      r.el.classList.remove('selected'); r.el.classList.add('matched-fail');
+      setTimeout(()=>{ l.el.classList.remove('matched-fail'); r.el.classList.remove('matched-fail'); }, 700);
+    }
+    matchState[cid].left = null; matchState[cid].right = null;
+  }
+}
+
+const listPairs = [
+  {key:'a', left:'setListAdapter()', right:'Pins data to the list view'},
+  {key:'b', left:'onListItemClick()', right:'Fires when a row is tapped'},
+  {key:'c', left:'getListAdapter()', right:'Returns current attached adapter'},
+  {key:'d', left:'onActivityCreated()', right:'Safe place to create adapter'},
+];
+const dialogPairs = [
+  {key:'a', left:'onCreateDialog()', right:'Builds dialog using Builder'},
+  {key:'b', left:'show()', right:'Displays dialog from Activity'},
+  {key:'c', left:'dismiss()', right:'Closes dialog programmatically'},
+  {key:'d', left:'setPositiveButton()', right:'Adds the OK / confirm button'},
+];
+const prefPairs = [
+  {key:'a', left:'EditTextPreference', right:'Text input saved as String'},
+  {key:'b', left:'CheckBoxPreference', right:'Toggle saved as true/false'},
+  {key:'c', left:'ListPreference', right:'Dropdown from list of options'},
+  {key:'d', left:'onCreatePreferences()', right:'Loads the XML preferences file'},
+];
+
+const menuPairs = [
+  {key:'a', left:'onCreateOptionsMenu()', right:'Inflates menu XML into toolbar'},
+  {key:'b', left:'onOptionsItemSelected()', right:'Handles clicked menu item'},
+  {key:'c', left:'app:showAsAction', right:'Controls toolbar vs overflow placement'},
+  {key:'d', left:'invalidateOptionsMenu()', right:'Forces menu rebuild at runtime'},
+];
+
+const glidePairs = [
+  {key:'a', left:'placeholder()', right:'Temporary drawable while loading'},
+  {key:'b', left:'error()', right:'Fallback drawable on failure'},
+  {key:'c', left:'thumbnail(0.1f)', right:'Shows low-res preview first'},
+  {key:'d', left:'override(w,h)', right:'Resizes image before cache'},
+];
+
+const webviewPairs = [
+  {key:'a', left:'loadUrl(url)', right:'Loads an internet page into WebView'},
+  {key:'b', left:'setWebViewClient(...)', right:'Keeps navigation inside app'},
+  {key:'c', left:'setJavaScriptEnabled(true)', right:'Enables JavaScript execution'},
+  {key:'d', left:'onPageFinished(...)', right:'Callback after page fully loads'},
+];
+
+const menuAttributes = [
+  { id:'android:id', value:'@+id/action_search', desc:'Unique ID used in onOptionsItemSelected() switch-case.' },
+  { id:'android:title', value:'Search', desc:'Text shown in overflow list or as toolbar tooltip text.' },
+  { id:'android:icon', value:'@drawable/ic_search', desc:'Icon shown when showAsAction is always or ifRoom.' },
+  { id:'app:showAsAction', value:'ifRoom', desc:'always (toolbar) / ifRoom (if space) / never (overflow).' },
+  { id:'android:checkable', value:'true', desc:'Makes menu item act like a checkbox toggle.' },
+  { id:'android:visible', value:'false', desc:'Hides item until you update menu state dynamically.' },
+  { id:'android:enabled', value:'false', desc:'Shows item as disabled and non-interactive.' },
+  { id:'android:orderInCategory', value:'1', desc:'Lower numbers appear first in menu ordering.' },
+  { id:'android:alphabeticShortcut', value:'s', desc:'Keyboard alphabetic shortcut for that menu item.' },
+  { id:'android:numericShortcut', value:'1', desc:'Numeric keyboard shortcut for that menu item.' },
+];
+
+function toggleAttrLearn(attrId) {
+  if(learnedAttrRows.has(attrId)) return;
+  learnedAttrRows.add(attrId);
+  addXP(4, 'Attribute learned');
+  renderAttrTable();
+  if(learnedAttrRows.size === menuAttributes.length && !menuAttrMastered) {
+    menuAttrMastered = true;
+    addXP(18, 'XML Attribute Lab mastered!');
+    burst(window.innerWidth / 2, window.scrollY + 220, '#1c8f49');
+    checkSectionProgress();
+  }
+  persistProgress();
+}
+
+function renderAttrTable() {
+  const searchEl = document.getElementById('attr-search');
+  const body = document.getElementById('attr-body');
+  const score = document.getElementById('attr-score');
+  if(!body || !score) return;
+  const q = (searchEl?.value || '').toLowerCase().trim();
+  const filtered = menuAttributes.filter((a) =>
+    a.id.toLowerCase().includes(q) ||
+    a.value.toLowerCase().includes(q) ||
+    a.desc.toLowerCase().includes(q)
+  );
+
+  body.innerHTML = filtered.map((a) => {
+    const learnedClass = learnedAttrRows.has(a.id) ? ' learned' : '';
+    return `
+      <div class="attr-row${learnedClass}" onclick="toggleAttrLearn('${a.id}')">
+        <div class="mono">${a.id}</div>
+        <div>${a.value}</div>
+        <div>${a.desc}</div>
+      </div>
+    `;
+  }).join('');
+
+  score.textContent = `${learnedAttrRows.size} / ${menuAttributes.length} learned`;
+}
+
+let glideFlow = [];
+const glideTargetFlow = ['placeholder', 'thumbnail', 'full'];
+
+function resetGlideSim() {
+  glideFlow = [];
+  const img = document.getElementById('glide-sim-image');
+  const note = document.getElementById('glide-sim-note');
+  const score = document.getElementById('glide-sim-score');
+  if(!img || !note || !score) return;
+  img.className = 'sim-image placeholder';
+  img.textContent = 'placeholder';
+  note.textContent = modeText({
+    beginner: 'Start with placeholder(), then thumbnail(), then into(imageView) to complete mission.',
+    exam: 'Exam flow: placeholder -> thumbnail -> into(imageView).'
+  });
+  score.textContent = '0 / 3 flow steps';
+  setGlideNarration(
+    'Glide Simulator reset',
+    {
+      beginner:'Follow the loading sequence to understand perceived performance optimization.',
+      exam:'Exam point: Correct Glide chain order improves UX and is often asked in viva.'
+    },
+    'EVENT: Glide chain reset'
+  );
+}
+
+function glideSimStep(step) {
+  const img = document.getElementById('glide-sim-image');
+  const note = document.getElementById('glide-sim-note');
+  const score = document.getElementById('glide-sim-score');
+  if(!img || !note || !score) return;
+
+  if(step === 'error') {
+    img.className = 'sim-image error';
+    img.textContent = 'error fallback';
+    note.textContent = modeText({
+      beginner: 'Network failed. Glide shows error(drawable). Use reset and try ideal flow again.',
+      exam: 'Exam point: error(drawable) handles failed URL requests gracefully.'
+    });
+    glideFlow = [];
+    score.textContent = '0 / 3 flow steps';
+    setGlideNarration(
+      'Glide error() fallback',
+      {
+        beginner:'When request fails, Glide binds fallback drawable to avoid blank image area.',
+        exam:'Exam point: error() is the failure branch in Glide request chain.'
+      },
+      'EVENT: Request failed -> error(drawable)'
+    );
+    return;
+  }
+
+  glideFlow.push(step);
+  const progress = glideFlow.filter((s, i) => glideTargetFlow[i] === s).length;
+  img.className = 'sim-image ' + step;
+  img.textContent = step === 'full' ? 'full image' : step;
+  score.textContent = `${Math.min(progress, 3)} / 3 flow steps`;
+
+  if(progress !== glideFlow.length) {
+    note.textContent = modeText({
+      beginner: 'Flow order broken. Correct sequence is placeholder -> thumbnail -> into(imageView).',
+      exam: 'Wrong order. Remember: placeholder -> thumbnail -> into(imageView).'
+    });
+    glideFlow = [];
+    addXP(1, 'Retry bonus');
+    setGlideNarration(
+      'Glide chain order mismatch',
+      {
+        beginner:'Sequence reset. Start from placeholder for realistic progressive loading.',
+        exam:'Exam point: request chaining order must be conceptually correct.'
+      },
+      'EVENT: Invalid Glide method order'
+    );
+    return;
+  }
+
+  note.textContent = modeText({
+    beginner: 'Great flow. Continue until full image loads.',
+    exam: 'Correct chain so far. Finish into(imageView) for final bind.'
+  });
+  setGlideNarration(
+    `Glide step: ${step}`,
+    {
+      beginner:'Progressive loading improves perceived speed on slow networks.',
+      exam:'Exam point: thumbnail() gives quick preview before final image decode.'
+    },
+    `EVENT: Glide ${step} applied`
+  );
+  if(progress === 3 && !glideSimDone) {
+    glideSimDone = true;
+    addXP(20, 'Glide simulator mission complete!');
+    burst(window.innerWidth / 2, window.scrollY + 220, '#1c9a96');
+    checkSectionProgress();
+    persistProgress();
+  }
+}
+
+// ── SCALETYPE CANVAS ────────────────────────────────────
+const IW=200, IH=120;
+function drawScene(ctx, x, y, w, h) {
+  ctx.fillStyle='#87CEEB'; ctx.fillRect(x,y,w,h);
+  ctx.fillStyle='#4a7c59'; ctx.fillRect(x,y+h*0.72,w,h*0.28);
+  ctx.fillStyle='#6b6b6b';
+  ctx.beginPath(); ctx.moveTo(x+w*.27,y+h*.72); ctx.lineTo(x+w*.5,y+h*.18); ctx.lineTo(x+w*.73,y+h*.72); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#999';
+  ctx.beginPath(); ctx.moveTo(x+w*.38,y+h*.72); ctx.lineTo(x+w*.55,y+h*.3); ctx.lineTo(x+w*.73,y+h*.72); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,.5)';
+  ctx.beginPath(); ctx.moveTo(x+w*.44,y+h*.72); ctx.lineTo(x+w*.55,y+h*.42); ctx.lineTo(x+w*.66,y+h*.72); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,.7)';
+  ctx.beginPath(); ctx.arc(x+w*.78,y+h*.18,w*.07,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(x+w*.86,y+h*.14,w*.055,0,Math.PI*2); ctx.fill();
+}
+function renderST(canvas, type, fw, fh) {
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,fw,fh);
+  ctx.fillStyle='#0d1117'; ctx.fillRect(0,0,fw,fh);
+  const sx=fw/IW, sy=fh/IH;
+  ctx.save();
+  if(type==='centerCrop'){
+    const s=Math.max(sx,sy); const dw=IW*s,dh=IH*s;
+    ctx.beginPath();ctx.rect(0,0,fw,fh);ctx.clip();
+    drawScene(ctx,(fw-dw)/2,(fh-dh)/2,dw,dh);
+  } else if(type==='fitCenter'){
+    const s=Math.min(sx,sy); const dw=IW*s,dh=IH*s;
+    drawScene(ctx,(fw-dw)/2,(fh-dh)/2,dw,dh);
+  } else if(type==='centerInside'){
+    const s=Math.min(1,Math.min(sx,sy)); const dw=IW*s,dh=IH*s;
+    drawScene(ctx,(fw-dw)/2,(fh-dh)/2,dw,dh);
+  } else if(type==='fitXY'){
+    drawScene(ctx,0,0,fw,fh);
+  } else if(type==='center'){
+    ctx.beginPath();ctx.rect(0,0,fw,fh);ctx.clip();
+    drawScene(ctx,(fw-IW)/2,(fh-IH)/2,IW,IH);
+  } else if(type==='fitStart'){
+    const s=Math.min(sx,sy); drawScene(ctx,0,0,IW*s,IH*s);
+  } else if(type==='fitEnd'){
+    const s=Math.min(sx,sy); const dw=IW*s,dh=IH*s;
+    drawScene(ctx,fw-dw,fh-dh,dw,dh);
+  }
+  ctx.restore();
+  ctx.strokeStyle='rgba(255,255,255,0.1)'; ctx.lineWidth=1;
+  ctx.strokeRect(.5,.5,fw-1,fh-1);
+}
+
+const scaleTypes = [
+  {type:'centerCrop',   desc:'Fills the entire frame. Crops edges that overflow. No empty space.', ex:'Instagram: Profile photos and feed images use centerCrop so they fill the square frame completely.'},
+  {type:'fitCenter',    desc:'Entire image is visible. Scaled to fit. Letterbox bars appear if aspect ratio differs.', ex:'WhatsApp: Received photo shows fully in chat preview. Dark bars appear if the photo is portrait shaped.'},
+  {type:'centerInside', desc:'Image never enlarged beyond its original size. Shrinks if too big.', ex:'Email app: Small icons stay at original pixel size. Large images shrink to fit but are never blown up.'},
+  {type:'fitXY',        desc:'Stretches to fill frame exactly. Aspect ratio is distorted.', ex:'Background images only. Photos look squashed. Never use fitXY for actual photos.'},
+  {type:'center',       desc:'No scaling. Image placed at original pixel size in the centre. Crops if bigger than frame.', ex:'App icons placed inside a larger container — displayed at exact original size.'},
+  {type:'fitStart',     desc:'Same scaling as fitCenter but image snaps to top-left corner.', ex:'Document viewer — text and images align to top-left for natural reading flow.'},
+  {type:'fitEnd',       desc:'Same scaling as fitCenter but image snaps to bottom-right corner.', ex:'Signatures or stamps — aligned to the bottom-right of the frame.'},
+];
+
+function buildScaleGrid() {
+  const grid = document.getElementById('scale-grid');
+  scaleTypes.forEach((st,i) => {
+    const card = document.createElement('div');
+    card.className = 'sc-card'+(i===0?' active':'');
+    card.id='scard'+i;
+    const cv = document.createElement('canvas');
+    cv.className='sc-canvas'; cv.width=80; cv.height=80;
+    cv.id='scv'+i;
+    const lbl = document.createElement('div');
+    lbl.className='sc-name'; lbl.textContent=st.type;
+    card.appendChild(cv); card.appendChild(lbl);
+    card.onclick=()=>selectST(i);
+    grid.appendChild(card);
+    setTimeout(()=>renderST(cv,st.type,80,80),0);
+  });
+  renderScaleDiffGrid(0);
+  selectST(0);
+}
+
+function renderScaleDiffGrid(activeIndex) {
+  const host = document.getElementById('scale-diff-grid');
+  if(!host) return;
+  host.innerHTML = scaleTypes.map((st, idx) => {
+    const activeClass = idx === activeIndex ? ' active' : '';
+    return `
+      <div class="scmp-row${activeClass}">
+        <div class="scmp-type">${st.type}</div>
+        <div class="scmp-diff">Difference: ${st.desc}</div>
+        <div class="scmp-ex">Example: ${st.ex}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function selectST(i) {
+  scaleTypes.forEach((_,j)=>document.getElementById('scard'+j).className='sc-card'+(j===i?' active':''));
+  const st=scaleTypes[i];
+  viewedScaleTypes.add(st.type);
+  document.getElementById('sd-name').textContent=st.type;
+  document.getElementById('sd-desc').textContent=st.desc;
+  document.getElementById('sd-ex').textContent=st.ex;
+  const bc=document.getElementById('big-cv');
+  renderST(bc,st.type,280,140);
+  renderScaleDiffGrid(i);
+  checkSectionProgress();
+  persistProgress();
+}
+
+// ── QUIZ DATA ───────────────────────────────────────────
+const quizQuestions = [
+  {q:'Which ListFragment method is called automatically when a user taps a row in the list?', opts:['setListAdapter()','onListItemClick()','getListAdapter()','onActivityCreated()'], ans:1, explain:'onListItemClick() is called by Android automatically whenever a row is tapped. You never call it yourself — you just override it.'},
+  {q:'A DialogFragment shows a "Delete email?" popup in Gmail. Which method builds this dialog using AlertDialog.Builder?', opts:['show()','dismiss()','onCreateDialog()','setPositiveButton()'], ans:2, explain:'onCreateDialog() is where you override and build the dialog using AlertDialog.Builder. It is the construction site of the popup.'},
+  {q:'In PreferenceFragment, which preference type saves a boolean true/false value automatically?', opts:['EditTextPreference','ListPreference','CheckBoxPreference','PreferenceScreen'], ans:2, explain:'CheckBoxPreference is the toggle switch. When flipped, it automatically saves true or false to SharedPreferences. No extra code needed.'},
+  {q:'Which Fragment lifecycle method is the best and safest place to set up click listeners and populate TextViews?', opts:['onCreate()','onCreateView()','onViewCreated()','onStart()'], ans:2, explain:'onViewCreated() is called after the View is fully ready. All views are accessible safely here — perfect for click listeners and adapter setup.'},
+  {q:'Which ImageView scaleType fills the entire frame with no empty space, even if it means cropping the edges of the image?', opts:['fitCenter','fitXY','centerCrop','centerInside'], ans:2, explain:'centerCrop scales the image until it covers the full frame, then crops what overflows. Instagram profile photos and feed posts use this.'},
+  {q:'In ListFragment, which method connects your ArrayList data to the built-in ListView?', opts:['onListItemClick()','getListAdapter()','setListAdapter()','onCreateView()'], ans:2, explain:'setListAdapter() is the method that binds an ArrayAdapter or CursorAdapter to the ListView inside the ListFragment.'},
+  {q:'Which DialogFragment method makes the popup appear on screen from inside an Activity?', opts:['onCreateDialog()','dismiss()','show()','onStart()'], ans:2, explain:'show(getSupportFragmentManager(), "tag") is called to display the DialogFragment. The Activity calls this whenever the dialog needs to appear.'},
+  {q:'Which Activity callback should you override to inflate menu XML into the toolbar?', opts:['onCreateOptionsMenu()','onPrepareOptionsMenu()','onOptionsItemSelected()','onStart()'], ans:0, explain:'onCreateOptionsMenu() is where you call getMenuInflater().inflate(...) to create the options menu from XML.'},
+  {q:'In menu XML, which attribute decides if an item appears in toolbar or overflow?', opts:['android:icon','android:enabled','app:showAsAction','android:orderInCategory'], ans:2, explain:'app:showAsAction controls placement using values like always, ifRoom and never.'},
+  {q:'In Glide, which method shows a temporary local drawable while network image loads?', opts:['error()','placeholder()','override()','circleCrop()'], ans:1, explain:'placeholder() displays a temporary image immediately while the real image is fetched from network.'},
+  {q:'Which Glide API gives a fast low-resolution preview before full image appears?', opts:['thumbnail(0.1f)','fitCenter()','into(imageView)','with(context)'], ans:0, explain:'thumbnail(0.1f) loads a quick low-res preview first, improving perceived speed on slow networks.'},
+  {q:'Which WebView API loads a remote webpage URL string?', opts:['loadData()','loadUrl()','setWebViewClient()','reload()'], ans:1, explain:'loadUrl(url) is the direct API to load a remote webpage into WebView.'},
+  {q:'Which class keeps URL navigation inside app instead of opening Chrome?', opts:['WebChromeClient','WebViewClient','WebSettings','CookieManager'], ans:1, explain:'Attach a WebViewClient to keep navigation in the same WebView inside your app.'},
+  {q:'Which WebSettings method enables JavaScript execution?', opts:['setDomStorageEnabled(true)','setJavaScriptEnabled(true)','setCacheMode(...)','setMixedContentMode(...)'], ans:1, explain:'setJavaScriptEnabled(true) enables JavaScript support in WebView.'},
+  {q:'In the Fragment lifecycle, which method is called when the fragment is completely hidden and you must release camera/heavy resources?', opts:['onPause()','onStop()','onDestroyView()','onDetach()'], ans:1, explain:'onStop() fires when the fragment is completely hidden from the user. This is the right place to stop camera, location updates and heavy network calls.'},
+  {q:'Which ImageView attribute sets the transparency from 0.0 (invisible) to 1.0 (fully visible)?', opts:['android:tint','android:src','android:alpha','android:scaleType'], ans:2, explain:'android:alpha controls opacity. 0.0 = invisible, 1.0 = fully opaque. Used for fade effects like Instagram\'s "seen story" fading.'},
+  {q:'In PreferenceFragment, which method must you override to load the XML preferences file onto the screen?', opts:['onCreate()','setListAdapter()','onCreatePreferences()','onCreateView()'], ans:2, explain:'onCreatePreferences() is the method you override and inside it you call setPreferencesFromResource() to load your preferences.xml file.'},
+];
+
+let quizIdx = 0, quizDone = false;
+
+function buildQuiz() {
+  renderQuiz();
+}
+function renderQuiz() {
+  if(quizIdx >= quizQuestions.length) {
+    document.getElementById('quiz-q').textContent = 'Quiz complete!';
+    document.getElementById('quiz-opts').innerHTML = '';
+    document.getElementById('quiz-score').style.display='block';
+    document.getElementById('quiz-score').textContent = `Final score: ${quizCorrect} / ${quizQuestions.length} correct  •  Total XP: ${xp}`;
+    addXP(30, 'Quiz completed!');
+    burst(window.innerWidth / 2, window.innerHeight - 120, '#ffd60a');
+    checkSectionProgress();
+    persistProgress();
+    return;
+  }
+  const q = quizQuestions[quizIdx];
+  document.getElementById('quiz-q').textContent = `Q${quizIdx+1}. ${q.q}`;
+  const opts = document.getElementById('quiz-opts');
+  opts.innerHTML = '';
+  q.opts.forEach((o,i) => {
+    const btn = document.createElement('button');
+    btn.className='quiz-opt'; btn.textContent=o;
+    btn.onclick = () => answerQuiz(i, q.ans, q.explain);
+    opts.appendChild(btn);
+  });
+  document.getElementById('quiz-feedback').style.display='none';
+  document.getElementById('next-btn').style.display='none';
+}
+function answerQuiz(chosen, correct, explain) {
+  document.querySelectorAll('.quiz-opt').forEach(b=>b.disabled=true);
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts[correct].classList.add('correct');
+  const fb = document.getElementById('quiz-feedback');
+  const nb = document.getElementById('next-btn');
+  if(chosen === correct) {
+    fb.className='quiz-feedback correct'; fb.style.display='block';
+    fb.textContent='Correct! ' + explain;
+    addXP(15,'Correct answer!'); updateQuiz(true);
+  } else {
+    opts[chosen].classList.add('wrong');
+    fb.className='quiz-feedback wrong'; fb.style.display='block';
+    fb.textContent='Not quite. ' + explain;
+    updateQuiz(false);
+  }
+  nb.style.display='block';
+}
+function nextQuiz() {
+  quizIdx++; renderQuiz(); persistProgress();
+}
+
+function setupSectionObserver() {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if(entry.isIntersecting) {
+        entry.target.classList.add('is-reveal');
+        updateMapCurrent(entry.target.id);
+      }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.section').forEach((s)=>io.observe(s));
+}
+
+function restoreUnlockedCardsUI() {
+  unlockedCards.forEach((key) => {
+    const [cid, i] = key.split(/-(?=\d+$)/);
+    const body = document.getElementById(`cb-${cid}-${i}`);
+    const btn = document.getElementById(`btn-${cid}-${i}`);
+    if(body && btn) {
+      body.style.display = 'block';
+      btn.textContent = 'HIDE ▼';
+      btn.closest('.feat-card').classList.add('revealed');
+    }
+  });
+}
+
+function setupLifecycleSwipe() {
+  const card = document.getElementById('lc-card');
+  let startX = 0;
+  card.addEventListener('touchstart', (e)=>{ startX = e.touches[0].clientX; }, { passive:true });
+  card.addEventListener('touchend', (e)=>{
+    const dx = e.changedTouches[0].clientX - startX;
+    if(Math.abs(dx) < 35) return;
+    if(dx < 0) lcNext(); else lcPrev();
+  }, { passive:true });
+}
+
+// ── INIT ────────────────────────────────────────────────
+buildCards('list-cards', listFeatures, 'var(--list)');
+buildCards('dialog-cards', dialogFeatures, 'var(--dialog)');
+buildCards('pref-cards', prefFeatures, 'var(--pref)');
+buildCards('iv-cards', ivFeatures, 'var(--imageview)');
+buildCards('menu-cards', menuFeatures, 'var(--menu)');
+buildCards('glide-cards', glideFeatures, 'var(--glide)');
+buildCards('webview-cards', webviewFeatures, 'var(--webview)');
+loadProgress();
+paintHudFromState();
+buildMatch('list-match', listPairs, 'var(--list)');
+buildMatch('dialog-match', dialogPairs, 'var(--dialog)');
+buildMatch('pref-match', prefPairs, 'var(--pref)');
+buildMatch('menu-match', menuPairs, 'var(--menu)');
+buildMatch('glide-match', glidePairs, 'var(--glide)');
+buildMatch('webview-match', webviewPairs, 'var(--webview)');
+buildLifecycle();
+buildScaleGrid();
+buildQuiz();
+restoreUnlockedCardsUI();
+renderAttrTable();
+resetGlideSim();
+buildWebSettingsLab();
+buildWebStepsLab();
+if(glideSimDone) {
+  const img = document.getElementById('glide-sim-image');
+  const note = document.getElementById('glide-sim-note');
+  const score = document.getElementById('glide-sim-score');
+  if(img && note && score) {
+    img.className = 'sim-image full';
+    img.textContent = 'full image';
+    note.textContent = 'Mission already complete. You can reset and replay the loading flow.';
+    score.textContent = '3 / 3 flow steps';
+  }
+}
+setupSectionObserver();
+setupLifecycleSwipe();
+checkSectionProgress();
+initFeaturePreviews();
+</script>
+</body>
+</html>
