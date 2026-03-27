@@ -610,6 +610,90 @@ body.light-mode .level-badge {
   color:var(--muted);
   font-size:11px;
 }
+.dp-points-wrap {
+  margin-top:10px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:var(--surface);
+  padding:10px;
+}
+.dp-points-head {
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+  color:var(--persist);
+  margin-bottom:8px;
+}
+.dp-points-grid {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);
+  gap:10px;
+}
+.dp-point-list {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.dp-point-btn {
+  text-align:left;
+  border:1px solid var(--border);
+  background:var(--surface2);
+  color:var(--text);
+  border-radius:8px;
+  padding:8px;
+  font-size:11px;
+  cursor:pointer;
+}
+.dp-point-btn.active {
+  border-color:var(--persist);
+  box-shadow:0 0 0 1px rgba(63,81,181,0.35) inset;
+}
+.dp-point-num {
+  display:inline-flex;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  align-items:center;
+  justify-content:center;
+  background:rgba(63,81,181,0.18);
+  color:var(--persist);
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  margin-right:6px;
+}
+.dp-point-detail {
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:var(--surface2);
+  padding:9px;
+}
+.dp-point-detail h4 {
+  color:var(--persist);
+  font-size:13px;
+  margin-bottom:6px;
+}
+.dp-point-detail p {
+  font-size:12px;
+  color:var(--text);
+  line-height:1.55;
+  margin-bottom:6px;
+}
+.dp-point-note {
+  color:var(--muted);
+  font-size:11px;
+  margin-bottom:6px;
+}
+.dp-point-code {
+  background:#0b1220;
+  color:#d7e2ff;
+  border:1px solid rgba(63,81,181,0.35);
+  border-radius:8px;
+  padding:8px;
+  font-size:11px;
+  overflow:auto;
+}
+@media (max-width: 900px) {
+  .dp-points-grid { grid-template-columns:1fr; }
+}
 .dp-phone-field {
   display:flex;
   flex-direction:column;
@@ -1973,6 +2057,17 @@ body.light-mode .level-badge {
         <div class="dp-example" id="dp-topic-example">Example: Save username + darkMode when user taps Save Settings.</div>
         <pre class="dp-code" id="dp-topic-code">SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
 prefs.edit().putString("username", "Ajith").putBoolean("darkMode", true).apply();</pre>
+
+        <div class="dp-points-wrap" id="dp-points-wrap">
+          <div class="dp-points-head" id="dp-points-head">DETAILED EXPLAINER — tap each point</div>
+          <div class="dp-points-grid">
+            <div class="dp-point-list" id="dp-point-list"></div>
+            <div class="dp-point-detail" id="dp-point-detail">
+              <h4>Select a point</h4>
+              <p>Tap Internal Storage or SQLite tab to view 8 key features with examples.</p>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="dp-score" id="dp-topic-score">Topics explored: 1 / 4</div>
 
@@ -2007,7 +2102,7 @@ prefs.edit().putString("username", "Ajith").putBoolean("darkMode", true).apply()
 
           <div class="dp-phone-field">
             <label>Note (SQLite row)</label>
-            <textarea id="dp-note-input">Buy milk and submit assignment</textarea>
+            <textarea id="dp-note-input">Write bluebook and submit assignment</textarea>
           </div>
 
           <div class="dp-actions">
@@ -2045,6 +2140,21 @@ prefs.edit().putString("username", "Ajith").putBoolean("darkMode", true).apply()
   <div class="match-score" id="quiz-score" style="display:none"></div>
 </div>
 
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════
+     FINAL REVISION MATCH GAME
+════════════════════════════════════════════ -->
+<div class="section" id="final-revision">
+  <div class="section-header">
+    <div class="section-badge" style="background:rgba(255,214,10,0.15);color:var(--gold)">FINAL</div>
+    <div class="section-title" style="color:var(--gold)">Grand Revision Matching Game</div>
+    <div class="section-xp">+15 XP</div>
+  </div>
+  <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;">MATCH MIXED CONCEPTS FROM ENTIRE COURSE</div>
+  <div class="match-game" id="final-match"></div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -2058,7 +2168,7 @@ let streak = 0;
 const unlockedCards = new Set();
 const sectionCardUnlocks = { list:0, dialog:0, pref:0, imageview:0, menus:0, glide:0, webview:0 };
 const sectionDone = { list:false, dialog:false, pref:false, lifecycle:false, imageview:false, menus:false, glide:false, webview:false, persistence:false, 'quiz-zone':false };
-const matchCompleted = { 'list-match':false, 'dialog-match':false, 'pref-match':false, 'menu-match':false, 'glide-match':false, 'webview-match':false };
+const matchCompleted = { 'list-match':false, 'dialog-match':false, 'pref-match':false, 'menu-match':false, 'glide-match':false, 'webview-match':false, 'final-match':false };
 const viewedScaleTypes = new Set();
 const learnedAttrRows = new Set();
 let menuAttrMastered = false;
@@ -3135,6 +3245,279 @@ db.insert("notes", null, cv);`
   }
 };
 
+const dpDeepMap = {
+  shared: [
+    {
+      title: '1) Simple API — Easy to Use',
+      what: 'SharedPreferences uses key-value pairs like a dictionary.',
+      example: 'Example: key = username, value = Ajith.',
+      note: 'Just like storing username = Ajith in a tiny settings file.',
+      code: `SharedPreferences prefs = getSharedPreferences("UserData", MODE_PRIVATE);
+SharedPreferences.Editor editor = prefs.edit();
+editor.putString("username", "Ajith");
+editor.apply();`
+    },
+    {
+      title: '2) Persistent Storage — stays after app close',
+      what: 'Data remains even after closing app or restarting phone.',
+      example: 'Save username once, reopen app later, value is still available.',
+      note: 'Great for login/session/theme continuity.',
+      code: `// save once
+editor.putString("username", "Ajith");
+editor.apply();
+
+// later read after app restart
+String user = prefs.getString("username", "Guest");`
+    },
+    {
+      title: '3) Lightweight — small data only',
+      what: 'Use for booleans/strings/flags, not large files like images/videos.',
+      example: 'Good: isLoggedIn=true, theme=dark | Bad: 5MB profile image.',
+      note: 'For large binary data use files or database + file storage.',
+      code: `editor.putBoolean("isLoggedIn", true);
+editor.putString("theme", "dark");
+editor.apply();`
+    },
+    {
+      title: '4) Private Storage — app sandbox',
+      what: 'Preferences file is inside your app private directory.',
+      example: 'Other apps cannot directly read your shared_prefs XML.',
+      note: '/data/data/your.package.name/shared_prefs/',
+      code: `SharedPreferences prefs = getSharedPreferences("UserData", MODE_PRIVATE);
+// MODE_PRIVATE keeps file app-only`
+    },
+    {
+      title: '5) Supports Multiple Data Types',
+      what: 'Supports String, int, boolean, float, long, and Set<String>.',
+      example: 'username, age, isLoggedIn, rating, timestamp, hobbies.',
+      note: 'Choose method based on value type.',
+      code: `editor.putString("username", "Ajith");
+editor.putInt("age", 21);
+editor.putBoolean("isLoggedIn", true);
+editor.putFloat("rating", 4.8f);
+editor.putLong("timestamp", System.currentTimeMillis());
+editor.putStringSet("hobbies", new HashSet<>(Arrays.asList("music", "code")));
+editor.apply();`
+    },
+    {
+      title: '6) getSharedPreferences() — open or create file',
+      what: 'Opens existing preferences file or creates it if missing.',
+      example: 'UserData.xml is created automatically first time.',
+      note: 'No manual file creation needed.',
+      code: `SharedPreferences prefs = getSharedPreferences("UserData", MODE_PRIVATE);
+// opens UserData.xml or creates it`
+    },
+    {
+      title: '7) editor.apply() — async save',
+      what: 'apply() saves in background (non-blocking); commit() blocks UI thread.',
+      example: 'Use apply() for normal settings updates.',
+      note: 'apply() recommended for smoother UX.',
+      code: `editor.putString("username", "Ajith");
+editor.apply();   // async, recommended
+// editor.commit(); // sync, blocking`
+    },
+    {
+      title: '8) prefs.getString() — read with default',
+      what: 'Returns stored value if present, otherwise returns fallback default.',
+      example: 'If username exists -> Ajith else -> Guest.',
+      note: 'Prevents null/empty crashes on first app launch.',
+      code: `String name = prefs.getString("username", "Guest");`
+    }
+  ],
+  internal: [
+    {
+      title: '1) Internal Storage',
+      what: 'Files saved inside app private folder. Only your app can access them, and they are deleted when app is uninstalled.',
+      example: 'Example: Saving user notes privately.',
+      note: 'Best for private data like tokens, notes cache, and app-only files.',
+      code: `FileOutputStream fos = openFileOutput("notes.txt", MODE_PRIVATE);
+fos.write("Hello Ajith".getBytes());
+fos.close();`
+    },
+    {
+      title: '2) openFileOutput(name, MODE_PRIVATE)',
+      what: 'Creates a file or overwrites existing file in internal storage.',
+      example: 'Example: Overwrite old login data with new username.',
+      note: 'If login.txt already exists, old content is deleted.',
+      code: `FileOutputStream fos = openFileOutput("login.txt", MODE_PRIVATE);
+fos.write("username=ajith".getBytes());
+fos.close();`
+    },
+    {
+      title: '3) openFileInput(name)',
+      what: 'Opens an existing internal file to read data.',
+      example: 'Example: Read saved login info from login.txt.',
+      note: 'Use buffered reading for line-by-line parsing.',
+      code: `FileInputStream fis = openFileInput("login.txt");
+InputStreamReader isr = new InputStreamReader(fis);
+BufferedReader br = new BufferedReader(isr);
+String line = br.readLine();
+br.close();`
+    },
+    {
+      title: '4) MODE_APPEND',
+      what: 'Adds new data at end of file instead of deleting old content.',
+      example: 'Example: Append chat messages/log entries.',
+      note: 'Result grows like: Hello -> How are you -> New message',
+      code: `FileOutputStream fos = openFileOutput("chat.txt", MODE_APPEND);
+fos.write("New message\\n".getBytes());
+fos.close();`
+    },
+    {
+      title: '5) External Storage',
+      what: 'Files stored in shared storage (Downloads/Pictures etc). Visible to user and accessible by other apps based on policy.',
+      example: 'Example: Save photo/PDF that user sees in File Manager.',
+      note: 'Use carefully for non-sensitive files.',
+      code: `File publicDir = Environment.getExternalStoragePublicDirectory(
+        Environment.DIRECTORY_DOWNLOADS);
+File out = new File(publicDir, "report.pdf");`
+    },
+    {
+      title: '6) Environment.getExternalStorageDirectory()',
+      what: 'Returns base path of external shared storage.',
+      example: 'Example path: /storage/emulated/0/',
+      note: 'On modern Android prefer scoped APIs where possible.',
+      code: `File path = Environment.getExternalStorageDirectory();
+File file = new File(path, "myfile.txt");`
+    },
+    {
+      title: '7) WRITE_EXTERNAL_STORAGE (API < 29)',
+      what: 'Old Android versions required this permission for writing shared storage files.',
+      example: 'Without permission, file creation could fail.',
+      note: 'Mostly legacy behavior before scoped storage enforcement.',
+      code: `<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>`
+    },
+    {
+      title: '8) Scoped Storage (API 29+)',
+      what: 'Modern Android restricts direct file access for better privacy. Use MediaStore for shared media.',
+      example: 'Example: Save image to gallery with MediaStore insert.',
+      note: 'Ensures files go to correct media collections securely.',
+      code: `ContentValues values = new ContentValues();
+values.put(MediaStore.Images.Media.DISPLAY_NAME, "image.jpg");
+values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+Uri uri = getContentResolver().insert(
+        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);`
+    }
+  ],
+  sqlite: [
+    {
+      title: '1) Full SQL Support',
+      what: 'SQLite supports CREATE, INSERT, SELECT, UPDATE, DELETE, WHERE, JOIN and more.',
+      example: 'Example table students(id, name, age), then query age > 18.',
+      note: 'You can use full relational modeling in local mobile DB.',
+      code: `CREATE TABLE students(id INTEGER PRIMARY KEY, name TEXT, age INTEGER);
+INSERT INTO students VALUES(1, 'Ajith', 20);
+SELECT * FROM students WHERE age > 18;`
+    },
+    {
+      title: '2) SQLiteOpenHelper',
+      what: 'Android helper class to create DB, manage versions, and handle upgrades.',
+      example: 'Extend this class to centralize DB setup.',
+      note: 'This is your DB manager entry point.',
+      code: `class DBHelper extends SQLiteOpenHelper {
+    public DBHelper(Context context) {
+        super(context, "College.db", null, 1);
+    }
+}`
+    },
+    {
+      title: '3) onCreate(SQLiteDatabase db)',
+      what: 'Runs only first time when database is created.',
+      example: 'Create tables here.',
+      note: 'Automatically invoked for fresh install/database.',
+      code: `@Override
+public void onCreate(SQLiteDatabase db) {
+    db.execSQL("CREATE TABLE students(id INTEGER, name TEXT)");
+}`
+    },
+    {
+      title: '4) onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)',
+      what: 'Runs when DB version is increased. Used for schema changes/migration.',
+      example: 'Version 1: name only; Version 2: add email column.',
+      note: 'Always plan migration carefully to avoid data loss.',
+      code: `@Override
+public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    db.execSQL("DROP TABLE IF EXISTS students");
+    onCreate(db);
+}`
+    },
+    {
+      title: '5) getWritableDatabase()',
+      what: 'Opens DB in write mode for insert/update/delete operations.',
+      example: 'Use before inserting student records.',
+      note: 'For read-only use, getReadableDatabase().',
+      code: `SQLiteDatabase db = helper.getWritableDatabase();`
+    },
+    {
+      title: '6) ContentValues',
+      what: 'Insert data as key-value pairs instead of raw SQL string concatenation.',
+      example: 'name -> Ajith, id -> 1.',
+      note: 'Safer and cleaner for inserts/updates.',
+      code: `ContentValues values = new ContentValues();
+values.put("id", 1);
+values.put("name", "Ajith");
+db.insert("students", null, values);`
+    },
+    {
+      title: '7) Cursor',
+      what: 'SELECT query returns Cursor. Move pointer row-by-row to read data.',
+      example: 'Loop with moveToNext() and extract values.',
+      note: 'Always close cursor after use.',
+      code: `Cursor cursor = db.rawQuery("SELECT * FROM students", null);
+while(cursor.moveToNext()) {
+    // read data here
+}
+cursor.close();`
+    },
+    {
+      title: '8) cursor.getString(index)',
+      what: 'Read current row value by column index from cursor.',
+      example: 'index 0 -> id, index 1 -> name.',
+      note: 'Use getColumnIndexOrThrow("name") for safer indexing in large tables.',
+      code: `String name = cursor.getString(1);`
+    }
+  ]
+};
+
+function dpSelectPoint(topic, index) {
+  const list = dpDeepMap[topic] || [];
+  const point = list[index];
+  const detail = document.getElementById('dp-point-detail');
+  if(!point || !detail) return;
+  detail.innerHTML = `<h4>${point.title}</h4>
+<p>${point.what}</p>
+<p>${point.example}</p>
+<div class="dp-point-note">${point.note}</div>
+<pre class="dp-point-code">${point.code}</pre>`;
+  document.querySelectorAll('.dp-point-btn').forEach((btn)=>btn.classList.remove('active'));
+  const active = document.getElementById(`dp-point-${topic}-${index}`);
+  if(active) active.classList.add('active');
+}
+
+function dpRenderPoints(topic) {
+  const host = document.getElementById('dp-point-list');
+  const head = document.getElementById('dp-points-head');
+  const wrap = document.getElementById('dp-points-wrap');
+  if(!host || !head || !wrap) return;
+  const list = dpDeepMap[topic];
+  if(!list) {
+    wrap.style.display = 'none';
+    return;
+  }
+  wrap.style.display = 'block';
+  if(topic === 'shared') {
+    head.textContent = 'SHAREDPREFERENCES — 8 KEY FEATURES (tap each point)';
+  } else if(topic === 'internal') {
+    head.textContent = 'INTERNAL STORAGE — 8 KEY FEATURES (tap each point)';
+  } else {
+    head.textContent = 'SQLITE DATABASE — 8 KEY FEATURES (tap each point)';
+  }
+  host.innerHTML = list.map((item, i)=>
+    `<button class="dp-point-btn" id="dp-point-${topic}-${i}" onclick="dpSelectPoint('${topic}', ${i})"><span class="dp-point-num">${i + 1}</span>${item.title.replace(/^\d+\)\s*/, '')}</button>`
+  ).join('');
+  dpSelectPoint(topic, 0);
+}
+
 function dpUpdateScore() {
   const score = document.getElementById('dp-topic-score');
   if(score) score.textContent = `Topics explored: ${dpVisitedTopics.size} / 4`;
@@ -3168,6 +3551,8 @@ function dpShowTopic(topic, silent) {
   if(desc) desc.textContent = data.desc;
   if(example) example.textContent = data.example;
   if(code) code.textContent = data.code;
+
+  dpRenderPoints(key);
 
   if(!dpVisitedTopics.has(key)) {
     dpVisitedTopics.add(key);
@@ -3559,6 +3944,17 @@ const webviewPairs = [
   {key:'b', left:'setWebViewClient(...)', right:'Keeps navigation inside app'},
   {key:'c', left:'setJavaScriptEnabled(true)', right:'Enables JavaScript execution'},
   {key:'d', left:'onPageFinished(...)', right:'Callback after page fully loads'},
+];
+
+const finalPairs = [
+  {key:'a', left:'openFileOutput(name, MODE_PRIVATE)', right:'Creates/overwrites private internal file'},
+  {key:'b', left:'MODE_APPEND', right:'Adds data at end of existing file'},
+  {key:'c', left:'SQLiteOpenHelper', right:'Manages database creation and upgrades'},
+  {key:'d', left:'ContentValues', right:'Column-value map used in insert/update'},
+  {key:'e', left:'Cursor.moveToNext()', right:'Iterates result rows one by one'},
+  {key:'f', left:'SharedPreferences.apply()', right:'Asynchronous non-blocking save'},
+  {key:'g', left:'setWebViewClient(...)', right:'Keeps links inside app WebView'},
+  {key:'h', left:'Glide.thumbnail(0.1f)', right:'Shows quick low-res preview first'},
 ];
 
 const menuAttributes = [
@@ -4035,6 +4431,7 @@ buildMatch('pref-match', prefPairs, 'var(--pref)');
 buildMatch('menu-match', menuPairs, 'var(--menu)');
 buildMatch('glide-match', glidePairs, 'var(--glide)');
 buildMatch('webview-match', webviewPairs, 'var(--webview)');
+buildMatch('final-match', finalPairs, 'var(--gold)');
 buildLifecycle();
 buildScaleGrid();
 buildQuiz();
