@@ -23,8 +23,21 @@
   --menu: #1c8f49;
   --glide: #1c9a96;
   --webview: #1aa39b;
+  --persist: #3f51b5;
   --gold: #ffd60a;
   --xp-bar: #00b4d8;
+}
+
+body.light-mode {
+  --bg: #f4f7fb;
+  --surface: #ffffff;
+  --surface2: #edf2f7;
+  --border: rgba(15,23,42,0.14);
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #e11d48;
+  --gold: #b45309;
+  --xp-bar: #0284c7;
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -35,6 +48,7 @@ body {
   font-family: 'Syne', sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
+  transition: background .25s ease, color .25s ease;
 }
 
 /* ── SCANLINE overlay ── */
@@ -42,6 +56,10 @@ body::before {
   content:'';
   position:fixed; inset:0; z-index:0; pointer-events:none;
   background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+}
+
+body.light-mode::before {
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(2,8,23,0.02) 2px, rgba(2,8,23,0.02) 4px);
 }
 
 /* ── HUD BAR ── */
@@ -66,6 +84,14 @@ body::before {
   padding:6px 10px; border-radius:6px; cursor:pointer; transition:all .2s;
 }
 .hud-btn:hover { border-color:var(--accent); color:var(--accent); }
+
+body.light-mode .hud {
+  background: rgba(255,255,255,0.92);
+}
+
+body.light-mode .level-badge {
+  color:#fff;
+}
 
 /* ── HERO ── */
 .hero {
@@ -513,6 +539,159 @@ body::before {
   border-color:var(--webview);
   color:#fff;
   background:rgba(26,163,155,0.2);
+}
+
+/* ── DATA PERSISTENCE LAB ── */
+.dp-wrap {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:20px;
+}
+.dp-tabs {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:10px;
+}
+.dp-tab {
+  border:1px solid rgba(63,81,181,0.35);
+  background:rgba(63,81,181,0.1);
+  color:var(--text);
+  border-radius:999px;
+  padding:7px 11px;
+  font-size:11px;
+  font-family:'Space Mono',monospace;
+  cursor:pointer;
+}
+.dp-tab.active {
+  background:var(--persist);
+  color:#fff;
+  border-color:var(--persist);
+}
+.dp-box {
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:var(--surface2);
+  padding:10px;
+}
+.dp-title {
+  font-family:'Space Mono',monospace;
+  color:var(--persist);
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:6px;
+}
+.dp-desc {
+  color:var(--text);
+  font-size:12px;
+  line-height:1.55;
+  margin-bottom:8px;
+}
+.dp-example {
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5;
+  margin-bottom:8px;
+}
+.dp-code {
+  background:#0b1220;
+  color:#d7e2ff;
+  border:1px solid rgba(63,81,181,0.35);
+  border-radius:8px;
+  padding:8px;
+  font-size:11px;
+  overflow:auto;
+}
+.dp-score {
+  margin-top:8px;
+  font-family:'Space Mono',monospace;
+  color:var(--muted);
+  font-size:11px;
+}
+.dp-phone-field {
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  margin-bottom:8px;
+}
+.dp-phone-field label {
+  font-size:10px;
+  color:var(--muted);
+  font-family:'Space Mono',monospace;
+}
+.dp-phone-field input,
+.dp-phone-field textarea {
+  border:1px solid var(--border);
+  background:var(--surface2);
+  color:var(--text);
+  border-radius:8px;
+  padding:7px 8px;
+  font-size:11px;
+}
+.dp-phone-field textarea { min-height:52px; resize:vertical; }
+.dp-actions {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+  margin:8px 0;
+}
+.dp-btn {
+  border:1px solid rgba(63,81,181,0.35);
+  background:rgba(63,81,181,0.1);
+  color:var(--text);
+  border-radius:8px;
+  padding:7px 8px;
+  font-size:10px;
+  font-family:'Space Mono',monospace;
+  cursor:pointer;
+}
+.dp-btn:hover { border-color:var(--persist); }
+.dp-log {
+  border:1px solid var(--border);
+  background:var(--surface2);
+  border-radius:8px;
+  padding:8px;
+  font-size:11px;
+  color:var(--text);
+  min-height:40px;
+}
+.dp-flow {
+  margin-top:12px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px;
+  background:var(--surface);
+}
+.dp-flow-title {
+  font-family:'Space Mono',monospace;
+  color:var(--persist);
+  font-size:11px;
+  margin-bottom:8px;
+}
+.dp-flow-grid {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
+  align-items:center;
+}
+.dp-node {
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:var(--surface2);
+  padding:8px;
+  text-align:center;
+  font-size:11px;
+  color:var(--muted);
+}
+.dp-node.active {
+  border-color:var(--persist);
+  color:var(--text);
+  box-shadow:0 0 0 1px rgba(63,81,181,0.35) inset;
+}
+@media (max-width: 900px) {
+  .dp-flow-grid { grid-template-columns:1fr 1fr; }
 }
 
 
@@ -1116,6 +1295,7 @@ body::before {
   <div class="hud-stat">Quiz <span id="quiz-val">0/0</span></div>
   <div class="hud-stat">Streak <span id="streak-val">0</span></div>
   <div class="level-badge" id="level-badge">LVL 1</div>
+  <button class="hud-btn" id="theme-toggle" onclick="toggleTheme()">LIGHT MODE</button>
   <button class="hud-btn" onclick="resetProgress()">RESET</button>
 </div>
 
@@ -1162,6 +1342,10 @@ body::before {
     <div class="map-node" id="map-webview" data-target="webview" onclick="scrollToSection('webview')" style="color:var(--webview)">
       <div class="node-icon" style="background:rgba(26,163,155,0.15); font-size:20px">🌐</div>
       <div class="node-label">WebView</div>
+    </div>
+    <div class="map-node" id="map-persistence" data-target="persistence" onclick="scrollToSection('persistence')" style="color:var(--persist)">
+      <div class="node-icon" style="background:rgba(63,81,181,0.15); font-size:20px">💾</div>
+      <div class="node-label">Persistence</div>
     </div>
     <div class="map-node" id="map-quiz-zone" data-target="quiz-zone" onclick="scrollToSection('quiz-zone')" style="color:var(--gold)">
       <div class="node-icon" style="background:rgba(255,214,10,0.15); font-size:20px">🏆</div>
@@ -1766,6 +1950,84 @@ body::before {
 <hr class="section-divider">
 
 <!-- ═══════════════════════════════════════════
+     SECTION 9 — DATA PERSISTENCE
+════════════════════════════════════════════ -->
+<div class="section" id="persistence">
+  <div class="section-header">
+    <div class="section-badge" style="background:rgba(63,81,181,0.15);color:var(--persist)">09</div>
+    <div class="section-title" style="color:var(--persist)">Data Persistence + Storage Mapping</div>
+    <div class="section-xp">+120 XP</div>
+  </div>
+
+  <div class="feature-stage">
+    <div class="dp-wrap">
+      <div class="dp-tabs">
+        <button class="dp-tab active" id="dp-tab-shared" onclick="dpShowTopic('shared')">SharedPreferences</button>
+        <button class="dp-tab" id="dp-tab-internal" onclick="dpShowTopic('internal')">Internal Storage</button>
+        <button class="dp-tab" id="dp-tab-external" onclick="dpShowTopic('external')">External Storage</button>
+        <button class="dp-tab" id="dp-tab-sqlite" onclick="dpShowTopic('sqlite')">SQLite Database</button>
+      </div>
+      <div class="dp-box">
+        <div class="dp-title" id="dp-topic-title">SharedPreferences — key-value storage</div>
+        <div class="dp-desc" id="dp-topic-desc">Store tiny settings like username, theme mode, login flag and remember-me state.</div>
+        <div class="dp-example" id="dp-topic-example">Example: Save username + darkMode when user taps Save Settings.</div>
+        <pre class="dp-code" id="dp-topic-code">SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+prefs.edit().putString("username", "Ajith").putBoolean("darkMode", true).apply();</pre>
+      </div>
+      <div class="dp-score" id="dp-topic-score">Topics explored: 1 / 4</div>
+
+      <div class="dp-flow">
+        <div class="dp-flow-title">UI → REPOSITORY → STORAGE FLOW (tap actions on right)</div>
+        <div class="dp-flow-grid">
+          <div class="dp-node" id="dp-node-ui">Mobile UI</div>
+          <div class="dp-node" id="dp-node-repo">Repository Layer</div>
+          <div class="dp-node" id="dp-node-pref">SharedPreferences</div>
+          <div class="dp-node" id="dp-node-db">SQLite DB</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mobile-live" style="--live-accent:var(--persist)">
+      <div class="ml-top">LIVE MOBILE UI</div>
+      <div class="ml-phone">
+        <div class="ml-appbar">PERSISTENCE DEMO (REAL FLOW)</div>
+        <div class="ml-body">
+          <div class="ml-method" id="dp-mobile-method">Try Save/Load actions</div>
+          <div class="ml-tag" id="dp-mobile-tag">This panel simulates app UI storing data into local persistence layers.</div>
+
+          <div class="dp-phone-field">
+            <label>Username</label>
+            <input id="dp-name-input" value="Ajith" />
+          </div>
+
+          <div class="dp-phone-field">
+            <label>Dark Mode Preference</label>
+            <input id="dp-dark-input" value="true" />
+          </div>
+
+          <div class="dp-phone-field">
+            <label>Note (SQLite row)</label>
+            <textarea id="dp-note-input">Buy milk and submit assignment</textarea>
+          </div>
+
+          <div class="dp-actions">
+            <button class="dp-btn" onclick="dpRunAction('savePrefs')">Save Prefs</button>
+            <button class="dp-btn" onclick="dpRunAction('loadPrefs')">Load Prefs</button>
+            <button class="dp-btn" onclick="dpRunAction('insertSql')">Insert SQLite</button>
+            <button class="dp-btn" onclick="dpRunAction('querySql')">Query SQLite</button>
+          </div>
+
+          <div class="dp-log" id="dp-log">Action log: waiting for interaction...</div>
+          <div class="ml-event" id="dp-mobile-event">EVENT: waiting for interaction...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════
      FINAL QUIZ
 ════════════════════════════════════════════ -->
 <div class="section" id="quiz-zone">
@@ -1795,7 +2057,7 @@ const XP_MAX = 1100;
 let streak = 0;
 const unlockedCards = new Set();
 const sectionCardUnlocks = { list:0, dialog:0, pref:0, imageview:0, menus:0, glide:0, webview:0 };
-const sectionDone = { list:false, dialog:false, pref:false, lifecycle:false, imageview:false, menus:false, glide:false, webview:false, 'quiz-zone':false };
+const sectionDone = { list:false, dialog:false, pref:false, lifecycle:false, imageview:false, menus:false, glide:false, webview:false, persistence:false, 'quiz-zone':false };
 const matchCompleted = { 'list-match':false, 'dialog-match':false, 'pref-match':false, 'menu-match':false, 'glide-match':false, 'webview-match':false };
 const viewedScaleTypes = new Set();
 const learnedAttrRows = new Set();
@@ -1805,6 +2067,36 @@ const webSettingsUnlocked = new Set();
 let webStepsIndex = 0;
 let webSettingsDone = false;
 let webStepsDone = false;
+const dpVisitedTopics = new Set();
+const dpActionsDone = new Set();
+let dpPrefsStore = { username:'', darkMode:'false' };
+let dpRows = [];
+let uiTheme = 'dark';
+
+function applyTheme(theme) {
+  const nextTheme = theme === 'light' ? 'light' : 'dark';
+  uiTheme = nextTheme;
+  document.body.classList.toggle('light-mode', nextTheme === 'light');
+  const toggleBtn = document.getElementById('theme-toggle');
+  if(toggleBtn) {
+    toggleBtn.textContent = nextTheme === 'light' ? 'DARK MODE' : 'LIGHT MODE';
+    toggleBtn.setAttribute('aria-label', `Switch to ${nextTheme === 'light' ? 'dark' : 'light'} mode`);
+  }
+}
+
+function toggleTheme() {
+  applyTheme(uiTheme === 'dark' ? 'light' : 'dark');
+  localStorage.setItem('madTheme', uiTheme);
+}
+
+function initTheme() {
+  const saved = localStorage.getItem('madTheme');
+  if(saved === 'light' || saved === 'dark') {
+    applyTheme(saved);
+    return;
+  }
+  applyTheme('dark');
+}
 
 function addXP(amount, label) {
   xp = Math.min(xp + amount, XP_MAX);
@@ -1866,6 +2158,7 @@ function checkSectionProgress() {
   if(sectionCardUnlocks.menus >= menuFeatures.length && matchCompleted['menu-match'] && menuAttrMastered) markSectionDone('menus');
   if(sectionCardUnlocks.glide >= glideFeatures.length && matchCompleted['glide-match'] && glideSimDone) markSectionDone('glide');
   if(sectionCardUnlocks.webview >= webviewFeatures.length && matchCompleted['webview-match'] && webSettingsDone && webStepsDone) markSectionDone('webview');
+  if(dpVisitedTopics.size >= 4 && dpActionsDone.size >= 3) markSectionDone('persistence');
   if(quizIdx >= quizQuestions.length) markSectionDone('quiz-zone');
 }
 
@@ -1895,7 +2188,11 @@ function persistProgress() {
     webSettingsUnlocked: Array.from(webSettingsUnlocked),
     webStepsIndex,
     webSettingsDone,
-    webStepsDone
+    webStepsDone,
+    dpVisitedTopics: Array.from(dpVisitedTopics),
+    dpActionsDone: Array.from(dpActionsDone),
+    dpPrefsStore,
+    dpRows
   };
   localStorage.setItem('fragmentsAcademyState', JSON.stringify(state));
 }
@@ -1924,6 +2221,15 @@ function loadProgress() {
     webStepsIndex = Number.isInteger(s.webStepsIndex) ? s.webStepsIndex : 0;
     webSettingsDone = !!s.webSettingsDone;
     webStepsDone = !!s.webStepsDone;
+    (s.dpVisitedTopics || []).forEach((k)=>dpVisitedTopics.add(k));
+    (s.dpActionsDone || []).forEach((k)=>dpActionsDone.add(k));
+    if(s.dpPrefsStore && typeof s.dpPrefsStore === 'object') {
+      dpPrefsStore = {
+        username: s.dpPrefsStore.username || '',
+        darkMode: s.dpPrefsStore.darkMode || 'false'
+      };
+    }
+    dpRows = Array.isArray(s.dpRows) ? s.dpRows : [];
   } catch (e) {}
 }
 
@@ -2791,6 +3097,166 @@ wv.loadUrl("https://www.google.com");`
   persistProgress();
 }
 
+const dpTopicMap = {
+  shared: {
+    title: 'SharedPreferences — key-value storage',
+    desc: 'Use this for tiny settings data that should survive app close, like username, dark mode, language, and login flags.',
+    example: 'Example: Save username + darkMode after user taps Save Settings.',
+    code: `SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+prefs.edit()
+    .putString("username", "Ajith")
+    .putBoolean("darkMode", true)
+    .apply();`
+  },
+  internal: {
+    title: 'Internal Storage — private app files',
+    desc: 'Store files in the app sandbox. Other apps cannot read these files, and they are removed when app is uninstalled.',
+    example: 'Example: Save encrypted profile.json or offline notes cache.',
+    code: `FileOutputStream fos = openFileOutput("profile.txt", MODE_PRIVATE);
+fos.write("Ajith|BCA".getBytes());
+fos.close();`
+  },
+  external: {
+    title: 'External Storage — shared file access',
+    desc: 'Used for user-visible files like images/PDF downloads. On modern Android, use scoped storage APIs for safety.',
+    example: 'Example: Export attendance report as PDF so user can share through WhatsApp.',
+    code: `File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+File report = new File(dir, "attendance.pdf");
+// write bytes to report`
+  },
+  sqlite: {
+    title: 'SQLite — structured relational data',
+    desc: 'Best when you have rows/columns and need query/filter/sort. Good for notes, tasks, history, and transactional records.',
+    example: 'Example: Store notes table (id, title, content, createdAt) and query latest notes.',
+    code: `SQLiteDatabase db = helper.getWritableDatabase();
+ContentValues cv = new ContentValues();
+cv.put("note", "Buy milk");
+db.insert("notes", null, cv);`
+  }
+};
+
+function dpUpdateScore() {
+  const score = document.getElementById('dp-topic-score');
+  if(score) score.textContent = `Topics explored: ${dpVisitedTopics.size} / 4`;
+}
+
+function dpHighlightFlow(target) {
+  ['ui', 'repo', 'pref', 'db'].forEach((k)=> {
+    const node = document.getElementById(`dp-node-${k}`);
+    if(node) node.classList.remove('active');
+  });
+  const ui = document.getElementById('dp-node-ui');
+  const repo = document.getElementById('dp-node-repo');
+  if(ui) ui.classList.add('active');
+  if(repo) repo.classList.add('active');
+  const endNode = document.getElementById(`dp-node-${target}`);
+  if(endNode) endNode.classList.add('active');
+}
+
+function dpShowTopic(topic, silent) {
+  const key = dpTopicMap[topic] ? topic : 'shared';
+  const data = dpTopicMap[key];
+  document.querySelectorAll('.dp-tab').forEach((btn)=>btn.classList.remove('active'));
+  const activeBtn = document.getElementById(`dp-tab-${key}`);
+  if(activeBtn) activeBtn.classList.add('active');
+
+  const title = document.getElementById('dp-topic-title');
+  const desc = document.getElementById('dp-topic-desc');
+  const example = document.getElementById('dp-topic-example');
+  const code = document.getElementById('dp-topic-code');
+  if(title) title.textContent = data.title;
+  if(desc) desc.textContent = data.desc;
+  if(example) example.textContent = data.example;
+  if(code) code.textContent = data.code;
+
+  if(!dpVisitedTopics.has(key)) {
+    dpVisitedTopics.add(key);
+    if(!silent) addXP(4, 'Persistence topic explored');
+  }
+  dpUpdateScore();
+  checkSectionProgress();
+  persistProgress();
+}
+
+function dpRunAction(action) {
+  const nameInput = document.getElementById('dp-name-input');
+  const darkInput = document.getElementById('dp-dark-input');
+  const noteInput = document.getElementById('dp-note-input');
+  const method = document.getElementById('dp-mobile-method');
+  const tag = document.getElementById('dp-mobile-tag');
+  const log = document.getElementById('dp-log');
+  const event = document.getElementById('dp-mobile-event');
+  if(!nameInput || !darkInput || !noteInput || !method || !tag || !log || !event) return;
+
+  if(action === 'savePrefs') {
+    dpPrefsStore.username = nameInput.value.trim() || 'Guest';
+    dpPrefsStore.darkMode = darkInput.value.trim().toLowerCase() === 'true' ? 'true' : 'false';
+    dpHighlightFlow('pref');
+    method.textContent = 'SharedPreferences save';
+    tag.textContent = 'UI values serialized into key-value pairs and persisted locally.';
+    event.textContent = 'EVENT: UI -> Repository -> SharedPreferences.save(username, darkMode)';
+    log.textContent = `Saved: username=${dpPrefsStore.username}, darkMode=${dpPrefsStore.darkMode}`;
+  }
+
+  if(action === 'loadPrefs') {
+    nameInput.value = dpPrefsStore.username || 'Guest';
+    darkInput.value = dpPrefsStore.darkMode || 'false';
+    dpHighlightFlow('pref');
+    method.textContent = 'SharedPreferences load';
+    tag.textContent = 'Stored key-value data loaded back into UI fields.';
+    event.textContent = 'EVENT: SharedPreferences.read -> Repository -> UI binding';
+    log.textContent = `Loaded to UI: username=${nameInput.value}, darkMode=${darkInput.value}`;
+  }
+
+  if(action === 'insertSql') {
+    const note = noteInput.value.trim();
+    if(!note) {
+      showToast('Enter note text before inserting SQLite row.');
+      return;
+    }
+    dpRows.unshift({ id: dpRows.length + 1, note, createdAt: new Date().toISOString().slice(11,19) });
+    dpHighlightFlow('db');
+    method.textContent = 'SQLite insert';
+    tag.textContent = 'Form note inserted as a database row in local SQLite table.';
+    event.textContent = 'EVENT: UI -> Repository -> SQLite INSERT notes(note, createdAt)';
+    log.textContent = `Inserted row #${dpRows[0].id}: "${dpRows[0].note}" at ${dpRows[0].createdAt}`;
+  }
+
+  if(action === 'querySql') {
+    dpHighlightFlow('db');
+    method.textContent = 'SQLite query';
+    tag.textContent = 'Latest row queried from SQLite and mapped to UI.';
+    event.textContent = 'EVENT: SQLite SELECT latest -> Repository -> UI';
+    if(dpRows.length) {
+      const row = dpRows[0];
+      log.textContent = `Query result: #${row.id} "${row.note}" (${row.createdAt}) | total rows=${dpRows.length}`;
+    } else {
+      log.textContent = 'Query result: no rows yet. Tap Insert SQLite first.';
+    }
+  }
+
+  if(!dpActionsDone.has(action)) {
+    dpActionsDone.add(action);
+    addXP(5, 'Persistence action completed');
+  }
+
+  checkSectionProgress();
+  persistProgress();
+}
+
+function initPersistenceLab() {
+  const nameInput = document.getElementById('dp-name-input');
+  const darkInput = document.getElementById('dp-dark-input');
+  if(nameInput) nameInput.value = dpPrefsStore.username || 'Ajith';
+  if(darkInput) darkInput.value = dpPrefsStore.darkMode || 'false';
+  dpShowTopic('shared', true);
+  dpUpdateScore();
+  if(dpRows.length) {
+    const log = document.getElementById('dp-log');
+    if(log) log.textContent = `Last saved row: #${dpRows[0].id} "${dpRows[0].note}" (${dpRows[0].createdAt})`;
+  }
+}
+
 function updateFeaturePreview(containerId, featureIndex, stateLabel) {
   const meta = previewMeta[containerId];
   if(!meta) return;
@@ -3560,6 +4026,7 @@ buildCards('iv-cards', ivFeatures, 'var(--imageview)');
 buildCards('menu-cards', menuFeatures, 'var(--menu)');
 buildCards('glide-cards', glideFeatures, 'var(--glide)');
 buildCards('webview-cards', webviewFeatures, 'var(--webview)');
+initTheme();
 loadProgress();
 paintHudFromState();
 buildMatch('list-match', listPairs, 'var(--list)');
@@ -3576,6 +4043,7 @@ renderAttrTable();
 resetGlideSim();
 buildWebSettingsLab();
 buildWebStepsLab();
+initPersistenceLab();
 // Initialize WebView browser with first page
 webviewNavigate('google');
 if(glideSimDone) {
