@@ -1836,44 +1836,21 @@ body.light-mode .level-badge {
   <div style="display:grid; grid-template-columns:1fr 360px; gap:24px; align-items:start;">
     <div class="cards-grid" id="list-cards"></div>
 
-    <!-- RIGHT: ANIMATED WORKING MODEL -->
-    <div class="model-container">
-      <div class="model-title">INTERACTIVE LIST DEMO</div>
-      <div class="model-demo">
-        <div style="margin-bottom:14px;">
-          <div style="display:flex; gap:6px; margin-bottom:10px;">
-            <button onclick="listAnimAddItem()" style="padding:6px 10px; font-size:11px; background:var(--list); color:#fff; border:none; border-radius:6px; cursor:pointer;">+ Add</button>
-            <button onclick="listAnimRemoveItem()" style="padding:6px 10px; font-size:11px; background:#999; color:#fff; border:none; border-radius:6px; cursor:pointer;">- Remove</button>
-            <button onclick="listAnimClear()" style="padding:6px 10px; font-size:11px; background:#666; color:#fff; border:none; border-radius:6px; cursor:pointer;">Clear</button>
+    <div class="mobile-live" style="--live-accent:var(--list)">
+      <div class="ml-top">LIVE MOBILE UI</div>
+      <div class="ml-phone">
+        <div class="ml-appbar">LISTFRAGMENT PREVIEW</div>
+        <div class="ml-body">
+          <div class="ml-method" id="pv-list-method">Tap a feature card</div>
+          <div class="ml-tag" id="pv-list-tag">Real-time card summary appears here.</div>
+          <div class="ml-what" id="pv-list-what">Use reveal/hide to see this panel change live as your feature interaction changes.</div>
+          <div class="ml-visual ml-visual-list" id="pv-list-visual">
+            <div class="ml-row">Primary Inbox</div>
+            <div class="ml-row">Starred</div>
+            <div class="ml-row">Promotions</div>
+            <div class="ml-row">Sent Mail</div>
           </div>
-          <div style="height:1px; background:var(--border); margin:10px 0;"></div>
-        </div>
-        <ul class="anim-list" id="list-anim-demo">
-          <li>
-            <div class="list-icon">📨</div>
-            <div class="list-content">
-              <div class="list-label">Inbox</div>
-              <div class="list-desc">45 messages</div>
-            </div>
-          </li>
-          <li>
-            <div class="list-icon">⭐</div>
-            <div class="list-content">
-              <div class="list-label">Starred</div>
-              <div class="list-desc">12 messages</div>
-            </div>
-          </li>
-          <li>
-            <div class="list-icon">🎯</div>
-            <div class="list-content">
-              <div class="list-label">Promotions</div>
-              <div class="list-desc">8 messages</div>
-            </div>
-          </li>
-        </ul>
-        <div style="margin-top:14px; padding:10px; background:var(--surface2); border-radius:6px; border-left:3px solid var(--list);">
-          <div style="font-size:10px; color:var(--muted); font-family:'Space Mono',monospace;">📊 LIST STATE</div>
-          <div style="font-size:11px; color:var(--text); margin-top:4px;" id="list-state-info">Click items or use buttons to interact</div>
+          <div class="ml-event" id="pv-list-event">EVENT: waiting for interaction...</div>
         </div>
       </div>
     </div>
