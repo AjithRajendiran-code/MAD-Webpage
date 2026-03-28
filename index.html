@@ -1,3 +1,4 @@
+  if (!container) return; // Skip if container doesn't exist
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -778,6 +779,297 @@ body.light-mode .level-badge {
   .dp-flow-grid { grid-template-columns:1fr 1fr; }
 }
 
+/* ── CHAPTER 6: SUDOKU UI DESIGN LAB ── */
+.s6-wrap {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:20px;
+}
+.s6-tabs {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:12px;
+}
+.s6-tab {
+  border:1px solid rgba(44,97,168,0.35);
+  background:rgba(44,97,168,0.1);
+  color:var(--text);
+  border-radius:999px;
+  padding:7px 11px;
+  font-size:11px;
+  font-family:'Space Mono',monospace;
+  cursor:pointer;
+}
+.s6-tab.active {
+  background:#2c61a8;
+  border-color:#2c61a8;
+  color:#fff;
+}
+.s6-panel { display:none; }
+.s6-panel.active { display:block; }
+.s6-title {
+  color:#7fb2ff;
+  font-family:'Space Mono',monospace;
+  font-size:12px;
+  margin-bottom:8px;
+}
+.s6-text {
+  color:var(--text);
+  font-size:13px;
+  line-height:1.65;
+  margin-bottom:8px;
+}
+.s6-note {
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.5;
+}
+.s6-grid {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 300px;
+  gap:12px;
+  align-items:start;
+}
+.s6-card {
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:var(--surface2);
+  padding:10px;
+}
+.s6-code {
+  background:#0b1220;
+  color:#d7e2ff;
+  border:1px solid rgba(127,178,255,0.35);
+  border-radius:8px;
+  padding:8px;
+  font-size:11px;
+  overflow:auto;
+}
+.s6-bullets {
+  padding-left:18px;
+  color:var(--text);
+  font-size:12px;
+  line-height:1.7;
+}
+.s6-bullets li { margin-bottom:4px; }
+.s6-puzzle {
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+  margin-top:8px;
+}
+.s6-puzzle td {
+  border:1px solid var(--border);
+  text-align:center;
+  font-family:'Space Mono',monospace;
+  font-size:12px;
+  padding:6px 0;
+  color:var(--text);
+  background:var(--surface);
+}
+.s6-puzzle tr:nth-child(3n) td { border-bottom:2px solid #2c61a8; }
+.s6-puzzle td:nth-child(3n) { border-right:2px solid #2c61a8; }
+.s6-puzzle td.given {
+  color:#7fb2ff;
+  font-weight:700;
+}
+.s6-btn {
+  border:1px solid #2c61a8;
+  background:rgba(44,97,168,0.12);
+  color:var(--text);
+  border-radius:8px;
+  padding:7px 10px;
+  font-size:11px;
+  font-family:'Space Mono',monospace;
+  cursor:pointer;
+}
+.s6-btn:hover { background:rgba(44,97,168,0.2); }
+.s6-step-row {
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-bottom:8px;
+}
+.s6-step-btn {
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--muted);
+  border-radius:999px;
+  padding:6px 10px;
+  font-size:11px;
+  cursor:pointer;
+}
+.s6-step-btn.active {
+  border-color:#2c61a8;
+  color:#fff;
+  background:#2c61a8;
+}
+.s6-actions {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+  margin-bottom:8px;
+}
+.s6-log {
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:var(--surface2);
+  padding:8px;
+  min-height:42px;
+  color:var(--text);
+  font-size:11px;
+}
+.s6-log-list {
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:#0a1020;
+  padding:8px;
+  max-height:170px;
+  overflow:auto;
+}
+.s6-log-item {
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  margin-bottom:5px;
+}
+.s6-log-item.error { color:#ff6b6b; }
+.s6-log-item.warn { color:#ffd166; }
+.s6-log-item.info { color:#90caf9; }
+.s6-log-item.debug { color:#b8f2e6; }
+.s6-log-item.verbose { color:#cdb4db; }
+.s6-orient-bar {
+  display:flex;
+  gap:7px;
+  align-items:center;
+  margin-bottom:8px;
+}
+.s6-open-mock {
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:linear-gradient(160deg,#0d1528,#14233e);
+  padding:10px;
+}
+.s6-open-mock.portrait .s6-open-main {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.s6-open-mock.landscape .s6-open-main {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  align-items:start;
+}
+.s6-open-title {
+  font-family:'Space Mono',monospace;
+  color:#fff;
+  letter-spacing:.05em;
+  font-size:11px;
+  margin-bottom:8px;
+}
+.s6-open-btns {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.s6-open-btn {
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:7px;
+  padding:7px 8px;
+  background:rgba(255,255,255,0.06);
+  color:#fff;
+  font-size:10px;
+  font-family:'Space Mono',monospace;
+}
+.s6-open-scroll {
+  border:1px dashed rgba(127,178,255,0.5);
+  border-radius:8px;
+  padding:8px;
+  color:#b8d8ff;
+  font-size:10px;
+  min-height:86px;
+}
+.s6-rule-input-row {
+  display:flex;
+  gap:8px;
+  align-items:center;
+  margin:8px 0;
+}
+.s6-rule-input {
+  flex:1;
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:var(--surface);
+  color:var(--text);
+  padding:8px;
+  font-family:'Space Mono',monospace;
+  font-size:12px;
+}
+.s6-setting-row {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:8px;
+  margin-bottom:7px;
+  font-size:12px;
+  color:var(--text);
+  background:var(--surface);
+}
+.s6-dialog-overlay {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+  z-index:1600;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+}
+.s6-dialog-overlay.open { display:flex; }
+.s6-about-dialog {
+  width:min(560px, 96vw);
+  max-height:78vh;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 16px 44px rgba(0,0,0,0.35);
+}
+.s6-about-head {
+  background:#2c61a8;
+  color:#fff;
+  font-family:'Space Mono',monospace;
+  font-size:12px;
+  padding:9px 12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.s6-about-body {
+  padding:12px;
+  color:var(--text);
+  font-size:13px;
+  line-height:1.6;
+  overflow:auto;
+  max-height:52vh;
+}
+.s6-about-actions {
+  border-top:1px solid var(--border);
+  padding:9px 12px;
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  background:var(--surface2);
+}
+@media (max-width: 900px) {
+  .s6-grid { grid-template-columns:1fr; }
+}
+
 
 .ml-visual-dialog {
   position:relative;
@@ -1333,12 +1625,15 @@ body.light-mode .level-badge {
 .site-footer {
   text-align:center;
   padding:18px 24px 28px;
-  color:var(--muted);
+  color:transparent;
   font-family:'Space Mono',monospace;
   font-size:11px;
   letter-spacing:.04em;
   position:relative;
   z-index:1;
+  background:linear-gradient(90deg,#7fb2ff 0%, #00d4ff 35%, #7ef29a 70%, #ffd166 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
 }
 
 .burst {
@@ -1355,7 +1650,94 @@ body.light-mode .level-badge {
 /* ── DIVIDER ── */
 .section-divider { border:none; border-top:1px solid var(--border); margin:8px 24px; }
 
+/* ── ENHANCED CONTENT LAYOUT ── */
+.content-left { flex:1; padding-right:24px; }
+.content-intro { font-size:15px; line-height:1.8; color:var(--text); margin-bottom:20px; }
+.content-section { margin-bottom:24px; }
+.content-title { font-size:14px; font-weight:700; color:var(--accent); margin-bottom:12px; font-family:'Space Mono',monospace; letter-spacing:.05em; }
+.content-text { font-size:13px; line-height:1.7; color:var(--text); margin-bottom:10px; }
+.code-block { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:14px; margin:12px 0; overflow-x:auto; }
+.code-block code { font-family:'Space Mono',monospace; font-size:11px; color:#a8ff60; line-height:1.6; }
+.key-points { background:rgba(255,214,10,0.08); border-left:3px solid var(--gold); padding:12px; border-radius:6px; margin:12px 0; }
+.key-points li { font-size:12px; color:var(--text); margin-bottom:6px; }
+.key-points li:last-child { margin-bottom:0; }
+
+/* ── ANIMATED WORKING MODELS ── */
+.model-container { position:sticky; top:84px; }
+.model-title { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:.08em; color:var(--muted); margin-bottom:8px; }
+.model-demo { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; min-height:300px; }
+.model-canvas { width:100%; height:400px; background:linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(99,102,241,0.1) 100%); border:1px solid rgba(255,255,255,0.1); border-radius:8px; overflow:hidden; }
+
+/* ── ANIMATED LIST ITEMS ── */
+.anim-list { list-style:none; margin:12px 0; }
+.anim-list li { display:flex; align-items:center; padding:12px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; margin-bottom:8px; gap:10px; cursor:pointer; transition:all .3s ease; }
+.anim-list li:hover { border-color:var(--accent); background:color-mix(in srgb, var(--accent) 10%, var(--surface2)); transform:translateX(4px); }
+.anim-list li.active { border-color:var(--accent); background:color-mix(in srgb, var(--accent) 15%, var(--surface2)); }
+.list-icon { width:24px; height:24px; border-radius:50%; background:var(--accent); display:flex; align-items:center; justify-content:center; font-size:12px; color:#fff; }
+.list-content { flex:1; }
+.list-label { font-size:12px; font-weight:700; color:var(--text); }
+.list-desc { font-size:11px; color:var(--muted); margin-top:2px; }
+
+/* ── ANIMATED DIALOG BOX ── */
+.dialog-demo { position:relative; width:100%; height:300px; background:linear-gradient(to right, rgba(0,0,0,0.2), rgba(0,0,0,0.1)); border-radius:8px; display:flex; align-items:center; justify-content:center; }
+.dialog-box { background:var(--surface); border:1px solid var(--border); border-radius:12px; width:85%; max-width:280px; box-shadow:0 8px 32px rgba(0,0,0,0.3); animation:dialog-enter .4s ease-out; }
+.dialog-header { background:var(--accent); color:#fff; padding:14px; border-radius:12px 12px 0 0; font-weight:700; font-size:13px; }
+.dialog-body { padding:16px; font-size:12px; line-height:1.6; color:var(--text); min-height:80px; }
+.dialog-actions { display:flex; gap:8px; padding:12px; border-top:1px solid var(--border); justify-content:flex-end; }
+.dialog-btn { padding:6px 12px; border:1px solid var(--border); background:var(--surface2); border-radius:6px; font-size:11px; cursor:pointer; color:var(--text); transition:all .2s; }
+.dialog-btn:hover { border-color:var(--accent); color:var(--accent); }
+.dialog-btn.primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+@keyframes dialog-enter { from { opacity:0; transform:scale(.9) translateY(-20px); } to { opacity:1; transform:scale(1) translateY(0); } }
+@keyframes dialog-exit { from { opacity:1; transform:scale(1) translateY(0); } to { opacity:0; transform:scale(.9) translateY(-20px); } }
+
+/* ── ANIMATED PREFERENCE TOGGLE ── */
+.pref-item-demo { display:flex; align-items:center; justify-content:space-between; padding:14px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; margin-bottom:10px; }
+.pref-label { font-size:12px; font-weight:700; color:var(--text); }
+.pref-toggle { width:48px; height:28px; background:var(--border); border-radius:99px; position:relative; cursor:pointer; transition:background .3s; }
+.pref-toggle.active { background:var(--accent); }
+.pref-toggle::after { content:''; position:absolute; width:24px; height:24px; background:#fff; border-radius:50%; top:2px; left:2px; transition:left .3s; }
+.pref-toggle.active::after { left:22px; }
+
+/* ── LIFECYCLE STATE VISUALIZATION ── */
+.lc-flow { display:flex; flex-direction:column; gap:12px; }
+.lc-state { padding:12px; border-radius:8px; border:2px solid var(--border); background:var(--surface2); font-size:12px; font-weight:700; text-align:center; cursor:pointer; transition:all .3s; }
+.lc-state.active { border-color:var(--accent); background:color-mix(in srgb, var(--accent) 20%, var(--surface2)); color:var(--accent); }
+.lc-arrow { text-align:center; color:var(--muted); font-size:14px; }
+
+/* ── SCALE TYPE GRID DEMO ── */
+.scale-demo-grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; margin:12px 0; }
+.scale-item { background:linear-gradient(135deg, #ff6b6b, #feca57); width:100%; height:120px; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:11px; font-weight:700; cursor:pointer; transition:all .3s; border:2px solid transparent; }
+.scale-item:hover { border-color:#fff; transform:scale(1.05); }
+.scale-item.active { border-color:#fff; box-shadow:0 0 16px rgba(255,255,255,0.4); }
+
+/* ── ANIMATED MENU DISPLAY ── */
+.menu-demo-list { list-style:none; margin:12px 0; }
+.menu-item { padding:12px 14px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; margin-bottom:8px; cursor:pointer; transition:all .3s; display:flex; align-items:center; gap:10px; }
+.menu-item:hover { border-color:var(--accent); background:color-mix(in srgb, var(--accent) 12%, var(--surface2)); }
+.menu-item.active { border-color:var(--accent); background:color-mix(in srgb, var(--accent) 20%, var(--surface2)); color:var(--accent); }
+.menu-icon { width:20px; height:20px; background:var(--accent); border-radius:4px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:10px; }
+.menu-label { flex:1; font-size:12px; font-weight:700; }
+.menu-shortcut { font-family:'Space Mono',monospace; font-size:10px; color:var(--muted); }
+
+/* ── GLIDE IMAGE LOADING ANIMATION ── */
+.glide-preview { width:100%; height:200px; background:linear-gradient(90deg, var(--surface2), var(--border), var(--surface2)); background-size:200% 100%; animation:glide-loading 1.5s infinite; border-radius:8px; display:flex; align-items:center; justify-content:center; }
+.glide-preview.loaded { animation:none; background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+@keyframes glide-loading { 0%, 100% { background-position:200% 0; } 50% { background-position:-200% 0; } }
+.glide-status { font-size:11px; color:var(--muted); margin-top:8px; font-family:'Space Mono',monospace; }
+
+/* ── WEBVIEW SIMULATOR ── */
+.webview-frame { width:100%; height:200px; border:1px solid var(--border); border-radius:8px; background:#fff; overflow:hidden; }
+.webview-header { background:#f0f0f0; padding:8px; border-bottom:1px solid #ddd; display:flex; align-items:center; gap:6px; }
+.webview-btn { width:20px; height:20px; background:#e0e0e0; border:1px solid #999; border-radius:4px; cursor:pointer; font-size:10px; }
+.webview-url { flex:1; background:#fff; border:1px solid #ddd; border-radius:4px; padding:4px 8px; font-size:10px; font-family:monospace; margin:0 4px; }
+.webview-content { padding:12px; font-size:12px; color:#333; line-height:1.6; overflow-y:auto; height:calc(100% - 36px); }
+
 /* ── RESPONSIVE ── */
+@media(max-width:1024px) {
+  .feature-stage { grid-template-columns:1fr; }
+  .model-container { position:relative; top:auto; }
+  .content-left { padding-right:0; margin-bottom:24px; }
+}
 @media(max-width:600px) {
   .cards-grid { grid-template-columns:1fr; }
   .match-cols { grid-template-columns:1fr; }
@@ -1365,6 +1747,7 @@ body.light-mode .level-badge {
   .mobile-live { position:relative; top:0; }
   .attr-head,
   .attr-row { grid-template-columns:1fr; }
+  .scale-demo-grid { grid-template-columns:1fr; }
 }
 </style>
 </head>
@@ -1450,30 +1833,54 @@ body.light-mode .level-badge {
     <div class="section-xp">+80 XP</div>
   </div>
 
-  <div class="feature-stage">
+  <div style="display:grid; grid-template-columns:1fr 360px; gap:24px; align-items:start;">
     <div class="cards-grid" id="list-cards"></div>
-    <div class="mobile-live" style="--live-accent:var(--list)">
-      <div class="ml-top">LIVE MOBILE UI</div>
-      <div class="ml-phone">
-        <div class="ml-appbar">LISTFRAGMENT PREVIEW</div>
-        <div class="ml-body">
-          <div class="ml-method" id="pv-list-method">Tap a feature card</div>
-          <div class="ml-tag" id="pv-list-tag">Real-time card summary appears here.</div>
-          <div class="ml-what" id="pv-list-what">Use reveal/hide to see this panel change live as your feature interaction changes.</div>
-          <div class="ml-visual ml-visual-list" id="pv-list-visual">
-            <div class="ml-row">Primary Inbox</div>
-            <div class="ml-row">Starred</div>
-            <div class="ml-row">Promotions</div>
-            <div class="ml-row">Sent Mail</div>
+
+    <!-- RIGHT: ANIMATED WORKING MODEL -->
+    <div class="model-container">
+      <div class="model-title">INTERACTIVE LIST DEMO</div>
+      <div class="model-demo">
+        <div style="margin-bottom:14px;">
+          <div style="display:flex; gap:6px; margin-bottom:10px;">
+            <button onclick="listAnimAddItem()" style="padding:6px 10px; font-size:11px; background:var(--list); color:#fff; border:none; border-radius:6px; cursor:pointer;">+ Add</button>
+            <button onclick="listAnimRemoveItem()" style="padding:6px 10px; font-size:11px; background:#999; color:#fff; border:none; border-radius:6px; cursor:pointer;">- Remove</button>
+            <button onclick="listAnimClear()" style="padding:6px 10px; font-size:11px; background:#666; color:#fff; border:none; border-radius:6px; cursor:pointer;">Clear</button>
           </div>
-          <div class="ml-event" id="pv-list-event">EVENT: waiting for interaction...</div>
+          <div style="height:1px; background:var(--border); margin:10px 0;"></div>
+        </div>
+        <ul class="anim-list" id="list-anim-demo">
+          <li>
+            <div class="list-icon">📨</div>
+            <div class="list-content">
+              <div class="list-label">Inbox</div>
+              <div class="list-desc">45 messages</div>
+            </div>
+          </li>
+          <li>
+            <div class="list-icon">⭐</div>
+            <div class="list-content">
+              <div class="list-label">Starred</div>
+              <div class="list-desc">12 messages</div>
+            </div>
+          </li>
+          <li>
+            <div class="list-icon">🎯</div>
+            <div class="list-content">
+              <div class="list-label">Promotions</div>
+              <div class="list-desc">8 messages</div>
+            </div>
+          </li>
+        </ul>
+        <div style="margin-top:14px; padding:10px; background:var(--surface2); border-radius:6px; border-left:3px solid var(--list);">
+          <div style="font-size:10px; color:var(--muted); font-family:'Space Mono',monospace;">📊 LIST STATE</div>
+          <div style="font-size:11px; color:var(--text); margin-top:4px;" id="list-state-info">Click items or use buttons to interact</div>
         </div>
       </div>
     </div>
   </div>
 
   <!-- MATCH GAME -->
-  <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;">MATCH GAME — connect the method to its role</div>
+  <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;margin-top:20px;">MATCH GAME — connect the method to its role</div>
   <div class="match-game" id="list-match"></div>
 </div>
 
@@ -1488,31 +1895,30 @@ body.light-mode .level-badge {
     <div class="section-title" style="color:var(--dialog)">DialogFragment</div>
     <div class="section-xp">+80 XP</div>
   </div>
-  <div class="feature-stage">
+
+  <div style="display:grid; grid-template-columns:1fr 360px; gap:24px; align-items:start;">
     <div class="cards-grid" id="dialog-cards"></div>
-    <div class="mobile-live" style="--live-accent:var(--dialog)">
-      <div class="ml-top">LIVE MOBILE UI</div>
-      <div class="ml-phone">
-        <div class="ml-appbar">DIALOG PREVIEW</div>
-        <div class="ml-body">
-          <div class="ml-method" id="pv-dialog-method">Tap a feature card</div>
-          <div class="ml-tag" id="pv-dialog-tag">Dialog method summary appears here.</div>
-          <div class="ml-what" id="pv-dialog-what">Open/close any feature to preview behavior as if it is happening in a phone screen.</div>
-          <div class="ml-visual ml-visual-dialog" id="pv-dialog-visual">
-            <div class="ml-dim"></div>
-            <div class="ml-dialog-card">
-              <div class="ml-image-caption" id="pv-dialog-caption" style="margin-bottom:6px">Dialog state: idle</div>
-              <div class="line"></div>
-              <div class="line"></div>
-              <div class="line"></div>
-            </div>
-          </div>
-          <div class="ml-event" id="pv-dialog-event">EVENT: waiting for interaction...</div>
+
+    <!-- RIGHT: ANIMATED WORKING MODEL -->
+    <div class="model-container">
+      <div class="model-title">INTERACTIVE DIALOG DEMO</div>
+      <div class="model-demo">
+        <div style="margin-bottom:14px;">
+          <button onclick="showDialogDemo()" style="width:100%; padding:10px; font-size:11px; background:var(--dialog); color:#fff; border:none; border-radius:6px; cursor:pointer;">Show Dialog</button>
+          <div style="height:1px; background:var(--border); margin:10px 0;"></div>
+        </div>
+        <div class="dialog-demo" id="dialog-demo-container">
+          <!-- Dialog will appear here on click -->
+        </div>
+        <div style="margin-top:14px; padding:10px; background:var(--surface2); border-radius:6px; border-left:3px solid var(--dialog);">
+          <div style="font-size:10px; color:var(--muted); font-family:'Space Mono',monospace;">💬 DIALOG STATE</div>
+          <div style="font-size:11px; color:var(--text); margin-top:4px;" id="dialog-state-info">Click "Show Dialog" to open a confirmation dialog</div>
         </div>
       </div>
     </div>
   </div>
-  <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;">MATCH GAME</div>
+
+  <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;margin-top:20px;">MATCH GAME — connect the dialog method to its function</div>
   <div class="match-game" id="dialog-match"></div>
 </div>
 
@@ -1527,27 +1933,45 @@ body.light-mode .level-badge {
     <div class="section-title" style="color:var(--pref)">PreferenceFragment</div>
     <div class="section-xp">+80 XP</div>
   </div>
-  <div class="feature-stage">
+
+  <div style="display:grid; grid-template-columns:1fr 360px; gap:24px; align-items:start;">
     <div class="cards-grid" id="pref-cards"></div>
-    <div class="mobile-live" style="--live-accent:var(--pref)">
-      <div class="ml-top">LIVE MOBILE UI</div>
-      <div class="ml-phone">
-        <div class="ml-appbar">SETTINGS PREVIEW</div>
-        <div class="ml-body">
-          <div class="ml-method" id="pv-pref-method">Tap a feature card</div>
-          <div class="ml-tag" id="pv-pref-tag">Preference summary appears here.</div>
-          <div class="ml-what" id="pv-pref-what">This side panel mirrors your current feature selection in real time.</div>
-          <div class="ml-visual" id="pv-pref-visual">
-            <div class="ml-pref-item"><span>Notifications</span><span class="ml-toggle"></span></div>
-            <div class="ml-pref-item"><span>Dark Theme</span><span class="ml-toggle"></span></div>
-            <div class="ml-pref-item"><span>Auto Backup</span><span class="ml-toggle"></span></div>
+
+    <!-- RIGHT: ANIMATED WORKING MODEL -->
+    <div class="model-container">
+      <div class="model-title">INTERACTIVE PREFERENCES DEMO</div>
+      <div class="model-demo">
+        <div style="margin-bottom:14px;">
+          <div style="font-size:10px; color:var(--muted); margin-bottom:8px;">Tap toggles to change settings:</div>
+          <div style="height:1px; background:var(--border); margin:10px 0;"></div>
+        </div>
+        <div id="pref-demo-container">
+          <div class="pref-item-demo" onclick="togglePrefDemo(this, 'notifications')">
+            <div class="pref-label">🔔 Notifications</div>
+            <div class="pref-toggle active"></div>
           </div>
-          <div class="ml-event" id="pv-pref-event">EVENT: waiting for interaction...</div>
+          <div class="pref-item-demo" onclick="togglePrefDemo(this, 'darkTheme')">
+            <div class="pref-label">🌙 Dark Theme</div>
+            <div class="pref-toggle"></div>
+          </div>
+          <div class="pref-item-demo" onclick="togglePrefDemo(this, 'autoBackup')">
+            <div class="pref-label">💾 Auto Backup</div>
+            <div class="pref-toggle active"></div>
+          </div>
+          <div class="pref-item-demo" onclick="togglePrefDemo(this, 'analytics')">
+            <div class="pref-label">📊 Analytics</div>
+            <div class="pref-toggle"></div>
+          </div>
+        </div>
+        <div style="margin-top:14px; padding:10px; background:var(--surface2); border-radius:6px; border-left:3px solid var(--pref);">
+          <div style="font-size:10px; color:var(--muted); font-family:'Space Mono',monospace;">💾 SAVED STATE</div>
+          <div style="font-size:11px; color:var(--text); margin-top:4px; font-family:'Space Mono',monospace;" id="pref-state-info">notifications: ON | darkTheme: OFF | autoBackup: ON | analytics: OFF</div>
         </div>
       </div>
     </div>
   </div>
-  <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;">MATCH GAME</div>
+
+  <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;margin-top:20px;">MATCH GAME — match preference types to their purposes</div>
   <div class="match-game" id="pref-match"></div>
 </div>
 
@@ -1562,20 +1986,58 @@ body.light-mode .level-badge {
     <div class="section-title" style="color:var(--lifecycle)">Fragment Lifecycle</div>
     <div class="section-xp">+100 XP</div>
   </div>
-  <div class="stepper-wrap">
-    <div class="stepper-dots" id="lc-dots"></div>
-    <div class="stepper-card" id="lc-card">
-      <div class="step-num" id="lc-num"></div>
-      <div class="step-method" id="lc-method"></div>
-      <div class="step-what" id="lc-what"></div>
-      <div class="step-wa" id="lc-wa"></div>
+
+  <div style="display:grid; grid-template-columns:1fr 360px; gap:24px; align-items:start;">
+    <div class="stepper-wrap">
+      <div class="stepper-dots" id="lc-dots"></div>
+      <div class="stepper-card" id="lc-card">
+        <div class="step-num" id="lc-num"></div>
+        <div class="step-method" id="lc-method"></div>
+        <div class="step-what" id="lc-what"></div>
+        <div class="step-wa" id="lc-wa"></div>
+      </div>
+      <div class="stepper-btns">
+        <button class="s-btn" onclick="lcPrev()">← Prev</button>
+        <button class="s-btn primary" onclick="lcNext()">Next →</button>
+        <div class="stepper-counter" id="lc-counter"></div>
+      </div>
     </div>
-    <div class="stepper-btns">
-      <button class="s-btn" onclick="lcPrev()">← Prev</button>
-      <button class="s-btn primary" onclick="lcNext()">Next →</button>
-      <div class="stepper-counter" id="lc-counter"></div>
+
+    <!-- RIGHT: ANIMATED LIFECYCLE FLOW DIAGRAM -->
+    <div class="model-container">
+      <div class="model-title">INTERACTIVE LIFECYCLE DIAGRAM</div>
+      <div class="model-demo">
+        <div style="margin-bottom:14px;">
+          <button onclick="cycleLifecycle()" style="width:100%; padding:8px; font-size:11px; background:var(--lifecycle); color:#fff; border:none; border-radius:6px; cursor:pointer;">Run Lifecycle</button>
+          <div style="height:1px; background:var(--border); margin:10px 0;"></div>
+        </div>
+        <div class="lc-flow" id="lifecycle-flow">
+          <div class="lc-state" onclick="highlightState(this, 0)">onCreate()</div>
+          <div class="lc-arrow">↓</div>
+          <div class="lc-state" onclick="highlightState(this, 1)">onCreateView()</div>
+          <div class="lc-arrow">↓</div>
+          <div class="lc-state" onclick="highlightState(this, 2)">onViewCreated()</div>
+          <div class="lc-arrow">↓</div>
+          <div class="lc-state" onclick="highlightState(this, 3)">onStart()</div>
+          <div class="lc-arrow">↓</div>
+          <div class="lc-state" onclick="highlightState(this, 4)">onResume() ← RUNNING</div>
+          <div style="text-align:center; color:var(--muted); font-size:10px; margin:8px 0;">⟷ User interacts ⟷</div>
+          <div class="lc-state" onclick="highlightState(this, 5)">onPause()</div>
+          <div class="lc-arrow">↓</div>
+          <div class="lc-state" onclick="highlightState(this, 6)">onStop()</div>
+          <div class="lc-arrow">↓</div>
+          <div class="lc-state" onclick="highlightState(this, 7)">onDestroyView()</div>
+          <div class="lc-arrow">↓</div>
+          <div class="lc-state" onclick="highlightState(this, 8)">onDestroy()</div>
+        </div>
+        <div style="margin-top:14px; padding:10px; background:var(--surface2); border-radius:6px; border-left:3px solid var(--lifecycle);">
+          <div style="font-size:10px; color:var(--muted); font-family:'Space Mono',monospace;">📊 LIFECYCLE STATE</div>
+          <div style="font-size:11px; color:var(--text); margin-top:4px;" id="lifecycle-state-info">Click "Run Lifecycle" or states to animate</div>
+        </div>
+      </div>
     </div>
   </div>
+
 </div>
 
 <hr class="section-divider">
@@ -2050,6 +2512,7 @@ body.light-mode .level-badge {
         <button class="dp-tab" id="dp-tab-internal" onclick="dpShowTopic('internal')">Internal Storage</button>
         <button class="dp-tab" id="dp-tab-external" onclick="dpShowTopic('external')">External Storage</button>
         <button class="dp-tab" id="dp-tab-sqlite" onclick="dpShowTopic('sqlite')">SQLite Database</button>
+        <button class="dp-tab" id="dp-tab-create-db" onclick="dpShowTopic('create-db')">Creating DB</button>
       </div>
       <div class="dp-box">
         <div class="dp-title" id="dp-topic-title">SharedPreferences — key-value storage</div>
@@ -2155,10 +2618,279 @@ prefs.edit().putString("username", "Ajith").putBoolean("darkMode", true).apply()
   <div class="match-game" id="final-match"></div>
 </div>
 
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════
+     CHAPTER 6 — SUDOKU UI DESIGN
+════════════════════════════════════════════ -->
+<div class="section" id="sudoku-ui">
+  <div class="section-header">
+    <div class="section-badge" style="background:rgba(44,97,168,0.15);color:#7fb2ff">CH6</div>
+    <div class="section-title" style="color:#7fb2ff">Designing User Interface (Sudoku Game App)</div>
+    <div class="section-xp">Interactive Chapter</div>
+  </div>
+
+  <div class="s6-wrap">
+    <div class="s6-tabs">
+      <button class="s6-tab active" id="s6-tab-intro" onclick="s6ShowTab('intro')">Introduction</button>
+      <button class="s6-tab" id="s6-tab-rules" onclick="s6ShowTab('rules')">Sudoku Rules</button>
+      <button class="s6-tab" id="s6-tab-declare" onclick="s6ShowTab('declare')">Design by Declaration</button>
+      <button class="s6-tab" id="s6-tab-open" onclick="s6ShowTab('opening')">Opening Screen</button>
+      <button class="s6-tab" id="s6-tab-about" onclick="s6ShowTab('about-theme')">About + Theme + Menu + Settings</button>
+      <button class="s6-tab" id="s6-tab-debug" onclick="s6ShowTab('debug')">Debugging</button>
+    </div>
+
+    <div class="s6-panel active" id="s6-panel-intro">
+      <div class="s6-grid">
+        <div class="s6-card">
+          <div class="s6-title">CHAPTER CONTEXT</div>
+          <p class="s6-text">This chapter converts Android theory into a complete mini app UI. Instead of isolated methods, you build one connected flow: opening screen, puzzle screen, about dialog, settings, and debugging support.</p>
+          <p class="s6-text">In exam terms, this chapter demonstrates how <strong>layouts, activities, intents, menu, and preferences</strong> work together in a practical design.</p>
+
+          <div class="s6-title" style="margin-top:10px;">REAL-TIME EXAMPLE SCENARIO</div>
+          <p class="s6-text">User launches app -> taps <strong>New Game</strong> -> solves puzzle -> opens <strong>About</strong> -> changes <strong>Theme</strong> in settings -> returns to puzzle with updated UI.</p>
+
+          <div class="s6-title" style="margin-top:10px;">WHAT YOU LEARN IN THIS CHAPTER</div>
+          <ul class="s6-bullets">
+            <li>How to plan one screen with multiple actions and clean alignment.</li>
+            <li>How to keep UI in XML and logic in Java for maintainability.</li>
+            <li>How to add beginner-friendly app polish: About, menu, settings.</li>
+            <li>How to debug button flow with Logcat and breakpoints.</li>
+          </ul>
+
+          <pre class="s6-code">// Flow-level pseudo code
+onCreate() -> setupOpeningScreen()
+newGameButton.setOnClickListener(v -> startGame())
+aboutButton.setOnClickListener(v -> showAbout())
+override onCreateOptionsMenu(...) -> inflate menu
+settingsItem -> open Preference screen</pre>
+        </div>
+
+        <div class="s6-card">
+          <div class="s6-title">CHAPTER FLOW SIMULATOR (RIGHT SIDE MODEL)</div>
+          <div class="s6-actions">
+            <button class="s6-btn" onclick="s6SetFlow('launch')">App Launch</button>
+            <button class="s6-btn" onclick="s6SetFlow('new')">New Game</button>
+            <button class="s6-btn" onclick="s6SetFlow('about')">About</button>
+            <button class="s6-btn" onclick="s6SetFlow('settings')">Settings</button>
+          </div>
+          <div class="s6-log" id="s6-intro-state">State: waiting for flow action...</div>
+          <pre class="s6-code" id="s6-intro-code">Tap a flow button to see exact UI logic used at that phase.</pre>
+          <p class="s6-note" style="margin-top:8px;">This right panel behaves like a live walkthrough of how your Sudoku app moves between screens.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="s6-panel" id="s6-panel-rules">
+      <div class="s6-grid">
+        <div class="s6-card">
+          <div class="s6-title">UNDERSTANDING SUDOKU (DEFINITION + RULES)</div>
+          <p class="s6-text">Sudoku is a 9x9 logic puzzle. Fill numbers 1-9 so every row, every column, and every 3x3 box contains each number exactly once.</p>
+          <ul class="s6-bullets">
+            <li>Grid has 81 cells split into nine 3x3 boxes.</li>
+            <li>Some numbers are pre-filled (givens/clues).</li>
+            <li>Use deduction, scanning, elimination, and cross-hatching.</li>
+            <li>A valid puzzle has one unique solution.</li>
+            <li>Difficulty changes with number/placement of givens.</li>
+          </ul>
+          <button class="s6-btn" onclick="s6ToggleSolution()" id="s6-solution-btn">Show Solution</button>
+          <table class="s6-puzzle" id="s6-puzzle"></table>
+        </div>
+        <div class="s6-card">
+          <div class="s6-title">RULE CHECKER (RIGHT SIDE WORKING MODEL)</div>
+          <p class="s6-text">Enter 9 digits (1-9) for a sample row and validate if Sudoku row rule is satisfied.</p>
+          <div class="s6-rule-input-row">
+            <input class="s6-rule-input" id="s6-row-input" value="176583924" maxlength="9" />
+            <button class="s6-btn" onclick="s6CheckRuleRow()">Validate Row</button>
+          </div>
+          <div class="s6-log" id="s6-rule-result">Result: waiting for validation...</div>
+          <p class="s6-note" style="margin-top:8px;">Example valid row: 176583924. If any number repeats, row becomes invalid.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="s6-panel" id="s6-panel-declare">
+      <div class="s6-grid">
+        <div class="s6-card">
+          <div class="s6-title">PROCEDURAL VS DECLARATIVE</div>
+          <table class="s6-puzzle" style="table-layout:auto">
+            <tr><td class="given">Approach</td><td class="given">Meaning</td><td class="given">Best Use</td></tr>
+            <tr><td>Procedural</td><td>Build UI in Java/Kotlin code</td><td>Dynamic runtime component creation</td></tr>
+            <tr><td>Declarative</td><td>Describe UI in XML</td><td>Readable, maintainable screen layouts</td></tr>
+          </table>
+          <p class="s6-note" style="margin-top:8px;">Google recommendation: prefer XML declaration for Android UI whenever possible.</p>
+        </div>
+        <div class="s6-card">
+          <div class="s6-title">XML EXAMPLE + RENDER PREVIEW</div>
+          <pre class="s6-code" id="s6-declare-code">&lt;LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"&gt;
+
+    &lt;TextView
+        android:id="@+id/main_title"
+        android:text="Android Sudoku" /&gt;
+
+    &lt;Button android:id="@+id/new_game_button" /&gt;
+&lt;/LinearLayout&gt;</pre>
+          <div class="s6-actions" style="margin-top:8px;">
+            <button class="s6-btn" onclick="s6SwitchDeclare('xml')">Show XML Mode</button>
+            <button class="s6-btn" onclick="s6SwitchDeclare('logic')">Show Java Wiring</button>
+          </div>
+          <div class="s6-log" id="s6-declare-out">Mode: XML declaration (structure first, behavior later).</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="s6-panel" id="s6-panel-opening">
+      <div class="s6-grid">
+        <div class="s6-card">
+          <div class="s6-title">OPENING SCREEN: STEP-BY-STEP</div>
+          <div class="s6-step-row" id="s6-step-row"></div>
+          <div class="s6-title" id="s6-step-title">Step details</div>
+          <p class="s6-text" id="s6-step-text">Tap a step to view explanation.</p>
+          <pre class="s6-code" id="s6-step-code">// Code appears here</pre>
+        </div>
+        <div class="mobile-live" style="--live-accent:#2c61a8">
+          <div class="ml-top">OPENING SCREEN SIMULATOR</div>
+          <div class="ml-phone">
+            <div class="ml-appbar">ANDROID SUDOKU</div>
+            <div class="ml-body">
+              <div class="s6-orient-bar">
+                <button class="s6-btn" onclick="s6ToggleOrientation()" id="s6-orient-btn">Switch to Landscape</button>
+                <span class="s6-note" id="s6-orient-note">Portrait mode active</span>
+              </div>
+              <div class="s6-open-mock portrait" id="s6-open-mock">
+                <div class="s6-open-title">Opening Screen Mockup</div>
+                <div class="s6-open-main">
+                  <div class="s6-open-btns">
+                    <button class="s6-open-btn">Continue</button>
+                    <button class="s6-open-btn">New Game</button>
+                    <button class="s6-open-btn">About</button>
+                    <button class="s6-open-btn">Exit</button>
+                  </div>
+                  <div class="s6-open-scroll" id="s6-open-scroll">In landscape, buttons may clip. Add ScrollView or use layout-land to keep everything visible.</div>
+                </div>
+              </div>
+              <div class="s6-actions">
+                <button class="s6-btn" onclick="s6OpenAction('continue')">Continue</button>
+                <button class="s6-btn" onclick="s6OpenAction('new')">New Game</button>
+                <button class="s6-btn" onclick="s6OpenAction('about')">About</button>
+                <button class="s6-btn" onclick="s6OpenAction('exit')">Exit</button>
+              </div>
+              <div class="s6-log" id="s6-open-log">Action log: waiting for click...</div>
+              <p class="s6-note">Briefly: Portrait is simple; Landscape needs ScrollView or alternate XML layout for clean alignment.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="s6-panel" id="s6-panel-about-theme">
+      <div class="s6-grid">
+        <div class="s6-card">
+          <div class="s6-title">ABOUT BOX + THEME + MENU + SETTINGS</div>
+          <ul class="s6-bullets">
+            <li><strong>About Activity:</strong> show Sudoku explanation in ScrollView.</li>
+            <li><strong>Theme:</strong> apply dialog/app theme in manifest/styles.</li>
+            <li><strong>Options Menu:</strong> inflate XML in onCreateOptionsMenu().</li>
+            <li><strong>Settings:</strong> open PreferenceFragmentCompat screen from menu.</li>
+          </ul>
+          <button class="s6-btn" onclick="s6ShowAboutDialog()">Open Mini About Dialog</button>
+          <p class="s6-note" style="margin-top:8px;">Briefly: About button opens a dialog-like screen with Sudoku definition and rules, then user returns with Back/Close.</p>
+          <pre class="s6-code">@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.menu, menu);
+    return true;
+}
+
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+    if (item.getItemId() == R.id.settings) {
+        startActivity(new Intent(this, Prefs.class));
+        return true;
+    }
+    return false;
+}</pre>
+        </div>
+        <div class="s6-card">
+          <div class="s6-title">SETTINGS PREVIEW (RIGHT SIDE WORKING MODEL)</div>
+          <p class="s6-text">Simulate what your settings screen changes in real app behavior.</p>
+          <div class="s6-setting-row">
+            <span>Dark Theme</span>
+            <button class="s6-btn" id="s6-set-theme" onclick="s6ToggleSetting('theme', this)">OFF</button>
+          </div>
+          <div class="s6-setting-row">
+            <span>Sound Effects</span>
+            <button class="s6-btn" id="s6-set-sound" onclick="s6ToggleSetting('sound', this)">ON</button>
+          </div>
+          <div class="s6-setting-row">
+            <span>Auto-Check Errors</span>
+            <button class="s6-btn" id="s6-set-check" onclick="s6ToggleSetting('check', this)">ON</button>
+          </div>
+          <div class="s6-log" id="s6-setting-log">Settings changed: none</div>
+          <p class="s6-note" style="margin-top:8px;"><strong>Layout tip:</strong> If landscape clips controls, use ScrollView or <span style="color:#7fb2ff">res/layout-land/</span>.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="s6-panel" id="s6-panel-debug">
+      <div class="s6-grid">
+        <div class="s6-card">
+          <div class="s6-title">DEBUGGING WITH LOG MESSAGES</div>
+          <div class="s6-actions">
+            <button class="s6-btn" onclick="s6AddLog('error')">Log.e</button>
+            <button class="s6-btn" onclick="s6AddLog('warn')">Log.w</button>
+            <button class="s6-btn" onclick="s6AddLog('info')">Log.i</button>
+            <button class="s6-btn" onclick="s6AddLog('debug')">Log.d</button>
+            <button class="s6-btn" onclick="s6AddLog('verbose')">Log.v</button>
+            <button class="s6-btn" onclick="s6SetLogFilter('all')">Show All</button>
+          </div>
+          <div class="s6-log-list" id="s6-log-list"></div>
+          <p class="s6-note" style="margin-top:8px;">Use TAG to filter logs in Logcat. Example TAG: SudokuApp.</p>
+        </div>
+        <div class="s6-card">
+          <div class="s6-title">DEBUGGER STEP SIMULATOR (RIGHT SIDE MODEL)</div>
+          <p class="s6-text">This simulates pause -> inspect -> step flow during Sudoku input validation.</p>
+          <div class="s6-actions">
+            <button class="s6-btn" onclick="s6RunDebugStep('pause')">Pause at BP</button>
+            <button class="s6-btn" onclick="s6RunDebugStep('inspect')">Inspect Vars</button>
+            <button class="s6-btn" onclick="s6RunDebugStep('step')">Step Over</button>
+            <button class="s6-btn" onclick="s6RunDebugStep('resume')">Resume</button>
+          </div>
+          <div class="s6-log" id="s6-debug-sim-log">Debugger state: idle</div>
+          <pre class="s6-code" id="s6-debug-sim-code">int row = 0; int col = 0;
+if (isMoveValid(row, col, 7)) {
+    board[row][col] = 7;
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="s6-dialog-overlay" id="s6-about-overlay">
+  <div class="s6-about-dialog" role="dialog" aria-modal="true" aria-label="About Android Sudoku">
+    <div class="s6-about-head">
+      <span>About Android Sudoku</span>
+      <button class="s6-btn" onclick="s6CloseAboutDialog()">Close</button>
+    </div>
+    <div class="s6-about-body">
+      Sudoku is a logic-based number placement puzzle. Starting with a partially completed 9x9 grid,
+      the objective is to fill the grid so that each row, each column, and each 3x3 box contains digits 1 to 9 exactly once.
+      <br><br>
+      This mini popup simulates the textbook About dialog output: scrollable text, focused window, and return to main screen.
+    </div>
+    <div class="s6-about-actions">
+      <button class="s6-btn" onclick="s6CloseAboutDialog()">Back to Main Screen</button>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<footer class="site-footer">Copyright 2026 Ajith Rajendiran</footer>
+<footer class="site-footer">Copyright 2026 Ajith Rajendiran | Christ Academy Institute for Advanced Studies</footer>
 
 <script>
 // ── XP SYSTEM ──────────────────────────────────────────
@@ -2367,6 +3099,7 @@ function resetProgress() {
 // ── FEATURE CARDS ──────────────────────────────────────
 function buildCards(containerId, features, color) {
   const c = document.getElementById(containerId);
+    if (!c) return; // Skip if container doesn't exist
   features.forEach((f, i) => {
     const div = document.createElement('div');
     div.className = 'feat-card';
@@ -3242,6 +3975,18 @@ File report = new File(dir, "attendance.pdf");
 ContentValues cv = new ContentValues();
 cv.put("note", "Buy milk");
 db.insert("notes", null, cv);`
+  },
+  'create-db': {
+    title: 'Creating and Using Databases (SQLite)',
+    desc: 'This is the full flow: create helper class -> create table -> insert -> query -> update/delete -> upgrade schema safely.',
+    example: 'Example use-case: Notes app where each note is saved as one row in local SQLite database.',
+    code: `DBHelper helper = new DBHelper(this);
+SQLiteDatabase db = helper.getWritableDatabase();
+
+ContentValues values = new ContentValues();
+values.put("title", "Exam Reminder");
+values.put("body", "Revise Android Persistence");
+db.insert("notes", null, values);`
   }
 };
 
@@ -3476,6 +4221,84 @@ cursor.close();`
       note: 'Use getColumnIndexOrThrow("name") for safer indexing in large tables.',
       code: `String name = cursor.getString(1);`
     }
+  ],
+  'create-db': [
+    {
+      title: '1) Create DB Helper Class',
+      what: 'Create a class extending SQLiteOpenHelper. This class is the single place to manage DB creation and upgrades.',
+      example: 'Example: DBHelper for notes database.',
+      note: 'Keep DB_NAME and DB_VERSION constants here.',
+      code: `class DBHelper extends SQLiteOpenHelper {
+    private static final String DB_NAME = "Notes.db";
+    private static final int DB_VERSION = 1;
+
+    DBHelper(Context c) {
+        super(c, DB_NAME, null, DB_VERSION);
+    }
+}`
+    },
+    {
+      title: '2) Create Tables in onCreate()',
+      what: 'Define table schema using CREATE TABLE SQL inside onCreate(). Runs once on first DB creation.',
+      example: 'Example: notes table with id, title, body, createdAt.',
+      note: 'Use INTEGER PRIMARY KEY AUTOINCREMENT for row id.',
+      code: `@Override
+public void onCreate(SQLiteDatabase db) {
+    db.execSQL("CREATE TABLE notes(" +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "title TEXT," +
+            "body TEXT," +
+            "createdAt INTEGER)");
+}`
+    },
+    {
+      title: '3) Open DB and Insert Data',
+      what: 'Use getWritableDatabase() and ContentValues to add rows.',
+      example: 'Example: save one note entered from UI form.',
+      note: 'ContentValues avoids raw SQL string concatenation.',
+      code: `SQLiteDatabase db = helper.getWritableDatabase();
+ContentValues cv = new ContentValues();
+cv.put("title", "Lab Record");
+cv.put("body", "Finish persistence experiment");
+cv.put("createdAt", System.currentTimeMillis());
+long id = db.insert("notes", null, cv);`
+    },
+    {
+      title: '4) Read Data with Cursor',
+      what: 'Run SELECT query and iterate rows with Cursor.moveToNext().',
+      example: 'Example: load all notes and show in RecyclerView.',
+      note: 'Always close cursor after reading.',
+      code: `Cursor c = db.rawQuery("SELECT id, title, body FROM notes ORDER BY id DESC", null);
+while (c.moveToNext()) {
+    int id = c.getInt(0);
+    String title = c.getString(1);
+    String body = c.getString(2);
+}
+c.close();`
+    },
+    {
+      title: '5) Update / Delete Rows',
+      what: 'Use update() and delete() methods with WHERE clause.',
+      example: 'Example: edit note title or remove one note by id.',
+      note: 'Never update/delete without condition unless intentional.',
+      code: `ContentValues cv = new ContentValues();
+cv.put("title", "Updated Title");
+db.update("notes", cv, "id=?", new String[]{"3"});
+
+db.delete("notes", "id=?", new String[]{"3"});`
+    },
+    {
+      title: '6) Handle DB Version Upgrades',
+      what: 'When schema changes, increase DB_VERSION and migrate in onUpgrade().',
+      example: 'Example: add new column `isPinned` in version 2.',
+      note: 'Prefer ALTER TABLE migrations to keep user data safe.',
+      code: `@Override
+public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    if (oldVersion < 2) {
+        db.execSQL("ALTER TABLE notes ADD COLUMN isPinned INTEGER DEFAULT 0");
+    }
+}`
+    }
   ]
 };
 
@@ -3509,6 +4332,8 @@ function dpRenderPoints(topic) {
     head.textContent = 'SHAREDPREFERENCES — 8 KEY FEATURES (tap each point)';
   } else if(topic === 'internal') {
     head.textContent = 'INTERNAL STORAGE — 8 KEY FEATURES (tap each point)';
+  } else if(topic === 'create-db') {
+    head.textContent = 'CREATING AND USING DATABASES — STEP BY STEP (tap each point)';
   } else {
     head.textContent = 'SQLITE DATABASE — 8 KEY FEATURES (tap each point)';
   }
@@ -3640,6 +4465,296 @@ function initPersistenceLab() {
     const log = document.getElementById('dp-log');
     if(log) log.textContent = `Last saved row: #${dpRows[0].id} "${dpRows[0].note}" (${dpRows[0].createdAt})`;
   }
+}
+
+const s6PuzzleData = [
+  [1,0,0,5,8,3,0,2,0],
+  [8,5,0,2,0,4,3,0,1],
+  [3,4,2,0,1,6,5,8,7],
+  [7,0,5,1,4,8,6,3,2],
+  [4,2,3,6,9,7,1,5,8],
+  [6,8,1,3,5,2,7,4,9],
+  [9,1,4,8,3,5,2,7,6],
+  [2,3,8,7,6,1,4,9,5],
+  [5,6,7,4,2,9,8,1,3],
+];
+let s6ShowSolved = false;
+let s6Orientation = 'portrait';
+
+const s6OpenSteps = [
+  {
+    title: 'Step 1: Project Setup',
+    text: 'Create a new Android Studio project (Empty View Activity), set language Java, and minimum SDK API 21.',
+    code: `Project name: Sudoku\nLanguage: Java\nMinimum SDK: API 21 (Android 5.0)`
+  },
+  {
+    title: 'Step 2: Define Layout in XML',
+    text: 'Create activity_main.xml with TextView title and 4 buttons: Continue, New Game, About, Exit.',
+    code: `<LinearLayout android:orientation=\"vertical\">\n  <TextView android:id=\"@+id/main_title\" />\n  <Button android:id=\"@+id/continue_button\" />\n  <Button android:id=\"@+id/new_game_button\" />\n  <Button android:id=\"@+id/about_button\" />\n  <Button android:id=\"@+id/exit_button\" />\n</LinearLayout>`
+  },
+  {
+    title: 'Step 3: Add Strings + Colors',
+    text: 'Move hardcoded text/colors into resources for readability and easy maintenance.',
+    code: `<string name=\"main_title\">Android Sudoku</string>\n<color name=\"background\">#FFFFFF</color>`
+  },
+  {
+    title: 'Step 4: Wire Buttons in MainActivity',
+    text: 'Use findViewById and setOnClickListener to handle button actions.',
+    code: `Button aboutButton = findViewById(R.id.about_button);\naboutButton.setOnClickListener(v -> {\n  startActivity(new Intent(this, About.class));\n});`
+  },
+  {
+    title: 'Step 5: Handle Orientation',
+    text: 'If landscape clips content, use ScrollView or create alternate res/layout-land/activity_main.xml.',
+    code: `<ScrollView>\n  <LinearLayout android:orientation=\"vertical\">...</LinearLayout>\n</ScrollView>`
+  },
+  {
+    title: 'Step 6: Polish with About, Menu, Settings',
+    text: 'Add About activity, options menu, and preferences screen for better usability.',
+    code: `inflater.inflate(R.menu.menu, menu);\nstartActivity(new Intent(this, Prefs.class));`
+  }
+];
+
+let s6Logs = [];
+let s6LogFilter = 'all';
+const s6Settings = { theme:false, sound:true, check:true };
+
+function s6ShowTab(tab) {
+  document.querySelectorAll('.s6-tab').forEach((b)=>b.classList.remove('active'));
+  document.querySelectorAll('.s6-panel').forEach((p)=>p.classList.remove('active'));
+  const tabEl = document.getElementById(`s6-tab-${tab}`);
+  const panelEl = document.getElementById(`s6-panel-${tab}`);
+  if(tabEl) tabEl.classList.add('active');
+  if(panelEl) panelEl.classList.add('active');
+}
+
+function s6RenderPuzzle() {
+  const host = document.getElementById('s6-puzzle');
+  if(!host) return;
+  const solved = [
+    [1,7,6,5,8,3,9,2,4],
+    [8,5,9,2,7,4,3,6,1],
+    [3,4,2,9,1,6,5,8,7],
+    [7,9,5,1,4,8,6,3,2],
+    [4,2,3,6,9,7,1,5,8],
+    [6,8,1,3,5,2,7,4,9],
+    [9,1,4,8,3,5,2,7,6],
+    [2,3,8,7,6,1,4,9,5],
+    [5,6,7,4,2,9,8,1,3],
+  ];
+  const grid = s6ShowSolved ? solved : s6PuzzleData;
+  host.innerHTML = grid.map((row, r)=>`<tr>${row.map((v,c)=>{
+    const given = s6PuzzleData[r][c] !== 0;
+    return `<td class="${given ? 'given' : ''}">${v === 0 ? '' : v}</td>`;
+  }).join('')}</tr>`).join('');
+  const btn = document.getElementById('s6-solution-btn');
+  if(btn) btn.textContent = s6ShowSolved ? 'Show Puzzle' : 'Show Solution';
+}
+
+function s6ToggleSolution() {
+  s6ShowSolved = !s6ShowSolved;
+  s6RenderPuzzle();
+}
+
+function s6BuildSteps() {
+  const row = document.getElementById('s6-step-row');
+  if(!row) return;
+  row.innerHTML = s6OpenSteps.map((_, i)=>`<button class="s6-step-btn" id="s6-step-btn-${i}" onclick="s6SetStep(${i})">${i + 1}</button>`).join('');
+  s6SetStep(0);
+}
+
+function s6SetStep(i) {
+  const step = s6OpenSteps[i];
+  if(!step) return;
+  document.querySelectorAll('.s6-step-btn').forEach((b)=>b.classList.remove('active'));
+  const active = document.getElementById(`s6-step-btn-${i}`);
+  if(active) active.classList.add('active');
+  const title = document.getElementById('s6-step-title');
+  const text = document.getElementById('s6-step-text');
+  const code = document.getElementById('s6-step-code');
+  if(title) title.textContent = step.title;
+  if(text) text.textContent = step.text;
+  if(code) code.textContent = step.code;
+}
+
+function s6SetFlow(flow) {
+  const state = document.getElementById('s6-intro-state');
+  const code = document.getElementById('s6-intro-code');
+  if(!state || !code) return;
+  const map = {
+    launch: {
+      text: 'State: App launched -> MainActivity created -> opening UI rendered.',
+      code: 'setContentView(R.layout.main);\ninitButtons();\nLog.i(TAG, "Opening screen ready");'
+    },
+    new: {
+      text: 'State: New Game tapped -> Sudoku board initialized and timer starts.',
+      code: 'newGameButton.setOnClickListener(v -> {\n  createPuzzle();\n  openGameScreen();\n});'
+    },
+    about: {
+      text: 'State: About tapped -> About dialog/activity opened with rules text.',
+      code: 'aboutButton.setOnClickListener(v -> showAboutDialog());'
+    },
+    settings: {
+      text: 'State: Settings selected -> Preference screen opened and values persisted.',
+      code: 'startActivity(new Intent(this, Prefs.class));\n// SharedPreferences stores values'
+    }
+  };
+  const chosen = map[flow] || map.launch;
+  state.textContent = chosen.text;
+  code.textContent = chosen.code;
+}
+
+function s6CheckRuleRow() {
+  const input = document.getElementById('s6-row-input');
+  const result = document.getElementById('s6-rule-result');
+  if(!input || !result) return;
+  const raw = input.value.trim();
+  if(!/^[1-9]{9}$/.test(raw)) {
+    result.textContent = 'Result: invalid input. Enter exactly 9 digits from 1 to 9.';
+    return;
+  }
+  const set = new Set(raw.split(''));
+  if(set.size === 9) {
+    result.textContent = 'Result: VALID row. No repeated number found.';
+  } else {
+    result.textContent = 'Result: INVALID row. Duplicate number detected.';
+  }
+}
+
+function s6SwitchDeclare(mode) {
+  const out = document.getElementById('s6-declare-out');
+  const code = document.getElementById('s6-declare-code');
+  if(!out || !code) return;
+  if(mode === 'logic') {
+    out.textContent = 'Mode: Java wiring (behavior). Use this after XML structure is ready.';
+    code.textContent = 'Button newBtn = findViewById(R.id.new_game_button);\nnewBtn.setOnClickListener(v -> startGame());\nTextView t = findViewById(R.id.main_title);\nt.setText("Android Sudoku");';
+  } else {
+    out.textContent = 'Mode: XML declaration (structure first, behavior later).';
+    code.textContent = '<LinearLayout\n    android:orientation="vertical"\n    android:layout_width="match_parent"\n    android:layout_height="match_parent">\n\n    <TextView\n        android:id="@+id/main_title"\n        android:text="Android Sudoku" />\n\n    <Button android:id="@+id/new_game_button" />\n</LinearLayout>';
+  }
+}
+
+function s6ToggleSetting(name, btn) {
+  if(!(name in s6Settings)) return;
+  s6Settings[name] = !s6Settings[name];
+  if(btn) btn.textContent = s6Settings[name] ? 'ON' : 'OFF';
+  const log = document.getElementById('s6-setting-log');
+  if(!log) return;
+  log.textContent = `Settings changed: theme=${s6Settings.theme ? 'ON' : 'OFF'}, sound=${s6Settings.sound ? 'ON' : 'OFF'}, autoCheck=${s6Settings.check ? 'ON' : 'OFF'}`;
+}
+
+function s6RunDebugStep(step) {
+  const log = document.getElementById('s6-debug-sim-log');
+  const code = document.getElementById('s6-debug-sim-code');
+  if(!log || !code) return;
+  const map = {
+    pause: {
+      log: 'Debugger state: paused at breakpoint in validateMove().',
+      code: 'if (isMoveValid(row, col, value)) {  // breakpoint here\n    board[row][col] = value;\n}'
+    },
+    inspect: {
+      log: 'Debugger state: inspected vars -> row=0, col=0, value=7, valid=true.',
+      code: 'Variables:\nrow = 0\ncol = 0\nvalue = 7\nvalid = true'
+    },
+    step: {
+      log: 'Debugger state: step over executed. Next line assigns value to board.',
+      code: 'board[row][col] = value;\nupdateCellUI(row, col);'
+    },
+    resume: {
+      log: 'Debugger state: resumed. App continues normal execution.',
+      code: 'continue; // app running\nLog.d(TAG, "Move accepted");'
+    }
+  };
+  const chosen = map[step] || map.pause;
+  log.textContent = chosen.log;
+  code.textContent = chosen.code;
+}
+
+function s6OpenAction(action) {
+  const log = document.getElementById('s6-open-log');
+  if(!log) return;
+  const map = {
+    continue: 'Continue clicked -> resume previous puzzle if available.',
+    new: 'New Game clicked -> start fresh Sudoku board.',
+    about: 'About clicked -> open About activity with game instructions.',
+    exit: 'Exit clicked -> finish activity/app screen.'
+  };
+  log.textContent = map[action] || 'Unknown action';
+  if(action === 'about') s6ShowAboutDialog();
+}
+
+function s6RenderOrientation() {
+  const mock = document.getElementById('s6-open-mock');
+  const btn = document.getElementById('s6-orient-btn');
+  const note = document.getElementById('s6-orient-note');
+  const hint = document.getElementById('s6-open-scroll');
+  if(!mock || !btn || !note || !hint) return;
+  mock.classList.remove('portrait', 'landscape');
+  mock.classList.add(s6Orientation);
+  if(s6Orientation === 'portrait') {
+    btn.textContent = 'Switch to Landscape';
+    note.textContent = 'Portrait mode active';
+    hint.textContent = 'Portrait: all 4 buttons fit in a clean vertical stack.';
+  } else {
+    btn.textContent = 'Switch to Portrait';
+    note.textContent = 'Landscape mode active';
+    hint.textContent = 'Landscape: if buttons clip, use ScrollView or create res/layout-land/activity_main.xml.';
+  }
+}
+
+function s6ToggleOrientation() {
+  s6Orientation = s6Orientation === 'portrait' ? 'landscape' : 'portrait';
+  s6RenderOrientation();
+}
+
+function s6ShowAboutDialog() {
+  const overlay = document.getElementById('s6-about-overlay');
+  if(overlay) overlay.classList.add('open');
+}
+
+function s6CloseAboutDialog() {
+  const overlay = document.getElementById('s6-about-overlay');
+  if(overlay) overlay.classList.remove('open');
+}
+
+function s6AddLog(level) {
+  const samples = {
+    error: 'Error occurred while saving game state',
+    warn: 'Potential issue: puzzle has duplicate number',
+    info: 'MainActivity created successfully',
+    debug: 'New Game button clicked',
+    verbose: 'Entering method validateGrid()'
+  };
+  s6Logs.unshift({ level, text: samples[level] || 'Log message', time: new Date().toLocaleTimeString() });
+  if(s6Logs.length > 30) s6Logs = s6Logs.slice(0, 30);
+  s6RenderLogs();
+}
+
+function s6SetLogFilter(filter) {
+  s6LogFilter = filter;
+  s6RenderLogs();
+}
+
+function s6RenderLogs() {
+  const host = document.getElementById('s6-log-list');
+  if(!host) return;
+  const rows = s6Logs.filter((l)=>s6LogFilter === 'all' || l.level === s6LogFilter);
+  if(!rows.length) {
+    host.innerHTML = '<div class="s6-log-item info">No logs yet. Tap a log button.</div>';
+    return;
+  }
+  host.innerHTML = rows.map((l)=>`<div class="s6-log-item ${l.level}">[${l.time}] ${l.level.toUpperCase()}: ${l.text}</div>`).join('');
+}
+
+function initSudokuChapter() {
+  s6RenderPuzzle();
+  s6BuildSteps();
+  s6RenderLogs();
+  s6RenderOrientation();
+  s6SetFlow('launch');
+  s6SwitchDeclare('xml');
+  s6CheckRuleRow();
+  s6RunDebugStep('pause');
+  s6ShowTab('intro');
 }
 
 function updateFeaturePreview(containerId, featureIndex, stateLabel) {
@@ -3828,6 +4943,7 @@ const lcSteps = [
 let lcCurrent = 0;
 function buildLifecycle() {
   const dotsEl = document.getElementById('lc-dots');
+    if (!dotsEl) return; // Skip if lifecycle dots container doesn't exist
   lcSteps.forEach((s,i) => {
     const d = document.createElement('div');
     d.className = 's-dot' + (i===0?' active':'');
@@ -3839,6 +4955,7 @@ function buildLifecycle() {
 }
 function lcRender() {
   const s = lcSteps[lcCurrent];
+    if (!document.getElementById('lc-num')) return; // Skip if lifecycle elements don't exist
   document.getElementById('lc-num').textContent = `METHOD ${lcCurrent+1} OF 10`;
   document.getElementById('lc-method').textContent = s.method;
   document.getElementById('lc-what').textContent = s.what;
@@ -4258,6 +5375,7 @@ const scaleTypes = [
 
 function buildScaleGrid() {
   const grid = document.getElementById('scale-grid');
+    if (!grid) return; // Skip if scale grid doesn't exist
   scaleTypes.forEach((st,i) => {
     const card = document.createElement('div');
     card.className = 'sc-card'+(i===0?' active':'');
@@ -4332,6 +5450,7 @@ function buildQuiz() {
   renderQuiz();
 }
 function renderQuiz() {
+    if (!document.getElementById('quiz-q')) return; // Skip if quiz elements don't exist
   if(quizIdx >= quizQuestions.length) {
     document.getElementById('quiz-q').textContent = 'Quiz complete!';
     document.getElementById('quiz-opts').innerHTML = '';
@@ -4387,7 +5506,14 @@ function setupSectionObserver() {
       }
     });
   }, { threshold: 0.2 });
-  document.querySelectorAll('.section').forEach((s)=>io.observe(s));
+  const sections = document.querySelectorAll('.section');
+  sections.forEach((s, idx) => {
+    io.observe(s);
+    // Immediately reveal first few sections to ensure they're visible on page load
+    if(idx < 3) {
+      s.classList.add('is-reveal');
+    }
+  });
 }
 
 function restoreUnlockedCardsUI() {
@@ -4441,6 +5567,7 @@ resetGlideSim();
 buildWebSettingsLab();
 buildWebStepsLab();
 initPersistenceLab();
+initSudokuChapter();
 // Initialize WebView browser with first page
 webviewNavigate('google');
 if(glideSimDone) {
@@ -4458,6 +5585,291 @@ setupSectionObserver();
 setupLifecycleSwipe();
 checkSectionProgress();
 initFeaturePreviews();
+
+// Initialize animated demonstrations
+updateListAnimDisplay();
+
+// ══════════════════════════════════════════════════
+// ENHANCED LIST ANIMATIONS
+// ══════════════════════════════════════════════════
+const listAnimItems = [
+  { icon: '📨', label: 'Inbox', count: 45 },
+  { icon: '⭐', label: 'Starred', count: 12 },
+  { icon: '🎯', label: 'Promotions', count: 8 }
+];
+let listAnimState = [...listAnimItems];
+
+function updateListAnimDisplay() {
+  const container = document.getElementById('list-anim-demo');
+  const stateInfo = document.getElementById('list-state-info');
+  
+  if (!container) return;
+  
+  container.innerHTML = '';
+  listAnimState.forEach((item, idx) => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <div class="list-icon">${item.icon}</div>
+      <div class="list-content">
+        <div class="list-label">${item.label}</div>
+        <div class="list-desc">${item.count} items</div>
+      </div>
+    `;
+    li.style.animation = `fadeInUp .3s ease-out ${idx * 0.1}s backwards`;
+    li.onclick = () => {
+      li.classList.toggle('active');
+      stateInfo.textContent = li.classList.contains('active')
+        ? `✓ Selected: ${item.label} (${item.count} items)`
+        : 'Click items to select';
+    };
+    container.appendChild(li);
+  });
+  
+  stateInfo.textContent = `📊 Total Items: ${listAnimState.length} labels, ${listAnimState.reduce((s, i) => s + i.count, 0)} messages`;
+}
+
+function listAnimAddItem() {
+  const newItems = [
+    { icon: '📌', label: 'Drafts', count: 3 },
+    { icon: '📤', label: 'Sent', count: 89 },
+    { icon: '🗑️', label: 'Trash', count: 2 },
+    { icon: '⚙️', label: 'Settings', count: 0 }
+  ];
+  const available = newItems.filter(item => !listAnimState.find(s => s.label === item.label));
+  if (available.length > 0) {
+    listAnimState.push(available[0]);
+    updateListAnimDisplay();
+  }
+}
+
+function listAnimRemoveItem() {
+  if (listAnimState.length > 1) {
+    listAnimState.pop();
+    updateListAnimDisplay();
+  }
+}
+
+function listAnimClear() {
+  listAnimState = [...listAnimItems];
+  updateListAnimDisplay();
+}
+
+// Animation keyframes for list items
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+`;
+document.head.appendChild(style);
+
+// ══════════════════════════════════════════════════
+// DIALOG ANIMATIONS
+// ══════════════════════════════════════════════════
+function dialogAnimShow(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  
+  const demo = container.querySelector('.dialog-demo');
+  if (!demo) return;
+  
+  // Clear previous dialog
+  const existing = demo.querySelector('.dialog-box');
+  if (existing) existing.remove();
+  
+  // Create new dialog with animation
+  const dialog = document.createElement('div');
+  dialog.className = 'dialog-box';
+  dialog.innerHTML = `
+    <div class="dialog-header">Confirm Action</div>
+    <div class="dialog-body">
+      Are you sure you want to delete this item?<br><small>This action cannot be undone.</small>
+    </div>
+    <div class="dialog-actions">
+      <button class="dialog-btn" onclick="this.closest('.dialog-box').style.animation = 'dialog-exit .4s ease-in forwards'; setTimeout(() => this.closest('.dialog-box').remove(), 400)">Cancel</button>
+      <button class="dialog-btn primary" onclick="this.closest('.dialog-box').style.animation = 'dialog-exit .4s ease-in forwards'; setTimeout(() => this.closest('.dialog-box').remove(), 400)">Delete</button>
+    </div>
+  `;
+  demo.appendChild(dialog);
+}
+
+// ══════════════════════════════════════════════════
+// PREFERENCE TOGGLE ANIMATIONS
+// ══════════════════════════════════════════════════
+function togglePref(element) {
+  const toggle = element.querySelector('.pref-toggle');
+  const label = element.querySelector('.pref-label').textContent;
+  if (toggle) {
+    toggle.classList.toggle('active');
+    const state = toggle.classList.contains('active') ? 'ON' : 'OFF';
+    console.log(`${label}: ${state}`);
+  }
+}
+
+// ══════════════════════════════════════════════════
+// DIALOG DEMO
+// ══════════════════════════════════════════════════
+function showDialogDemo() {
+  const container = document.getElementById('dialog-demo-container');
+  const stateInfo = document.getElementById('dialog-state-info');
+  
+  // Clear previous dialog
+  const existing = container.querySelector('.dialog-box');
+  if (existing) {
+    existing.style.animation = 'dialog-exit .4s ease-in forwards';
+    setTimeout(() => existing.remove(), 400);
+    return;
+  }
+  
+  // Create dialog with animation
+  const dialog = document.createElement('div');
+  dialog.className = 'dialog-box';
+  dialog.innerHTML = `
+    <div class="dialog-header">Delete Item?</div>
+    <div class="dialog-body">
+      Are you sure you want to delete this message?<br>
+      <small style="color:var(--muted);">This action cannot be undone.</small>
+    </div>
+    <div class="dialog-actions">
+      <button class="dialog-btn" onclick="closeDialogDemo(this, 'canceled')">Cancel</button>
+      <button class="dialog-btn primary" onclick="closeDialogDemo(this, 'deleted')">Delete</button>
+    </div>
+  `;
+  
+  container.appendChild(dialog);
+  stateInfo.textContent = '💬 Dialog opened - waiting for user action...';
+}
+
+function closeDialogDemo(btn, action) {
+  const container = document.getElementById('dialog-demo-container');
+  const dialog = btn.closest('.dialog-box');
+  const stateInfo = document.getElementById('dialog-state-info');
+  
+  dialog.style.animation = 'dialog-exit .4s ease-in forwards';
+  setTimeout(() => {
+    dialog.remove();
+    const messages = {
+      'deleted': '✓ User clicked DELETE - item removed',
+      'canceled': '✗ User clicked CANCEL - dialog closed'
+    };
+    stateInfo.textContent = `💬  ${messages[action] || 'Dialog closed'}`;
+  }, 400);
+}
+
+// ══════════════════════════════════════════════════
+// PREFERENCE DEMO
+// ══════════════════════════════════════════════════
+const prefState = {
+  'notifications': true,
+  'darkTheme': false,
+  'autoBackup': true,
+  'analytics': false
+};
+
+function togglePrefDemo(element, key) {
+  const toggle = element.querySelector('.pref-toggle');
+  toggle.classList.toggle('active');
+  prefState[key] = toggle.classList.contains('active');
+  updatePrefStateDisplay();
+}
+
+function updatePrefStateDisplay() {
+  const stateInfo = document.getElementById('pref-state-info');
+  const states = [];
+  for (let [key, value] of Object.entries(prefState)) {
+    const display = key.replace(/([A-Z])/g, ' $1').toLowerCase();
+    states.push(`${display}: ${value ? 'ON' : 'OFF'}`);
+  }
+  stateInfo.textContent = states.join(' | ');
+}
+
+// ══════════════════════════════════════════════════
+// LIFECYCLE ANIMATIONS
+// ══════════════════════════════════════════════════
+const lifecycleStates = [
+  'onCreate()',
+  'onCreateView()',
+  'onViewCreated()',
+  'onStart()',
+  'onResume()',
+  'onPause()',
+  'onStop()',
+  'onDestroyView()',
+  'onDestroy()'
+];
+
+let currentLifecycleIndex = -1;
+
+function cycleLifecycle() {
+  currentLifecycleIndex = -1;
+  const flow = document.getElementById('lifecycle-flow');
+  const states = flow.querySelectorAll('.lc-state');
+  states.forEach(s => s.classList.remove('active'));
+  
+  const stateInfo = document.getElementById('lifecycle-state-info');
+  stateInfo.textContent = 'Starting lifecycle animation...';
+  
+  animateNextState();
+}
+
+function animateNextState() {
+  if (currentLifecycleIndex < lifecycleStates.length - 1) {
+    currentLifecycleIndex++;
+    const flow = document.getElementById('lifecycle-flow');
+    const states = flow.querySelectorAll('.lc-state');
+    
+    if (states[currentLifecycleIndex]) {
+      states[currentLifecycleIndex].classList.add('active');
+      const stateInfo = document.getElementById('lifecycle-state-info');
+      const method = lifecycleStates[currentLifecycleIndex];
+      
+      const descriptions = {
+        'onCreate()': '📦 Create fragment, restore saved instance state',
+        'onCreateView()': '🎨 Inflate layout XML, return view',
+        'onViewCreated()': '⚙️ Initialize UI components, set listeners',
+        'onStart()': '👁️ Fragment becoming visible',
+        'onResume()': '▶️ Fragment interactive, resuming foreground',
+        'onPause()': '⏸️ Fragment losing focus, pause operations',
+        'onStop()': '⏹️ Fragment hidden from view',
+        'onDestroyView()': '🗑️ Clean up view references',
+        'onDestroy()': '💀 Fragment being destroyed'
+      };
+      
+      stateInfo.textContent = `${method} - ${descriptions[method] || ''}`;
+      setTimeout(animateNextState, 600);
+    }
+  } else {
+    const stateInfo = document.getElementById('lifecycle-state-info');
+    stateInfo.textContent = '✓ Lifecycle animation complete!';
+  }
+}
+
+function highlightState(element, index) {
+  const flow = document.getElementById('lifecycle-flow');
+  const states = flow.querySelectorAll('.lc-state');
+  
+  states.forEach((s, i) => {
+    s.classList.remove('active');
+    if (i === index) {
+      s.classList.add('active');
+      const stateInfo = document.getElementById('lifecycle-state-info');
+      const method = lifecycleStates[i];
+      const descriptions = {
+        'onCreate()': '📦 Create fragment, restore saved instance state',
+        'onCreateView()': '🎨 Inflate layout XML, return view',
+        'onViewCreated()': '⚙️ Initialize UI components, set listeners',
+        'onStart()': '👁️ Fragment becoming visible',
+        'onResume()': '▶️ Fragment interactive, resuming foreground',
+        'onPause()': '⏸️ Fragment losing focus, pause operations',
+        'onStop()': '⏹️ Fragment hidden from view',
+        'onDestroyView()': '🗑️ Clean up view references',
+        'onDestroy()': '💀 Fragment being destroyed'
+      };
+      stateInfo.textContent = `${method} - ${descriptions[method] || ''}`;
+    }
+  });
+}
 </script>
 </body>
 </html>
