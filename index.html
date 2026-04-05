@@ -1,4 +1,3 @@
-  if (!container) return; // Skip if container doesn't exist
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -114,179 +113,214 @@ body.light-mode .level-badge {
 }
 .start-btn:hover { transform:translateY(-2px); box-shadow: 0 0 36px rgba(255,77,109,0.6); }
 
-/* ── PROGRESS MAP ── */
-.progress-map { padding: 0 24px 24px; position:relative; z-index:1; }
-.map-title { font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.15em; color:var(--muted); margin-bottom:14px; text-align:center; }
-.map-row { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
-.map-node {
-  display:flex; flex-direction:column; align-items:center; gap:4px;
-  padding:10px 14px; border-radius:10px; border:1px solid var(--border);
-  background:var(--surface); cursor:pointer; transition:all .2s;
-  min-width:80px; text-align:center;
-  font-size:11px; color:var(--muted); font-family:'Space Mono',monospace;
+/* ── GLOBAL PAGE LAYOUT ── */
+.hero,
+.progress-map,
+.section,
+.site-footer {
+  width:min(1220px, 100%);
+  margin-left:auto;
+  margin-right:auto;
 }
-.map-node:hover { border-color:rgba(255,255,255,0.2); transform:translateY(-2px); }
-.map-node.active { border-color:currentColor; }
-.map-node.done .node-icon::after { content:'✓'; position:absolute; right:-4px; top:-4px; background:var(--gold); color:#000; font-size:8px; font-weight:700; width:14px;height:14px; border-radius:50%; display:flex;align-items:center;justify-content:center; }
-.map-node.current { box-shadow:0 0 0 1px currentColor inset, 0 0 18px color-mix(in srgb, currentColor 28%, transparent); }
-.node-icon { width:36px;height:36px; border-radius:8px; display:flex;align-items:center;justify-content:center; font-size:18px; position:relative; margin-bottom:2px; }
-.node-label { font-size:10px; }
 
-/* ── SECTION PANELS ── */
-.section { padding: 24px; position:relative; z-index:1; max-width:960px; margin:0 auto; }
-.section.is-reveal { opacity:1; transform:translateY(0); transition:opacity .5s ease, transform .5s ease; }
+.progress-map {
+  padding:0 24px 8px;
+  position:relative;
+  z-index:1;
+}
 
-@media (prefers-reduced-motion: no-preference) {
-  .section { opacity:0; transform:translateY(24px); }
+.map-title {
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+  letter-spacing:.12em;
+  color:var(--muted);
+  margin-bottom:10px;
+}
+
+.map-row {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(96px, 1fr));
+  gap:10px;
+}
+
+.map-node {
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:var(--surface);
+  min-height:92px;
+  padding:10px 8px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  cursor:pointer;
+  transition:all .2s;
+}
+
+.map-node:hover {
+  transform:translateY(-2px);
+  border-color:rgba(255,255,255,0.22);
+}
+
+.map-node.active {
+  border-color:currentColor;
+  box-shadow:0 0 0 1px color-mix(in srgb, currentColor 35%, transparent) inset;
+}
+
+.node-icon {
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:7px;
+}
+
+.node-label {
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  line-height:1.3;
+}
+
+.section {
+  position:relative;
+  z-index:1;
+  padding:20px 24px;
 }
 
 .section-header {
-  display:flex; align-items:center; gap:12px; margin-bottom:20px;
-  padding-bottom:12px; border-bottom:1px solid var(--border);
-}
-.section-badge { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:.1em; padding:4px 10px; border-radius:4px; font-weight:700; }
-.section-title { font-size:22px; font-weight:800; }
-.section-xp { margin-left:auto; font-family:'Space Mono',monospace; font-size:11px; color:var(--gold); }
-
-/* ── FEATURE CARDS ── */
-.cards-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:12px; margin-bottom:24px; }
-
-.feature-stage {
   display:grid;
-  grid-template-columns:minmax(0,1fr) 300px;
-  gap:14px;
-  align-items:start;
-  margin-bottom:24px;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:10px;
+  margin-bottom:14px;
 }
-.feature-stage .cards-grid { margin-bottom:0; }
+
+.section-badge {
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:4px 10px;
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+  font-weight:700;
+}
+
+.section-title {
+  font-size:clamp(20px, 2.2vw, 30px);
+  line-height:1.15;
+  font-weight:800;
+}
+
+.section-xp {
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+  color:var(--gold);
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:5px 10px;
+  white-space:nowrap;
+}
+
+.feature-stage,
+.feature-stage-tight {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 360px;
+  gap:24px;
+  align-items:start;
+}
+
+.cards-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:12px;
+  align-content:start;
+}
+
+.mobile-live,
+.model-container {
+  align-self:start;
+}
 
 .mobile-live {
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:10px;
   position:sticky;
   top:84px;
 }
+
 .ml-top {
   font-family:'Space Mono',monospace;
   font-size:10px;
-  letter-spacing:.08em;
-  color:var(--muted);
+  letter-spacing:.1em;
+  color:var(--live-accent, var(--accent));
   margin-bottom:8px;
 }
+
 .ml-phone {
   border:1px solid var(--border);
   border-radius:14px;
+  background:var(--surface);
   overflow:hidden;
-  background:#0f1118;
+  box-shadow:0 12px 28px rgba(0,0,0,0.28);
 }
+
 .ml-appbar {
-  background:color-mix(in srgb, var(--live-accent) 22%, #111826);
+  background:color-mix(in srgb, var(--live-accent, var(--accent)) 28%, #0e1828);
   color:#fff;
   font-family:'Space Mono',monospace;
   font-size:10px;
-  letter-spacing:.08em;
-  padding:8px 10px;
-  border-bottom:1px solid rgba(255,255,255,0.08);
+  letter-spacing:.09em;
+  padding:9px 12px;
 }
-.ml-body { padding:10px; }
+
+.ml-body {
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
 .ml-method {
-  color:var(--live-accent);
   font-family:'Space Mono',monospace;
   font-size:12px;
-  font-weight:700;
-  margin-bottom:6px;
+  color:#fff;
 }
-.ml-tag {
-  color:var(--muted);
+
+.ml-tag,
+.ml-what,
+.ml-event {
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:var(--surface2);
+  padding:8px;
   font-size:11px;
   line-height:1.5;
-  margin-bottom:8px;
-}
-.ml-what {
-  font-size:11px;
   color:var(--text);
-  line-height:1.5;
-  margin-bottom:8px;
 }
+
 .ml-event {
   font-family:'Space Mono',monospace;
-  font-size:10px;
-  color:var(--gold);
-  border:1px dashed rgba(255,214,10,0.35);
-  border-radius:6px;
-  padding:6px 8px;
-  background:rgba(255,214,10,0.06);
+  color:var(--muted);
 }
 
 .ml-visual {
-  margin:8px 0;
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:8px;
-  padding:8px;
-  background:#121722;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:#0d1422;
+  padding:9px;
 }
 
-.ml-visual-list .ml-row {
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:6px;
-  padding:6px 8px;
-  font-size:10px;
-  color:var(--muted);
+.ml-row {
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:7px;
+  padding:7px 8px;
   margin-bottom:6px;
-  transition:all .25s;
-}
-.ml-visual-list .ml-row:last-child { margin-bottom:0; }
-.ml-visual-list .ml-row.active {
-  border-color:var(--live-accent);
-  color:#fff;
-  background:color-mix(in srgb, var(--live-accent) 18%, transparent);
-  transform:translateX(4px);
+  color:#dbe7ff;
+  font-size:11px;
 }
 
-.menu-phone {
-  position:relative;
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:8px;
-  overflow:hidden;
-  background:#101726;
-}
-.menu-toolbar {
-  height:34px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 8px;
-  background:color-mix(in srgb, var(--menu) 20%, #142033);
-  border-bottom:1px solid rgba(255,255,255,0.08);
-}
-.menu-title {
-  font-family:'Space Mono',monospace;
-  font-size:10px;
-  color:#fff;
-  letter-spacing:.06em;
-}
-.menu-actions {
-  display:flex;
-  gap:6px;
-  align-items:center;
-}
-.m-btn {
-  width:22px;
-  height:22px;
-  border-radius:6px;
-  border:1px solid rgba(255,255,255,0.2);
-  background:rgba(255,255,255,0.04);
-  color:#fff;
-  font-size:12px;
-  cursor:pointer;
-  line-height:1;
-}
-.m-btn:hover,
-.m-btn.active {
-  border-color:var(--menu);
-  background:rgba(28,143,73,0.2);
+.ml-row:last-child {
+  margin-bottom:0;
 }
 .menu-body {
   padding:8px;
@@ -1020,6 +1054,23 @@ body.light-mode .level-badge {
   color:var(--text);
   background:var(--surface);
 }
+.s6-mini-table {
+  width:100%;
+  border-collapse:collapse;
+  font-size:11px;
+  margin:8px 0;
+}
+.s6-mini-table th,
+.s6-mini-table td {
+  border:1px solid var(--border);
+  padding:6px 7px;
+  text-align:left;
+}
+.s6-mini-table th {
+  background:rgba(127,178,255,0.14);
+  color:#b9d8ff;
+  font-family:'Space Mono',monospace;
+}
 .s6-dialog-overlay {
   position:fixed;
   inset:0;
@@ -1735,8 +1786,12 @@ body.light-mode .level-badge {
 /* ── RESPONSIVE ── */
 @media(max-width:1024px) {
   .feature-stage { grid-template-columns:1fr; }
+  .feature-stage-tight { grid-template-columns:1fr; }
   .model-container { position:relative; top:auto; }
+  .mobile-live { position:relative; top:auto; }
   .content-left { padding-right:0; margin-bottom:24px; }
+  .section { padding:18px 16px; }
+  .progress-map { padding:0 16px 8px; }
 }
 @media(max-width:600px) {
   .cards-grid { grid-template-columns:1fr; }
@@ -1744,7 +1799,14 @@ body.light-mode .level-badge {
   .scale-grid-g { grid-template-columns:repeat(3,1fr); }
   .hero h1 { font-size:32px; }
   .feature-stage { grid-template-columns:1fr; }
+  .feature-stage-tight { grid-template-columns:1fr; }
   .mobile-live { position:relative; top:0; }
+  .section-header { grid-template-columns:1fr; gap:8px; }
+  .section-xp { justify-self:start; }
+  .map-row { grid-template-columns:repeat(2, minmax(0,1fr)); }
+  .s6-actions { grid-template-columns:1fr; }
+  .s6-rule-input-row { flex-direction:column; align-items:stretch; }
+  .s6-orient-bar { flex-direction:column; align-items:stretch; }
   .attr-head,
   .attr-row { grid-template-columns:1fr; }
   .scale-demo-grid { grid-template-columns:1fr; }
@@ -1833,7 +1895,7 @@ body.light-mode .level-badge {
     <div class="section-xp">+80 XP</div>
   </div>
 
-  <div style="display:grid; grid-template-columns:1fr 360px; gap:24px; align-items:start;">
+  <div class="feature-stage-tight">
     <div class="cards-grid" id="list-cards"></div>
 
     <div class="mobile-live" style="--live-accent:var(--list)">
@@ -1873,7 +1935,7 @@ body.light-mode .level-badge {
     <div class="section-xp">+80 XP</div>
   </div>
 
-  <div style="display:grid; grid-template-columns:1fr 360px; gap:24px; align-items:start;">
+  <div class="feature-stage-tight">
     <div class="cards-grid" id="dialog-cards"></div>
 
     <!-- RIGHT: ANIMATED WORKING MODEL -->
@@ -1911,7 +1973,7 @@ body.light-mode .level-badge {
     <div class="section-xp">+80 XP</div>
   </div>
 
-  <div style="display:grid; grid-template-columns:1fr 360px; gap:24px; align-items:start;">
+  <div class="feature-stage-tight">
     <div class="cards-grid" id="pref-cards"></div>
 
     <!-- RIGHT: ANIMATED WORKING MODEL -->
@@ -1964,7 +2026,7 @@ body.light-mode .level-badge {
     <div class="section-xp">+100 XP</div>
   </div>
 
-  <div style="display:grid; grid-template-columns:1fr 360px; gap:24px; align-items:start;">
+  <div class="feature-stage-tight">
     <div class="stepper-wrap">
       <div class="stepper-dots" id="lc-dots"></div>
       <div class="stepper-card" id="lc-card">
@@ -2620,32 +2682,61 @@ prefs.edit().putString("username", "Ajith").putBoolean("darkMode", true).apply()
     <div class="s6-panel active" id="s6-panel-intro">
       <div class="s6-grid">
         <div class="s6-card">
-          <div class="s6-title">CHAPTER CONTEXT</div>
-          <p class="s6-text">This chapter converts Android theory into a complete mini app UI. Instead of isolated methods, you build one connected flow: opening screen, puzzle screen, about dialog, settings, and debugging support.</p>
-          <p class="s6-text">In exam terms, this chapter demonstrates how <strong>layouts, activities, intents, menu, and preferences</strong> work together in a practical design.</p>
-
-          <div class="s6-title" style="margin-top:10px;">REAL-TIME EXAMPLE SCENARIO</div>
-          <p class="s6-text">User launches app -> taps <strong>New Game</strong> -> solves puzzle -> opens <strong>About</strong> -> changes <strong>Theme</strong> in settings -> returns to puzzle with updated UI.</p>
-
-          <div class="s6-title" style="margin-top:10px;">WHAT YOU LEARN IN THIS CHAPTER</div>
+          <div class="s6-title">DEFINITION: USER INTERFACE DESIGN</div>
+          <p class="s6-text">User Interface Design is the process of planning and creating visual components through which users interact with an application. In Android, this includes layouts, widgets, navigation flow, readability, responsiveness, and consistency across screens.</p>
+          <div class="s6-title" style="margin-top:8px;">OPENING SCREEN REQUIREMENTS</div>
           <ul class="s6-bullets">
-            <li>How to plan one screen with multiple actions and clean alignment.</li>
-            <li>How to keep UI in XML and logic in Java for maintainability.</li>
-            <li>How to add beginner-friendly app polish: About, menu, settings.</li>
-            <li>How to debug button flow with Logcat and breakpoints.</li>
+            <li>Start New Game</li>
+            <li>Continue Previous Game</li>
+            <li>About Sudoku (rules + tips)</li>
+            <li>Exit application</li>
           </ul>
-
-          <pre class="s6-code">// Flow-level pseudo code
-onCreate() -> setupOpeningScreen()
-newGameButton.setOnClickListener(v -> startGame())
-aboutButton.setOnClickListener(v -> showAbout())
-override onCreateOptionsMenu(...) -> inflate menu
-settingsItem -> open Preference screen</pre>
+          <div class="s6-title" style="margin-top:8px;">DESIGN GOALS</div>
+          <ul class="s6-bullets">
+            <li>Simple layout with clear action flow.</li>
+            <li>Calm and neutral visual style.</li>
+            <li>Accessible, responsive button sizing.</li>
+          </ul>
+          <div class="s6-title" style="margin-top:8px;">CORE UI DESIGN PRINCIPLES</div>
+          <ul class="s6-bullets">
+            <li><strong>Clarity:</strong> each button should indicate exactly what action will happen.</li>
+            <li><strong>Consistency:</strong> typography, spacing, and colors should remain uniform across screens.</li>
+            <li><strong>Feedback:</strong> user actions should produce immediate visible response.</li>
+            <li><strong>Error prevention:</strong> avoid accidental destructive actions and invalid input paths.</li>
+            <li><strong>Accessibility:</strong> readable text size, enough contrast, and touch-friendly controls.</li>
+          </ul>
+          <div class="s6-title" style="margin-top:8px;">STEP 1 PROJECT SETUP</div>
+          <ol class="s6-bullets">
+            <li>Create project with Empty View Activity.</li>
+            <li>Project name: Sudoku, Language: Java.</li>
+            <li>Minimum SDK: API 21 (Android 5.0).</li>
+          </ol>
+          <pre class="s6-code">Project structure (initial)
+app/
+  src/main/
+    java/com/example/sudoku/
+      MainActivity.java
+      About.java
+      Prefs.java
+    res/layout/
+      activity_main.xml
+      about.xml
+    res/xml/
+      settings.xml
+    res/menu/
+      menu.xml
+    AndroidManifest.xml</pre>
         </div>
-
         <div class="s6-card">
-          <div class="s6-title">CHAPTER FLOW SIMULATOR (RIGHT SIDE MODEL)</div>
+          <div class="s6-title">REQUIREMENT CHECKER (RIGHT MODEL)</div>
           <div class="s6-actions">
+            <button class="s6-btn" id="s6-req-new" onclick="s6ToggleReq('new', this)">New Game</button>
+            <button class="s6-btn" id="s6-req-continue" onclick="s6ToggleReq('continue', this)">Continue</button>
+            <button class="s6-btn" id="s6-req-about" onclick="s6ToggleReq('about', this)">About</button>
+            <button class="s6-btn" id="s6-req-exit" onclick="s6ToggleReq('exit', this)">Exit</button>
+          </div>
+          <div class="s6-log" id="s6-req-state">Requirement coverage: 0 / 4 complete</div>
+          <div class="s6-actions" style="margin-top:8px;">
             <button class="s6-btn" onclick="s6SetFlow('launch')">App Launch</button>
             <button class="s6-btn" onclick="s6SetFlow('new')">New Game</button>
             <button class="s6-btn" onclick="s6SetFlow('about')">About</button>
@@ -2653,7 +2744,6 @@ settingsItem -> open Preference screen</pre>
           </div>
           <div class="s6-log" id="s6-intro-state">State: waiting for flow action...</div>
           <pre class="s6-code" id="s6-intro-code">Tap a flow button to see exact UI logic used at that phase.</pre>
-          <p class="s6-note" style="margin-top:8px;">This right panel behaves like a live walkthrough of how your Sudoku app moves between screens.</p>
         </div>
       </div>
     </div>
@@ -2661,27 +2751,46 @@ settingsItem -> open Preference screen</pre>
     <div class="s6-panel" id="s6-panel-rules">
       <div class="s6-grid">
         <div class="s6-card">
-          <div class="s6-title">UNDERSTANDING SUDOKU (DEFINITION + RULES)</div>
-          <p class="s6-text">Sudoku is a 9x9 logic puzzle. Fill numbers 1-9 so every row, every column, and every 3x3 box contains each number exactly once.</p>
+          <div class="s6-title">SUDOKU DEFINITION + RULES</div>
+          <p class="s6-text"><strong>Definition:</strong> Sudoku is a logic-based number placement puzzle. The objective is to complete a 9x9 grid so that every row, every column, and every 3x3 sub-grid contains digits 1 to 9 exactly once.</p>
           <ul class="s6-bullets">
-            <li>Grid has 81 cells split into nine 3x3 boxes.</li>
-            <li>Some numbers are pre-filled (givens/clues).</li>
-            <li>Use deduction, scanning, elimination, and cross-hatching.</li>
-            <li>A valid puzzle has one unique solution.</li>
-            <li>Difficulty changes with number/placement of givens.</li>
+            <li>81 cells total, 9 blocks.</li>
+            <li>Use deduction from given clues.</li>
+            <li>No repeated digit in row/column/block.</li>
+          </ul>
+          <div class="s6-title" style="margin-top:8px;">HOW A MOVE IS VALIDATED</div>
+          <ul class="s6-bullets">
+            <li>Check whether number already exists in the selected row.</li>
+            <li>Check whether number already exists in the selected column.</li>
+            <li>Check whether number already exists in corresponding 3x3 box.</li>
+            <li>If all checks pass, the move is valid and can be placed.</li>
+          </ul>
+          <pre class="s6-code">boolean isMoveValid(int row, int col, int value) {
+    return !inRow(row, value) &&
+           !inColumn(col, value) &&
+           !inBox(row - row % 3, col - col % 3, value);
+}</pre>
+          <div class="s6-title" style="margin-top:8px;">TERMS</div>
+          <ul class="s6-bullets">
+            <li><strong>Given/Clue:</strong> pre-filled number that cannot be changed.</li>
+            <li><strong>Candidate:</strong> possible value for an empty cell.</li>
+            <li><strong>Constraint:</strong> row, column, and box uniqueness rule.</li>
+            <li><strong>Valid Move:</strong> number that does not violate any constraint.</li>
           </ul>
           <button class="s6-btn" onclick="s6ToggleSolution()" id="s6-solution-btn">Show Solution</button>
           <table class="s6-puzzle" id="s6-puzzle"></table>
         </div>
         <div class="s6-card">
-          <div class="s6-title">RULE CHECKER (RIGHT SIDE WORKING MODEL)</div>
-          <p class="s6-text">Enter 9 digits (1-9) for a sample row and validate if Sudoku row rule is satisfied.</p>
+          <div class="s6-title">ROW RULE CHECKER (RIGHT MODEL)</div>
           <div class="s6-rule-input-row">
             <input class="s6-rule-input" id="s6-row-input" value="176583924" maxlength="9" />
-            <button class="s6-btn" onclick="s6CheckRuleRow()">Validate Row</button>
+            <button class="s6-btn" onclick="s6CheckRuleRow()">Validate</button>
           </div>
           <div class="s6-log" id="s6-rule-result">Result: waiting for validation...</div>
-          <p class="s6-note" style="margin-top:8px;">Example valid row: 176583924. If any number repeats, row becomes invalid.</p>
+          <div class="s6-actions" style="margin-top:8px;">
+            <button class="s6-btn" onclick="s6SetRuleSample('valid')">Valid Sample</button>
+            <button class="s6-btn" onclick="s6SetRuleSample('invalid')">Invalid Sample</button>
+          </div>
         </div>
       </div>
     </div>
@@ -2689,30 +2798,81 @@ settingsItem -> open Preference screen</pre>
     <div class="s6-panel" id="s6-panel-declare">
       <div class="s6-grid">
         <div class="s6-card">
-          <div class="s6-title">PROCEDURAL VS DECLARATIVE</div>
-          <table class="s6-puzzle" style="table-layout:auto">
-            <tr><td class="given">Approach</td><td class="given">Meaning</td><td class="given">Best Use</td></tr>
-            <tr><td>Procedural</td><td>Build UI in Java/Kotlin code</td><td>Dynamic runtime component creation</td></tr>
-            <tr><td>Declarative</td><td>Describe UI in XML</td><td>Readable, maintainable screen layouts</td></tr>
-          </table>
-          <p class="s6-note" style="margin-top:8px;">Google recommendation: prefer XML declaration for Android UI whenever possible.</p>
+          <div class="s6-title">STEP 2: XML LAYOUT</div>
+          <p class="s6-text"><strong>Definition:</strong> Designing by declaration means describing UI structure in XML files, then connecting behavior in Java code. This makes the app easier to maintain and test.</p>
+          <pre class="s6-code">&lt;LinearLayout ... android:orientation="vertical"&gt;
+  &lt;TextView android:id="@+id/main_title" /&gt;
+  &lt;Button android:id="@+id/continue_button" /&gt;
+  &lt;Button android:id="@+id/new_game_button" /&gt;
+  &lt;Button android:id="@+id/about_button" /&gt;
+  &lt;Button android:id="@+id/exit_button" /&gt;
+&lt;/LinearLayout&gt;</pre>
+          <div class="s6-title" style="margin-top:8px;">JAVA WIRING (SAME SCREEN)</div>
+          <pre class="s6-code">TextView title = findViewById(R.id.main_title);
+Button continueBtn = findViewById(R.id.continue_button);
+Button newBtn = findViewById(R.id.new_game_button);
+Button aboutBtn = findViewById(R.id.about_button);
+Button exitBtn = findViewById(R.id.exit_button);
+
+newBtn.setOnClickListener(v -> {
+    Intent i = new Intent(MainActivity.this, GameActivity.class);
+    startActivity(i);
+});
+
+aboutBtn.setOnClickListener(v -> {
+    Intent i = new Intent(MainActivity.this, About.class);
+    startActivity(i);
+});
+
+exitBtn.setOnClickListener(v -> finish());</pre>
+          <div class="s6-title" style="margin-top:8px;">WHY DECLARATIVE XML</div>
+          <ul class="s6-bullets">
+            <li>Readable structure.</li>
+            <li>Easy maintenance and design updates.</li>
+            <li>Separation of UI and logic.</li>
+          </ul>
+          <div class="s6-title" style="margin-top:8px;">IMPORTANT XML ATTRIBUTES</div>
+          <ul class="s6-bullets">
+            <li><strong>layout_width / layout_height:</strong> define component dimensions.</li>
+            <li><strong>orientation:</strong> controls child arrangement in LinearLayout.</li>
+            <li><strong>id:</strong> links XML widget with Java code using findViewById().</li>
+            <li><strong>text:</strong> binds labels from strings.xml for reuse and localization.</li>
+          </ul>
+          <div class="s6-title" style="margin-top:8px;">DECLARATION FLOW IN ANDROID</div>
+          <ol class="s6-bullets">
+            <li>Create widget hierarchy in XML.</li>
+            <li>Assign stable IDs to each interactive view.</li>
+            <li>Reference IDs in Java and add listeners.</li>
+            <li>Move visible text to strings.xml and colors to colors.xml.</li>
+            <li>Keep logic methods small and reusable (openGame(), openAbout(), exitApp()).</li>
+          </ol>
+          <pre class="s6-code">private void bindViews() {
+    newBtn = findViewById(R.id.new_game_button);
+    aboutBtn = findViewById(R.id.about_button);
+    exitBtn = findViewById(R.id.exit_button);
+}
+
+private void wireActions() {
+    newBtn.setOnClickListener(v -> openGame());
+    aboutBtn.setOnClickListener(v -> openAbout());
+    exitBtn.setOnClickListener(v -> finish());
+}</pre>
         </div>
         <div class="s6-card">
-          <div class="s6-title">XML EXAMPLE + RENDER PREVIEW</div>
-          <pre class="s6-code" id="s6-declare-code">&lt;LinearLayout
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"&gt;
-
-    &lt;TextView
-        android:id="@+id/main_title"
-        android:text="Android Sudoku" /&gt;
-
-    &lt;Button android:id="@+id/new_game_button" /&gt;
+          <div class="s6-title">RESOURCE SWITCHER (RIGHT MODEL)</div>
+          <div class="s6-actions">
+            <button class="s6-btn" onclick="s6ShowResource('layout')">layout</button>
+            <button class="s6-btn" onclick="s6ShowResource('strings')">strings</button>
+            <button class="s6-btn" onclick="s6ShowResource('colors')">colors</button>
+            <button class="s6-btn" onclick="s6ShowResource('activity')">activity</button>
+          </div>
+          <div class="s6-log" id="s6-resource-state">Resource view: activity_main.xml</div>
+          <pre class="s6-code" id="s6-declare-code">&lt;LinearLayout ...&gt;
+  ...
 &lt;/LinearLayout&gt;</pre>
           <div class="s6-actions" style="margin-top:8px;">
-            <button class="s6-btn" onclick="s6SwitchDeclare('xml')">Show XML Mode</button>
-            <button class="s6-btn" onclick="s6SwitchDeclare('logic')">Show Java Wiring</button>
+            <button class="s6-btn" onclick="s6SwitchDeclare('xml')">XML Mode</button>
+            <button class="s6-btn" onclick="s6SwitchDeclare('logic')">Java Wiring</button>
           </div>
           <div class="s6-log" id="s6-declare-out">Mode: XML declaration (structure first, behavior later).</div>
         </div>
@@ -2723,10 +2883,68 @@ settingsItem -> open Preference screen</pre>
       <div class="s6-grid">
         <div class="s6-card">
           <div class="s6-title">OPENING SCREEN: STEP-BY-STEP</div>
+          <p class="s6-text"><strong>Definition flow:</strong> initialize views in onCreate(), attach click listeners, then route actions with Intents or finish() for Exit. Keep all buttons visible in both portrait and landscape layouts.</p>
           <div class="s6-step-row" id="s6-step-row"></div>
           <div class="s6-title" id="s6-step-title">Step details</div>
           <p class="s6-text" id="s6-step-text">Tap a step to view explanation.</p>
           <pre class="s6-code" id="s6-step-code">// Code appears here</pre>
+          <div class="s6-title" style="margin-top:8px;">LANDSCAPE HANDLING</div>
+          <ul class="s6-bullets">
+            <li>Use ScrollView when vertical space is limited.</li>
+            <li>Optionally create alternate layout in <strong>res/layout-land/</strong>.</li>
+            <li>Maintain same IDs across portrait and landscape files.</li>
+          </ul>
+          <div class="s6-title" style="margin-top:8px;">OPENING SCREEN IMPLEMENTATION STEPS</div>
+          <ol class="s6-bullets">
+            <li>Create <strong>activity_main.xml</strong> with title and four primary buttons.</li>
+            <li>Assign stable IDs to all controls (continue_button, new_game_button, about_button, exit_button).</li>
+            <li>Inside <strong>onCreate()</strong>, call setContentView first, then bind views.</li>
+            <li>Attach listeners and route each action to the correct method.</li>
+            <li>For Continue flow, restore previous game state from persistence layer.</li>
+            <li>For New Game flow, launch puzzle activity with fresh board initialization.</li>
+            <li>For About flow, launch About screen/dialog activity.</li>
+            <li>For Exit flow, call finish() and allow system to close activity.</li>
+          </ol>
+          <div class="s6-title" style="margin-top:8px;">LINE-BY-LINE EXPLANATION</div>
+          <pre class="s6-code">setContentView(R.layout.activity_main);
+// Inflates XML layout and makes all views available.
+
+bindViews();
+// Maps Java references to XML widgets using findViewById().
+
+wireActions();
+// Attaches click listeners to each button.
+
+newBtn.setOnClickListener(v -> openGame());
+// Starts a new Sudoku game screen.
+
+aboutBtn.setOnClickListener(v -> openAbout());
+// Navigates to About screen.
+
+exitBtn.setOnClickListener(v -> finish());
+// Closes current activity.</pre>
+            <div class="s6-title" style="margin-top:8px;">MAINACTIVITY FLOW (DETAILED)</div>
+            <pre class="s6-code">@Override
+      protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        bindViews();
+        wireActions();
+      }
+
+      private void openGame() {
+        Intent intent = new Intent(this, GameActivity.class);
+        startActivity(intent);
+      }
+
+      private void openAbout() {
+        startActivity(new Intent(this, About.class));
+      }
+
+      private void continueGame() {
+        // Load saved state from preferences/database and resume
+      }</pre>
         </div>
         <div class="mobile-live" style="--live-accent:#2c61a8">
           <div class="ml-top">OPENING SCREEN SIMULATOR</div>
@@ -2746,7 +2964,7 @@ settingsItem -> open Preference screen</pre>
                     <button class="s6-open-btn">About</button>
                     <button class="s6-open-btn">Exit</button>
                   </div>
-                  <div class="s6-open-scroll" id="s6-open-scroll">In landscape, buttons may clip. Add ScrollView or use layout-land to keep everything visible.</div>
+                  <div class="s6-open-scroll" id="s6-open-scroll">In landscape, buttons may clip. Use ScrollView or layout-land.</div>
                 </div>
               </div>
               <div class="s6-actions">
@@ -2756,7 +2974,6 @@ settingsItem -> open Preference screen</pre>
                 <button class="s6-btn" onclick="s6OpenAction('exit')">Exit</button>
               </div>
               <div class="s6-log" id="s6-open-log">Action log: waiting for click...</div>
-              <p class="s6-note">Briefly: Portrait is simple; Landscape needs ScrollView or alternate XML layout for clean alignment.</p>
             </div>
           </div>
         </div>
@@ -2767,14 +2984,38 @@ settingsItem -> open Preference screen</pre>
       <div class="s6-grid">
         <div class="s6-card">
           <div class="s6-title">ABOUT BOX + THEME + MENU + SETTINGS</div>
+          <p class="s6-text"><strong>Definitions:</strong> <strong>Theme</strong> is a global visual style for app/activity. <strong>Style</strong> is a reusable design applied to specific widgets. <strong>Options Menu</strong> provides command actions. <strong>Settings</strong> stores user preferences.</p>
+          <div class="s6-title" style="margin-top:8px;">THEME VS STYLE (DIFFERENCE)</div>
+          <table class="s6-mini-table">
+            <tr><th>Item</th><th>Theme</th><th>Style</th></tr>
+            <tr><td>Scope</td><td>Whole app or activity</td><td>Single view/widget</td></tr>
+            <tr><td>Applied In</td><td>AndroidManifest.xml or activity</td><td>Inside XML view tag</td></tr>
+            <tr><td>Use Case</td><td>Primary color, typography, app-wide look</td><td>Button shape, text size, local appearance</td></tr>
+            <tr><td>Example</td><td>Theme.Material3.DayNight.NoActionBar</td><td>@style/PrimaryButtonStyle</td></tr>
+          </table>
+          <div class="s6-title" style="margin-top:8px;">THEME VS STYLE (DETAILED UNDERSTANDING)</div>
           <ul class="s6-bullets">
-            <li><strong>About Activity:</strong> show Sudoku explanation in ScrollView.</li>
-            <li><strong>Theme:</strong> apply dialog/app theme in manifest/styles.</li>
-            <li><strong>Options Menu:</strong> inflate XML in onCreateOptionsMenu().</li>
-            <li><strong>Settings:</strong> open PreferenceFragmentCompat screen from menu.</li>
+            <li><strong>Theme inheritance:</strong> themes generally inherit from a parent base and control app-level UI tokens.</li>
+            <li><strong>Style reusability:</strong> styles are reusable per-widget formatting bundles for local consistency.</li>
+            <li><strong>Priority:</strong> direct XML attributes can override style values for that specific widget.</li>
+            <li><strong>Best practice:</strong> define common look in theme, component-specific look in style.</li>
           </ul>
-          <button class="s6-btn" onclick="s6ShowAboutDialog()">Open Mini About Dialog</button>
-          <p class="s6-note" style="margin-top:8px;">Briefly: About button opens a dialog-like screen with Sudoku definition and rules, then user returns with Back/Close.</p>
+          <pre class="s6-code">&lt;!-- styles.xml --&gt;
+&lt;style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar"&gt;
+    &lt;item name="colorPrimary"&gt;#2C61A8&lt;/item&gt;
+&lt;/style&gt;
+
+&lt;style name="PrimaryButtonStyle"&gt;
+    &lt;item name="android:textColor"&gt;#FFFFFF&lt;/item&gt;
+    &lt;item name="android:background"&gt;@color/blue_700&lt;/item&gt;
+&lt;/style&gt;
+
+&lt;!-- AndroidManifest.xml --&gt;
+&lt;application android:theme="@style/AppTheme" /&gt;
+
+&lt;!-- activity_main.xml --&gt;
+&lt;Button style="@style/PrimaryButtonStyle" /&gt;</pre>
+          <div class="s6-title" style="margin-top:8px;">MENU + SETTINGS FLOW</div>
           <pre class="s6-code">@Override
 public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.menu, menu);
@@ -2783,30 +3024,69 @@ public boolean onCreateOptionsMenu(Menu menu) {
 
 @Override
 public boolean onOptionsItemSelected(MenuItem item) {
-    if (item.getItemId() == R.id.settings) {
+    int id = item.getItemId();
+    if (id == R.id.settings) {
         startActivity(new Intent(this, Prefs.class));
         return true;
+    } else if (id == R.id.about) {
+        startActivity(new Intent(this, About.class));
+        return true;
     }
-    return false;
+    return super.onOptionsItemSelected(item);
 }</pre>
+          <div class="s6-title" style="margin-top:8px;">ABOUT ACTIVITY + SETTINGS IMPLEMENTATION</div>
+          <pre class="s6-code">// About button from opening screen
+aboutBtn.setOnClickListener(v -> {
+    Intent intent = new Intent(MainActivity.this, About.class);
+    startActivity(intent);
+});
+
+// Prefs.java hosts preference XML using PreferenceFragmentCompat
+public class Prefs extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getSupportFragmentManager().beginTransaction()
+            .replace(android.R.id.content, new SettingsFragment())
+            .commit();
+    }
+}</pre>
+          <ol class="s6-bullets">
+            <li>Create About activity + about.xml (ScrollView).</li>
+            <li>Add about_title and about_text in strings.xml.</li>
+            <li>Wire About button using Intent.</li>
+            <li>Inflate menu.xml in onCreateOptionsMenu().</li>
+            <li>Open Prefs activity from settings menu item.</li>
+          </ol>
+          <div class="s6-title" style="margin-top:8px;">SETTINGS STORAGE FLOW</div>
+          <ul class="s6-bullets">
+            <li>User changes switch or list preference in settings screen.</li>
+            <li>Value is saved in SharedPreferences by Android preferences framework.</li>
+            <li>Main activity reads updated value in onResume() or onStart().</li>
+            <li>UI updates theme/sound/hints behavior based on stored preference.</li>
+          </ul>
+          <div class="s6-title" style="margin-top:8px;">PREFERENCE SCREEN (SUMMARY)</div>
+          <ul class="s6-bullets">
+            <li>Define preferences in <strong>res/xml/settings.xml</strong>.</li>
+            <li>Use SwitchPreferenceCompat for on/off options.</li>
+            <li>Load preference screen through PreferenceFragmentCompat.</li>
+            <li>Read selected values in activity to update app behavior.</li>
+          </ul>
+          <button class="s6-btn" onclick="s6ShowAboutDialog()">Open Mini About Dialog</button>
         </div>
         <div class="s6-card">
-          <div class="s6-title">SETTINGS PREVIEW (RIGHT SIDE WORKING MODEL)</div>
-          <p class="s6-text">Simulate what your settings screen changes in real app behavior.</p>
-          <div class="s6-setting-row">
-            <span>Dark Theme</span>
-            <button class="s6-btn" id="s6-set-theme" onclick="s6ToggleSetting('theme', this)">OFF</button>
-          </div>
-          <div class="s6-setting-row">
-            <span>Sound Effects</span>
-            <button class="s6-btn" id="s6-set-sound" onclick="s6ToggleSetting('sound', this)">ON</button>
-          </div>
-          <div class="s6-setting-row">
-            <span>Auto-Check Errors</span>
-            <button class="s6-btn" id="s6-set-check" onclick="s6ToggleSetting('check', this)">ON</button>
+          <div class="s6-title">SETTINGS + MENU PREVIEW (RIGHT MODEL)</div>
+          <div class="s6-setting-row"><span>Dark Theme</span><button class="s6-btn" id="s6-set-theme" onclick="s6ToggleSetting('theme', this)">OFF</button></div>
+          <div class="s6-setting-row"><span>Sound Effects</span><button class="s6-btn" id="s6-set-sound" onclick="s6ToggleSetting('sound', this)">ON</button></div>
+          <div class="s6-setting-row"><span>Auto-Check Errors</span><button class="s6-btn" id="s6-set-check" onclick="s6ToggleSetting('check', this)">ON</button></div>
+          <div class="s6-actions" style="margin-top:8px;">
+            <button class="s6-btn" onclick="s6SimMenu('settings')">Settings</button>
+            <button class="s6-btn" onclick="s6SimMenu('hints')">Show Hints</button>
+            <button class="s6-btn" onclick="s6SimMenu('results')">Past Results</button>
+            <button class="s6-btn" onclick="s6SimMenu('none')">Unhandled</button>
           </div>
           <div class="s6-log" id="s6-setting-log">Settings changed: none</div>
-          <p class="s6-note" style="margin-top:8px;"><strong>Layout tip:</strong> If landscape clips controls, use ScrollView or <span style="color:#7fb2ff">res/layout-land/</span>.</p>
+          <div class="s6-log" id="s6-menu-sim-log">Menu event: waiting for selection...</div>
         </div>
       </div>
     </div>
@@ -2815,6 +3095,118 @@ public boolean onOptionsItemSelected(MenuItem item) {
       <div class="s6-grid">
         <div class="s6-card">
           <div class="s6-title">DEBUGGING WITH LOG MESSAGES</div>
+          <p class="s6-text"><strong>Definition:</strong> Debugging is the process of identifying, isolating, and fixing defects in software behavior. In Android, Logcat and breakpoints are primary debugging tools.</p>
+          <div class="s6-title" style="margin-top:8px;">DEBUGGING WITH A DEBUGGER</div>
+          <p class="s6-text">A debugger lets you pause app execution, inspect variables, move line-by-line, and observe runtime state. This is useful for issues that are difficult to trace using logs alone.</p>
+
+          <div class="s6-title" style="margin-top:8px;">IMPORTANCE OF DEBUGGING WITH A DEBUGGER</div>
+          <ul class="s6-bullets">
+            <li><strong>Real-time analysis:</strong> inspect variables, object state, threads, and memory behavior while the app is paused.</li>
+            <li><strong>Step-by-step execution:</strong> identify the exact line where behavior becomes incorrect.</li>
+            <li><strong>Conditional breakpoints:</strong> pause only when a condition is true to reduce unnecessary stops.</li>
+            <li><strong>Watch variables:</strong> monitor selected variables while stepping through code.</li>
+            <li><strong>Call stack inspection:</strong> understand the sequence of method calls leading to current execution.</li>
+          </ul>
+
+          <div class="s6-title" style="margin-top:8px;">SETTING UP DEBUGGER IN ANDROID STUDIO</div>
+          <ol class="s6-bullets">
+            <li><strong>Enable debuggable mode:</strong> use a debuggable build during development.</li>
+            <li><strong>Set breakpoints:</strong> click left gutter next to line number in Java file.</li>
+            <li><strong>Attach debugger:</strong> click Debug (bug icon) or right-click and select Debug app.</li>
+            <li><strong>Use debug controls:</strong> Resume, Pause, Step Over, Step Into, Step Out, Evaluate Expression.</li>
+            <li><strong>Inspect Variables:</strong> use Variables pane and editor hover values.</li>
+            <li><strong>Inspect Call Stack:</strong> review the method chain that reached current line.</li>
+            <li><strong>Add Watches:</strong> track expression values continuously during execution.</li>
+          </ol>
+
+          <div class="s6-title" style="margin-top:8px;">ANDROIDMANIFEST.XML (DEBUG MODE EXAMPLE)</div>
+          <pre class="s6-code">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"&gt;
+
+    &lt;application
+        android:debuggable="true"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Sudoku"
+        tools:targetApi="31"
+        tools:ignore="HardcodedDebugMode"&gt;
+
+        &lt;activity android:name=".MainActivity" android:exported="true"&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name="android.intent.action.MAIN" /&gt;
+                &lt;category android:name="android.intent.category.LAUNCHER" /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/activity&gt;
+
+        &lt;activity
+            android:name=".About"
+            android:label="@string/about_title"
+            android:theme="@android:style/Theme.Dialog" /&gt;
+
+        &lt;activity
+            android:name=".Prefs"
+            android:label="@string/settings_label" /&gt;
+    &lt;/application&gt;
+&lt;/manifest&gt;</pre>
+
+          <div class="s6-title" style="margin-top:8px;">BREAKPOINT EXAMPLE (MAINACTIVITY)</div>
+          <pre class="s6-code">@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    Log.i("MS", "MainActivity created");
+    // Set breakpoint here and start debugging
+}</pre>
+
+          <div class="s6-title" style="margin-top:8px;">DEBUG CONTROLS (SHORTCUTS)</div>
+          <ul class="s6-bullets">
+            <li><strong>Resume Program (F9):</strong> continue to next breakpoint or end.</li>
+            <li><strong>Pause Program:</strong> stop at current execution point.</li>
+            <li><strong>Step Over (F8):</strong> execute current line and move ahead.</li>
+            <li><strong>Step Into (F7):</strong> enter called method for deeper debugging.</li>
+            <li><strong>Step Out (Shift+F8):</strong> return to caller method.</li>
+            <li><strong>Evaluate Expression (Alt+F8):</strong> evaluate variables or expressions live.</li>
+          </ul>
+
+          <div class="s6-title" style="margin-top:8px;">VARIABLES, CALL STACK, WATCHES</div>
+          <ul class="s6-bullets">
+            <li><strong>Variables pane:</strong> shows values in current scope when paused.</li>
+            <li><strong>Hover inspection:</strong> hover over variable names in editor to see values quickly.</li>
+            <li><strong>Call Stack pane:</strong> shows sequence of method calls to current line.</li>
+            <li><strong>Watches pane:</strong> add important expressions and monitor value changes while stepping.</li>
+          </ul>
+
+          <table class="s6-mini-table">
+            <tr><th>Method</th><th>Meaning</th></tr>
+            <tr><td>Log.e</td><td>Error</td></tr>
+            <tr><td>Log.w</td><td>Warning</td></tr>
+            <tr><td>Log.i</td><td>Info</td></tr>
+            <tr><td>Log.d</td><td>Debug</td></tr>
+            <tr><td>Log.v</td><td>Verbose</td></tr>
+          </table>
+          <div class="s6-title" style="margin-top:8px;">DEBUG CHECKLIST</div>
+          <ul class="s6-bullets">
+            <li>Use clear TAG names (example: SudokuApp, MainActivity).</li>
+            <li>Validate click flow before validating puzzle logic.</li>
+            <li>Inspect variable values at breakpoints for wrong state.</li>
+            <li>Fix root cause; avoid hiding errors with only UI-level patches.</li>
+          </ul>
+          <div class="s6-title" style="margin-top:8px;">COMMON ISSUES + FIX</div>
+          <ul class="s6-bullets">
+            <li><strong>NullPointerException:</strong> check findViewById IDs and setContentView order.</li>
+            <li><strong>Button click not working:</strong> confirm listener wiring inside onCreate().</li>
+            <li><strong>Wrong screen opens:</strong> verify Intent target activity class.</li>
+            <li><strong>Settings not applied:</strong> confirm preference key names and read timing.</li>
+          </ul>
+          <pre class="s6-code">Log.d("SudokuApp", "new_game_button clicked");
+Log.d("SudokuApp", "Loaded theme=" + prefs.getString("theme", "light"));
+
+// Add breakpoint on next line and inspect row/col/value
+boolean valid = isMoveValid(row, col, value);</pre>
           <div class="s6-actions">
             <button class="s6-btn" onclick="s6AddLog('error')">Log.e</button>
             <button class="s6-btn" onclick="s6AddLog('warn')">Log.w</button>
@@ -2824,14 +3216,19 @@ public boolean onOptionsItemSelected(MenuItem item) {
             <button class="s6-btn" onclick="s6SetLogFilter('all')">Show All</button>
           </div>
           <div class="s6-log-list" id="s6-log-list"></div>
-          <p class="s6-note" style="margin-top:8px;">Use TAG to filter logs in Logcat. Example TAG: SudokuApp.</p>
+          <div class="s6-actions" style="margin-top:8px;">
+            <button class="s6-btn" onclick="s6ExplainLogLevel('error')">Explain e</button>
+            <button class="s6-btn" onclick="s6ExplainLogLevel('warn')">Explain w</button>
+            <button class="s6-btn" onclick="s6ExplainLogLevel('debug')">Explain d</button>
+            <button class="s6-btn" onclick="s6ExplainLogLevel('verbose')">Explain v</button>
+          </div>
+          <div class="s6-log" id="s6-log-note">TAG usage: SudokuApp</div>
         </div>
         <div class="s6-card">
-          <div class="s6-title">DEBUGGER STEP SIMULATOR (RIGHT SIDE MODEL)</div>
-          <p class="s6-text">This simulates pause -> inspect -> step flow during Sudoku input validation.</p>
+          <div class="s6-title">DEBUGGER STEP SIMULATOR (RIGHT MODEL)</div>
           <div class="s6-actions">
-            <button class="s6-btn" onclick="s6RunDebugStep('pause')">Pause at BP</button>
-            <button class="s6-btn" onclick="s6RunDebugStep('inspect')">Inspect Vars</button>
+            <button class="s6-btn" onclick="s6RunDebugStep('pause')">Pause</button>
+            <button class="s6-btn" onclick="s6RunDebugStep('inspect')">Inspect</button>
             <button class="s6-btn" onclick="s6RunDebugStep('step')">Step Over</button>
             <button class="s6-btn" onclick="s6RunDebugStep('resume')">Resume</button>
           </div>
@@ -2853,10 +3250,16 @@ if (isMoveValid(row, col, 7)) {
       <button class="s6-btn" onclick="s6CloseAboutDialog()">Close</button>
     </div>
     <div class="s6-about-body">
-      Sudoku is a logic-based number placement puzzle. Starting with a partially completed 9x9 grid,
-      the objective is to fill the grid so that each row, each column, and each 3x3 box contains digits 1 to 9 exactly once.
+      <strong>Definition:</strong> Sudoku is a logic-based number placement puzzle.
+      Starting with a partially completed 9x9 grid, the objective is to fill all empty cells so
+      that each row, each column, and each 3x3 box contains digits 1 to 9 exactly once.
       <br><br>
-      This mini popup simulates the textbook About dialog output: scrollable text, focused window, and return to main screen.
+      <strong>UI Design Objective in this chapter:</strong> build an intuitive opening screen,
+      integrate About/Settings/Menu actions, and maintain readable, responsive layouts in portrait
+      and landscape orientation.
+      <br><br>
+      This popup models textbook About screen behavior: scrollable explanation, focused dialog,
+      and controlled return to the main screen.
     </div>
     <div class="s6-about-actions">
       <button class="s6-btn" onclick="s6CloseAboutDialog()">Back to Main Screen</button>
@@ -4494,6 +4897,7 @@ const s6OpenSteps = [
 let s6Logs = [];
 let s6LogFilter = 'all';
 const s6Settings = { theme:false, sound:true, check:true };
+const s6ReqDone = new Set();
 
 function s6ShowTab(tab) {
   document.querySelectorAll('.s6-tab').forEach((b)=>b.classList.remove('active'));
@@ -4580,6 +4984,18 @@ function s6SetFlow(flow) {
   code.textContent = chosen.code;
 }
 
+function s6ToggleReq(req, btn) {
+  if(s6ReqDone.has(req)) {
+    s6ReqDone.delete(req);
+    if(btn) btn.style.borderColor = '#2c61a8';
+  } else {
+    s6ReqDone.add(req);
+    if(btn) btn.style.borderColor = '#7ef29a';
+  }
+  const out = document.getElementById('s6-req-state');
+  if(out) out.textContent = `Requirement coverage: ${s6ReqDone.size} / 4 complete`;
+}
+
 function s6CheckRuleRow() {
   const input = document.getElementById('s6-row-input');
   const result = document.getElementById('s6-rule-result');
@@ -4595,6 +5011,40 @@ function s6CheckRuleRow() {
   } else {
     result.textContent = 'Result: INVALID row. Duplicate number detected.';
   }
+}
+
+function s6SetRuleSample(kind) {
+  const input = document.getElementById('s6-row-input');
+  if(!input) return;
+  input.value = kind === 'invalid' ? '116583924' : '176583924';
+  s6CheckRuleRow();
+}
+
+function s6ShowResource(kind) {
+  const state = document.getElementById('s6-resource-state');
+  const code = document.getElementById('s6-declare-code');
+  if(!state || !code) return;
+  const map = {
+    layout: {
+      state:'Resource view: activity_main.xml',
+      code:`<LinearLayout ...>\n  <TextView android:id="@+id/main_title" />\n  <Button android:id="@+id/continue_button" />\n  <Button android:id="@+id/new_game_button" />\n  <Button android:id="@+id/about_button" />\n  <Button android:id="@+id/exit_button" />\n</LinearLayout>`
+    },
+    strings: {
+      state:'Resource view: strings.xml',
+      code:`<resources>\n  <string name="app_name">Sudoku</string>\n  <string name="main_title">Android Sudoku</string>\n  <string name="continue_label">Continue</string>\n  <string name="new_game_label">New Game</string>\n  <string name="about_label">About</string>\n  <string name="exit_label">Exit</string>\n</resources>`
+    },
+    colors: {
+      state:'Resource view: colors.xml',
+      code:`<resources>\n  <color name="background">#FFFFFF</color>\n  <color name="text_color">#000000</color>\n</resources>`
+    },
+    activity: {
+      state:'Resource view: MainActivity.java',
+      code:`Button aboutButton = findViewById(R.id.about_button);\naboutButton.setOnClickListener(v -> {\n  Intent intent = new Intent(MainActivity.this, About.class);\n  startActivity(intent);\n});\n\nexitButton.setOnClickListener(v -> finish());`
+    }
+  };
+  const item = map[kind] || map.layout;
+  state.textContent = item.state;
+  code.textContent = item.code;
 }
 
 function s6SwitchDeclare(mode) {
@@ -4617,6 +5067,31 @@ function s6ToggleSetting(name, btn) {
   const log = document.getElementById('s6-setting-log');
   if(!log) return;
   log.textContent = `Settings changed: theme=${s6Settings.theme ? 'ON' : 'OFF'}, sound=${s6Settings.sound ? 'ON' : 'OFF'}, autoCheck=${s6Settings.check ? 'ON' : 'OFF'}`;
+}
+
+function s6SimMenu(action) {
+  const log = document.getElementById('s6-menu-sim-log');
+  if(!log) return;
+  const map = {
+    settings:'Menu event: settings selected -> open Prefs activity.',
+    hints:'Menu event: show hints selected -> helper overlays can be shown.',
+    results:'Menu event: show past results selected -> open history screen.',
+    none:'Menu event: unhandled menu id -> return false in onOptionsItemSelected().'
+  };
+  log.textContent = map[action] || map.none;
+}
+
+function s6ExplainLogLevel(level) {
+  const out = document.getElementById('s6-log-note');
+  if(!out) return;
+  const map = {
+    error:'Log.e: critical issue that may break core flow.',
+    warn:'Log.w: suspicious condition that should be checked.',
+    info:'Log.i: important lifecycle or normal app status.',
+    debug:'Log.d: development-time trace for button clicks or values.',
+    verbose:'Log.v: very detailed tracing during deep diagnostics.'
+  };
+  out.textContent = map[level] || map.info;
 }
 
 function s6RunDebugStep(step) {
@@ -4727,9 +5202,12 @@ function initSudokuChapter() {
   s6BuildSteps();
   s6RenderLogs();
   s6RenderOrientation();
+  s6ShowResource('layout');
   s6SetFlow('launch');
   s6SwitchDeclare('xml');
   s6CheckRuleRow();
+  s6SimMenu('settings');
+  s6ExplainLogLevel('info');
   s6RunDebugStep('pause');
   s6ShowTab('intro');
 }
