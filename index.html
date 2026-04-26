@@ -1121,6 +1121,198 @@ body.light-mode .level-badge {
   .s6-grid { grid-template-columns:1fr; }
 }
 
+/* ── CHAPTER 7: SMS, EMAIL, LBS ── */
+.c7-layout {
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) 360px;
+  gap:16px;
+  align-items:start;
+}
+.c7-wrap {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:14px;
+}
+.c7-tabs {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:12px;
+}
+.c7-tab {
+  border:1px solid rgba(20,190,160,0.35);
+  background:rgba(20,190,160,0.1);
+  color:var(--text);
+  border-radius:999px;
+  padding:7px 11px;
+  font-size:11px;
+  font-family:'Space Mono',monospace;
+  cursor:pointer;
+}
+.c7-tab.active {
+  background:#13a78e;
+  border-color:#13a78e;
+  color:#fff;
+}
+.c7-panel { display:none; }
+.c7-panel.active { display:block; }
+.c7-title {
+  color:#8ef2de;
+  font-family:'Space Mono',monospace;
+  font-size:12px;
+  margin:8px 0;
+}
+.c7-text {
+  color:var(--text);
+  font-size:13px;
+  line-height:1.65;
+  margin-bottom:8px;
+}
+.c7-bullets {
+  padding-left:18px;
+  color:var(--text);
+  font-size:12px;
+  line-height:1.7;
+}
+.c7-bullets li { margin-bottom:4px; }
+.c7-code {
+  background:#0b1b24;
+  color:#d8fff6;
+  border:1px solid rgba(20,190,160,0.35);
+  border-radius:8px;
+  padding:8px;
+  font-size:11px;
+  overflow:auto;
+  margin:8px 0;
+}
+.c7-mini-table {
+  width:100%;
+  border-collapse:collapse;
+  font-size:11px;
+  margin:8px 0;
+}
+.c7-mini-table th,
+.c7-mini-table td {
+  border:1px solid var(--border);
+  padding:6px 7px;
+  text-align:left;
+}
+.c7-mini-table th {
+  background:rgba(20,190,160,0.16);
+  color:#9ff7e8;
+  font-family:'Space Mono',monospace;
+}
+.c7-figure {
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:hidden;
+  background:#0d1822;
+  margin:8px 0;
+}
+.c7-figure svg {
+  width:100%;
+  height:auto;
+  display:block;
+}
+.c7-live {
+  position:sticky;
+  top:84px;
+}
+.c7-live .ml-visual {
+  min-height:132px;
+}
+.c7-live-actions {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+}
+.c7-live-btn {
+  border:1px solid #13a78e;
+  background:rgba(20,190,160,0.12);
+  color:var(--text);
+  border-radius:8px;
+  padding:7px 10px;
+  font-size:11px;
+  font-family:'Space Mono',monospace;
+  cursor:pointer;
+}
+.c7-live-btn:hover { background:rgba(20,190,160,0.22); }
+.c7-live-dyn {
+  display:grid;
+  gap:7px;
+}
+.c7-field {
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.c7-field label {
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  color:var(--muted);
+}
+.c7-input,
+.c7-select {
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:var(--surface2);
+  color:var(--text);
+  padding:7px 8px;
+  font-size:11px;
+  font-family:'Space Mono',monospace;
+}
+.c7-pillrow {
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.c7-chip {
+  border:1px solid rgba(20,190,160,0.35);
+  border-radius:999px;
+  padding:4px 8px;
+  font-size:10px;
+  font-family:'Space Mono',monospace;
+  color:#9fe7db;
+  background:rgba(20,190,160,0.1);
+}
+.c7-status {
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:7px 8px;
+  font-size:11px;
+  background:var(--surface2);
+  color:var(--text);
+}
+.c7-lab {
+  margin-top:10px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:var(--surface2);
+  padding:10px;
+}
+.c7-lab-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+}
+.c7-lab-out {
+  margin-top:8px;
+  border:1px dashed rgba(20,190,160,0.45);
+  border-radius:8px;
+  padding:8px;
+  font-size:11px;
+  color:#bafdf0;
+  background:rgba(20,190,160,0.08);
+}
+@media (max-width: 700px) {
+  .c7-lab-grid { grid-template-columns:1fr; }
+}
+@media (max-width: 1024px) {
+  .c7-layout { grid-template-columns:1fr; }
+  .c7-live { position:relative; top:auto; }
+}
+
 
 .ml-visual-dialog {
   position:relative;
@@ -3243,6 +3435,504 @@ if (isMoveValid(row, col, 7)) {
   </div>
 </div>
 
+<hr class="section-divider">
+
+<!-- ═══════════════════════════════════════════
+     CHAPTER 7 — SMS, EMAIL, LBS
+════════════════════════════════════════════ -->
+<div class="section" id="messaging-lbs">
+  <div class="section-header">
+    <div class="section-badge" style="background:rgba(20,190,160,0.16);color:#8ef2de">CH7</div>
+    <div class="section-title" style="color:#8ef2de">SMS Messaging, Email and Location Based Services</div>
+    <div class="section-xp">Detailed Notes</div>
+  </div>
+
+  <div class="c7-layout">
+    <div class="c7-wrap">
+      <div class="c7-tabs">
+        <button class="c7-tab active" id="c7-tab-sms" onclick="c7ShowTab('sms')">SMS Messaging</button>
+        <button class="c7-tab" id="c7-tab-email" onclick="c7ShowTab('email')">Sending Email</button>
+        <button class="c7-tab" id="c7-tab-lbs" onclick="c7ShowTab('lbs')">LBS Concepts</button>
+        <button class="c7-tab" id="c7-tab-maps" onclick="c7ShowTab('maps')">Displaying Maps</button>
+        <button class="c7-tab" id="c7-tab-location" onclick="c7ShowTab('location')">Getting and Monitoring Location</button>
+      </div>
+
+      <div class="c7-panel active" id="c7-panel-sms">
+        <div class="c7-title">BOOK DEFINITION: SMS MESSAGING</div>
+        <p class="c7-text">SMS (Short Message Service) is a mobile text communication service used to exchange short text messages over telecom networks. In Android, SMS operations are handled primarily by the SmsManager API with runtime permission control.</p>
+
+        <div class="c7-title">KEY POINTS</div>
+        <ul class="c7-bullets">
+          <li>SmsManager is used for sending text, data, and multipart SMS.</li>
+          <li>Dangerous permission required: android.permission.SEND_SMS.</li>
+          <li>Optional receive flow requires android.permission.RECEIVE_SMS.</li>
+          <li>BroadcastReceiver can process incoming SMS via SMS_RECEIVED action.</li>
+          <li>Delivery reports can be tracked with sentIntent and deliveryIntent.</li>
+        </ul>
+
+        <div class="c7-title">SMS RELATED CLASSES AND METHODS</div>
+        <table class="c7-mini-table">
+          <tr><th>Class</th><th>Main Methods</th><th>Purpose</th></tr>
+          <tr><td>SmsManager</td><td>getDefault(), sendTextMessage(), divideMessage(), sendMultipartTextMessage()</td><td>Send SMS programmatically</td></tr>
+          <tr><td>SmsMessage</td><td>createFromPdu(), getDisplayMessageBody(), getDisplayOriginatingAddress()</td><td>Read incoming SMS details</td></tr>
+          <tr><td>Telephony.Sms</td><td>getMessagesFromIntent()</td><td>Extract message array from receiver intent</td></tr>
+          <tr><td>BroadcastReceiver</td><td>onReceive()</td><td>Receive and process SMS events</td></tr>
+        </table>
+
+        <div class="c7-title">SMS METHODS: DETAILED TABLE</div>
+        <table class="c7-mini-table">
+          <tr><th>Class</th><th>Method</th><th>What It Does</th><th>Real-Time Example</th></tr>
+          <tr><td>SmsManager</td><td>getDefault()</td><td>Gets default SmsManager instance.</td><td>On Send button click, app first creates SmsManager object.</td></tr>
+          <tr><td>SmsManager</td><td>sendTextMessage()</td><td>Sends one standard SMS.</td><td>Send "MAD book available?" to 8026603535.</td></tr>
+          <tr><td>SmsManager</td><td>divideMessage()</td><td>Splits long text into SMS-sized parts.</td><td>400-char message divided before sending.</td></tr>
+          <tr><td>SmsManager</td><td>sendMultipartTextMessage()</td><td>Sends all message parts in sequence.</td><td>Long exam reminder sent as multipart SMS.</td></tr>
+          <tr><td>SmsManager</td><td>sendDataMessage()</td><td>Sends binary/data SMS to a port.</td><td>App-to-device command payload transmission.</td></tr>
+          <tr><td>SmsMessage</td><td>createFromPdu()</td><td>Converts raw PDU into SmsMessage object.</td><td>Incoming network bytes decoded to readable SMS.</td></tr>
+          <tr><td>SmsMessage</td><td>getDisplayMessageBody()</td><td>Returns SMS body text.</td><td>App reads OTP message text for verification.</td></tr>
+          <tr><td>SmsMessage</td><td>getDisplayOriginatingAddress()</td><td>Returns sender address/number.</td><td>Show sender number in message preview.</td></tr>
+          <tr><td>Telephony.Sms</td><td>getMessagesFromIntent()</td><td>Extracts SMS messages from broadcast intent.</td><td>Receiver parses incoming message parts safely.</td></tr>
+          <tr><td>BroadcastReceiver</td><td>onReceive()</td><td>Triggered on incoming SMS broadcast.</td><td>Auto-detect verification code when SMS arrives.</td></tr>
+        </table>
+
+        <div class="c7-title">SMS FLOW TABLE</div>
+        <table class="c7-mini-table">
+          <tr><th>Step</th><th>Application Action</th><th>Student View</th></tr>
+          <tr><td>1</td><td>Read phone + message fields</td><td>Input form filled</td></tr>
+          <tr><td>2</td><td>Check SEND_SMS runtime permission</td><td>Permission dialog appears (if needed)</td></tr>
+          <tr><td>3</td><td>sendTextMessage / multipart call</td><td>Message send initiated</td></tr>
+          <tr><td>4</td><td>Process sent/delivery state</td><td>Status: sent / failed / delivered</td></tr>
+        </table>
+
+        <div class="c7-title">BASIC STEPS TO SEND SMS</div>
+        <ol class="c7-bullets">
+          <li>Declare SEND_SMS permission in AndroidManifest.xml.</li>
+          <li>Create UI fields: phone number, message, and Send button.</li>
+          <li>Check runtime permission (API 23+).</li>
+          <li>Use SmsManager.getDefault().sendTextMessage(...).</li>
+          <li>Show success/failure feedback to user.</li>
+        </ol>
+
+        <div class="c7-title">EXAMPLE: ANDROIDMANIFEST.XML</div>
+        <pre class="c7-code">&lt;uses-permission android:name="android.permission.SEND_SMS"/&gt;
+&lt;uses-permission android:name="android.permission.RECEIVE_SMS"/&gt;</pre>
+
+        <div class="c7-title">EXAMPLE: SMS SEND CODE</div>
+        <pre class="c7-code">SmsManager smsManager = SmsManager.getDefault();
+smsManager.sendTextMessage(phoneNumber, null, message, null, null);</pre>
+
+        <div class="c7-figure">
+          <svg viewBox="0 0 760 210" xmlns="http://www.w3.org/2000/svg">
+            <rect width="760" height="210" fill="#0d1822"/>
+            <rect x="20" y="55" width="150" height="90" rx="10" fill="#194055" stroke="#41d4bc"/>
+            <text x="95" y="92" text-anchor="middle" fill="#c9fff5" font-size="13" font-family="monospace">User Input</text>
+            <text x="95" y="112" text-anchor="middle" fill="#9fe7db" font-size="11" font-family="monospace">Phone + Message</text>
+            <rect x="220" y="55" width="150" height="90" rx="10" fill="#194055" stroke="#41d4bc"/>
+            <text x="295" y="92" text-anchor="middle" fill="#c9fff5" font-size="13" font-family="monospace">Permission</text>
+            <text x="295" y="112" text-anchor="middle" fill="#9fe7db" font-size="11" font-family="monospace">SEND_SMS</text>
+            <rect x="420" y="55" width="150" height="90" rx="10" fill="#194055" stroke="#41d4bc"/>
+            <text x="495" y="92" text-anchor="middle" fill="#c9fff5" font-size="13" font-family="monospace">SmsManager</text>
+            <text x="495" y="112" text-anchor="middle" fill="#9fe7db" font-size="11" font-family="monospace">sendTextMessage()</text>
+            <rect x="620" y="55" width="120" height="90" rx="10" fill="#194055" stroke="#41d4bc"/>
+            <text x="680" y="92" text-anchor="middle" fill="#c9fff5" font-size="13" font-family="monospace">Delivery</text>
+            <text x="680" y="112" text-anchor="middle" fill="#9fe7db" font-size="11" font-family="monospace">Status</text>
+            <path d="M170 100 H220" stroke="#67f5df" stroke-width="2" marker-end="url(#arr7)"/>
+            <path d="M370 100 H420" stroke="#67f5df" stroke-width="2" marker-end="url(#arr7)"/>
+            <path d="M570 100 H620" stroke="#67f5df" stroke-width="2" marker-end="url(#arr7)"/>
+            <defs>
+              <marker id="arr7" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                <polygon points="0,0 8,4 0,8" fill="#67f5df"/>
+              </marker>
+            </defs>
+          </svg>
+        </div>
+
+        <div class="c7-lab">
+          <div class="c7-title">REAL-TIME PRACTICE LAB: SMS</div>
+          <div class="c7-lab-grid">
+            <div class="c7-field"><label>Recipient Number</label><input id="c7-left-sms-phone" class="c7-input" value="8026603535"></div>
+            <div class="c7-field"><label>Message</label><input id="c7-left-sms-msg" class="c7-input" value="Test SMS from MAD app"></div>
+          </div>
+          <div class="c7-live-actions" style="margin-top:8px;">
+            <button class="c7-live-btn" onclick="c7LeftAction('sms-permission')">Request Permission</button>
+            <button class="c7-live-btn" onclick="c7LeftAction('sms-send')">Send / Multipart Check</button>
+          </div>
+          <div class="c7-lab-out" id="c7-left-sms-out">Lab output: permission not requested yet.</div>
+        </div>
+      </div>
+
+      <div class="c7-panel" id="c7-panel-email">
+        <div class="c7-title">BOOK DEFINITION: EMAIL IN ANDROID</div>
+        <p class="c7-text">Email messaging in Android is typically implemented using Intent-based communication, where the app pre-fills recipient, subject, and body and launches the user’s preferred email client.</p>
+
+        <div class="c7-title">EMAIL RELATED CLASSES AND METHODS</div>
+        <table class="c7-mini-table">
+          <tr><th>Class</th><th>Methods</th><th>Usage</th></tr>
+          <tr><td>Intent</td><td>setAction(), setType(), putExtra(), resolveActivity()</td><td>Build and launch email composition flow</td></tr>
+          <tr><td>Uri</td><td>parse()</td><td>Optional for mailto: pattern</td></tr>
+        </table>
+
+        <div class="c7-title">EMAIL METHODS: DETAILED TABLE</div>
+        <table class="c7-mini-table">
+          <tr><th>Class</th><th>Method</th><th>What It Does</th><th>Real-Time Example</th></tr>
+          <tr><td>Intent</td><td>setAction()</td><td>Specifies action type for Android.</td><td>Set ACTION_SEND to open email-capable app flow.</td></tr>
+          <tr><td>Intent</td><td>setType()</td><td>Sets MIME type of shared content.</td><td>Set message/rfc822 for email-oriented sharing.</td></tr>
+          <tr><td>Intent</td><td>putExtra()</td><td>Adds recipient, subject, body and other fields.</td><td>Pre-fill To, Subject, Body in Gmail compose screen.</td></tr>
+          <tr><td>Intent</td><td>resolveActivity()</td><td>Checks if handler app exists.</td><td>If no mail app installed, show toast instead of crash.</td></tr>
+          <tr><td>Uri</td><td>parse()</td><td>Converts text URI into Uri object.</td><td>Convert mailto:publisher@example.com to Uri.</td></tr>
+        </table>
+
+        <div class="c7-title">EMAIL EXTRAS TABLE</div>
+        <table class="c7-mini-table">
+          <tr><th>Extra Key</th><th>Data Type</th><th>Purpose</th><th>Example</th></tr>
+          <tr><td>Intent.EXTRA_EMAIL</td><td>String[]</td><td>Main recipients</td><td>{"skyward.publishers@gmail.com"}</td></tr>
+          <tr><td>Intent.EXTRA_CC</td><td>String[]</td><td>CC recipients</td><td>{"faculty@example.com"}</td></tr>
+          <tr><td>Intent.EXTRA_BCC</td><td>String[]</td><td>BCC recipients</td><td>{"admin@example.com"}</td></tr>
+          <tr><td>Intent.EXTRA_SUBJECT</td><td>String</td><td>Email subject text</td><td>Books Enquiry</td></tr>
+          <tr><td>Intent.EXTRA_TEXT</td><td>String</td><td>Email body text</td><td>Please share MAD book availability.</td></tr>
+        </table>
+
+        <div class="c7-title">EMAIL FLOW TABLE</div>
+        <table class="c7-mini-table">
+          <tr><th>Step</th><th>Application Action</th><th>Student View</th></tr>
+          <tr><td>1</td><td>Collect To/Subject/Body</td><td>Email form filled</td></tr>
+          <tr><td>2</td><td>Build Intent and extras</td><td>No visible change yet</td></tr>
+          <tr><td>3</td><td>Run resolveActivity()</td><td>Client availability checked</td></tr>
+          <tr><td>4</td><td>Launch email client</td><td>Pre-filled compose screen opens</td></tr>
+        </table>
+
+        <div class="c7-title">BASIC STEPS TO SEND EMAIL</div>
+        <ol class="c7-bullets">
+          <li>Create UI fields: email address, subject, message.</li>
+          <li>Create Intent with ACTION_SEND.</li>
+          <li>Set type to message/rfc822.</li>
+          <li>Add extras: EXTRA_EMAIL, EXTRA_SUBJECT, EXTRA_TEXT.</li>
+          <li>Check resolveActivity() before startActivity().</li>
+        </ol>
+
+        <div class="c7-title">EXAMPLE: EMAIL SEND CODE</div>
+        <pre class="c7-code">Intent emailIntent = new Intent(Intent.ACTION_SEND);
+emailIntent.setType("message/rfc822");
+emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddress});
+emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+emailIntent.putExtra(Intent.EXTRA_TEXT, message);
+
+if (emailIntent.resolveActivity(getPackageManager()) != null) {
+    startActivity(emailIntent);
+}</pre>
+
+        <div class="c7-title">EXAMPLE OUTPUT EXPECTATION</div>
+        <ul class="c7-bullets">
+          <li>App captures entered values.</li>
+          <li>Gmail or another mail client opens.</li>
+          <li>To/Subject/Body fields are pre-filled for user review.</li>
+          <li>User sends manually from mail app.</li>
+        </ul>
+
+        <div class="c7-figure">
+          <svg viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="760" height="220" fill="#0d1822"/>
+            <rect x="30" y="35" width="290" height="150" rx="12" fill="#163243" stroke="#41d4bc"/>
+            <text x="175" y="62" text-anchor="middle" fill="#d7fff8" font-size="13" font-family="monospace">EmailExample App</text>
+            <text x="55" y="92" fill="#9fe7db" font-size="11" font-family="monospace">To: student@example.com</text>
+            <text x="55" y="114" fill="#9fe7db" font-size="11" font-family="monospace">Subject: Books Enquiry</text>
+            <text x="55" y="136" fill="#9fe7db" font-size="11" font-family="monospace">Body: Please share availability...</text>
+            <rect x="95" y="150" width="150" height="24" rx="7" fill="#1b4a5f"/>
+            <text x="170" y="166" text-anchor="middle" fill="#c9fff5" font-size="11" font-family="monospace">Send Email Button</text>
+
+            <path d="M340 110 H420" stroke="#67f5df" stroke-width="2" marker-end="url(#arr8)"/>
+
+            <rect x="440" y="35" width="290" height="150" rx="12" fill="#163243" stroke="#41d4bc"/>
+            <text x="585" y="62" text-anchor="middle" fill="#d7fff8" font-size="13" font-family="monospace">Email Client (Gmail)</text>
+            <text x="465" y="92" fill="#9fe7db" font-size="11" font-family="monospace">To: student@example.com</text>
+            <text x="465" y="114" fill="#9fe7db" font-size="11" font-family="monospace">Subject: Books Enquiry</text>
+            <text x="465" y="136" fill="#9fe7db" font-size="11" font-family="monospace">Body pre-filled successfully</text>
+            <defs>
+              <marker id="arr8" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                <polygon points="0,0 8,4 0,8" fill="#67f5df"/>
+              </marker>
+            </defs>
+          </svg>
+        </div>
+
+        <div class="c7-lab">
+          <div class="c7-title">REAL-TIME PRACTICE LAB: EMAIL</div>
+          <div class="c7-lab-grid">
+            <div class="c7-field"><label>To</label><input id="c7-left-mail-to" class="c7-input" value="student@example.com"></div>
+            <div class="c7-field"><label>Subject</label><input id="c7-left-mail-sub" class="c7-input" value="Books Enquiry"></div>
+          </div>
+          <div class="c7-field" style="margin-top:7px;"><label>Body</label><input id="c7-left-mail-body" class="c7-input" value="Please share MAD book availability."></div>
+          <div class="c7-live-actions" style="margin-top:8px;">
+            <button class="c7-live-btn" onclick="c7LeftAction('email-compose')">Build Intent</button>
+            <button class="c7-live-btn" onclick="c7LeftAction('email-send')">Open Mail App</button>
+          </div>
+          <div class="c7-lab-out" id="c7-left-email-out">Lab output: ready to compose intent.</div>
+        </div>
+      </div>
+
+      <div class="c7-panel" id="c7-panel-lbs">
+        <div class="c7-title">BOOK DEFINITION: LOCATION-BASED SERVICES (LBS)</div>
+        <p class="c7-text">Location-Based Services (LBS) are mobile services that use user/device geographic location to deliver personalized and context-aware information, alerts, navigation, and actions.</p>
+
+        <div class="c7-title">CORE COMPONENTS OF LBS</div>
+        <ul class="c7-bullets">
+          <li>Positioning technology: GPS, cell towers, Wi-Fi positioning.</li>
+          <li>Geographic data and GIS processing.</li>
+          <li>Location coordinates (latitude, longitude).</li>
+          <li>Application logic for map, notifications, routing, or tracking.</li>
+        </ul>
+
+        <div class="c7-title">KEY FEATURES</div>
+        <ul class="c7-bullets">
+          <li>Map integration and navigation.</li>
+          <li>Real-time location tracking.</li>
+          <li>Geocoding and reverse geocoding.</li>
+          <li>Geofencing and location-based notifications.</li>
+          <li>POI discovery, location sharing, and emergency support.</li>
+        </ul>
+
+        <div class="c7-title">IMPORTANT APPLICATIONS</div>
+        <table class="c7-mini-table">
+          <tr><th>Domain</th><th>Example</th><th>Student Understanding</th></tr>
+          <tr><td>Navigation</td><td>Google Maps, Waze</td><td>Real-time routes and traffic</td></tr>
+          <tr><td>Food and Retail</td><td>Zomato, local offers</td><td>Nearby discovery and delivery</td></tr>
+          <tr><td>Transport</td><td>Uber</td><td>Driver-rider location matching</td></tr>
+          <tr><td>Emergency</td><td>SOS apps</td><td>Share live location quickly</td></tr>
+          <tr><td>Field Services</td><td>Fleet tracking</td><td>Asset movement monitoring</td></tr>
+        </table>
+
+        <div class="c7-title">LBS METHODS: DETAILED TABLE</div>
+        <table class="c7-mini-table">
+          <tr><th>Class</th><th>Method</th><th>What It Does</th><th>Real-Time Example</th></tr>
+          <tr><td>LocationManager</td><td>requestLocationUpdates()</td><td>Starts receiving location updates.</td><td>Delivery app tracks rider location live.</td></tr>
+          <tr><td>LocationManager</td><td>getLastKnownLocation()</td><td>Returns cached last location quickly.</td><td>Map starts near user while waiting for fresh GPS.</td></tr>
+          <tr><td>LocationManager</td><td>addProximityAlert()</td><td>Triggers on enter/exit geofence radius.</td><td>Alert when user reaches campus gate zone.</td></tr>
+          <tr><td>LocationManager</td><td>removeUpdates()</td><td>Stops location callbacks/listeners.</td><td>Stop tracking when screen closes to save battery.</td></tr>
+          <tr><td>Geocoder</td><td>getFromLocationName()</td><td>Address to coordinates conversion.</td><td>"Bangalore, India" to latitude/longitude.</td></tr>
+          <tr><td>Geocoder</td><td>getFromLocation()</td><td>Coordinates to readable address.</td><td>Tap map and display place/street name.</td></tr>
+          <tr><td>GoogleMap</td><td>setMapType()</td><td>Switches map visual mode.</td><td>Normal to Satellite for terrain inspection.</td></tr>
+          <tr><td>GoogleMap</td><td>addMarker()</td><td>Adds marker to map position.</td><td>Place marker at Bangalore office point.</td></tr>
+          <tr><td>GoogleMap</td><td>animateCamera()</td><td>Smoothly moves camera to location.</td><td>Zoom camera to Bangalore at level 12.</td></tr>
+          <tr><td>GoogleMap</td><td>setOnMapClickListener()</td><td>Handles map tap callback.</td><td>Reverse geocode tapped map location.</td></tr>
+          <tr><td>GoogleMap</td><td>setMyLocationEnabled(true)</td><td>Shows user current location dot.</td><td>Blue dot appears after location permission.</td></tr>
+          <tr><td>MapView</td><td>getMapAsync()</td><td>Loads GoogleMap asynchronously.</td><td>Map becomes usable in onMapReady callback.</td></tr>
+        </table>
+
+        <div class="c7-title">LBS FLOW TABLE</div>
+        <table class="c7-mini-table">
+          <tr><th>Step</th><th>Application Action</th><th>Student View</th></tr>
+          <tr><td>1</td><td>Request location permission</td><td>Permission dialog</td></tr>
+          <tr><td>2</td><td>Initialize map/location provider</td><td>Map with controls</td></tr>
+          <tr><td>3</td><td>Fetch current/cached location</td><td>Camera centers near current place</td></tr>
+          <tr><td>4</td><td>Add marker and process geocode data</td><td>Readable address and marker shown</td></tr>
+          <tr><td>5</td><td>Monitor geofence enter/exit</td><td>Location alert events displayed</td></tr>
+        </table>
+
+        <div class="c7-figure">
+          <svg viewBox="0 0 760 230" xmlns="http://www.w3.org/2000/svg">
+            <rect width="760" height="230" fill="#0d1822"/>
+            <circle cx="130" cy="115" r="54" fill="#163243" stroke="#41d4bc"/>
+            <text x="130" y="112" text-anchor="middle" fill="#d7fff8" font-size="12" font-family="monospace">GPS / Wi-Fi /</text>
+            <text x="130" y="130" text-anchor="middle" fill="#d7fff8" font-size="12" font-family="monospace">Cell Tower</text>
+            <rect x="260" y="72" width="200" height="86" rx="10" fill="#163243" stroke="#41d4bc"/>
+            <text x="360" y="102" text-anchor="middle" fill="#d7fff8" font-size="12" font-family="monospace">Location Engine</text>
+            <text x="360" y="122" text-anchor="middle" fill="#9fe7db" font-size="11" font-family="monospace">Lat/Long + GIS</text>
+            <rect x="520" y="38" width="200" height="54" rx="10" fill="#163243" stroke="#41d4bc"/>
+            <text x="620" y="69" text-anchor="middle" fill="#d7fff8" font-size="12" font-family="monospace">Maps + Navigation</text>
+            <rect x="520" y="102" width="200" height="54" rx="10" fill="#163243" stroke="#41d4bc"/>
+            <text x="620" y="134" text-anchor="middle" fill="#d7fff8" font-size="12" font-family="monospace">Alerts + Geofence</text>
+            <rect x="520" y="166" width="200" height="54" rx="10" fill="#163243" stroke="#41d4bc"/>
+            <text x="620" y="198" text-anchor="middle" fill="#d7fff8" font-size="12" font-family="monospace">Tracking + POI</text>
+            <path d="M184 115 H260" stroke="#67f5df" stroke-width="2" marker-end="url(#arr9)"/>
+            <path d="M460 115 H520" stroke="#67f5df" stroke-width="2" marker-end="url(#arr9)"/>
+            <path d="M460 115 C500 115 500 65 520 65" stroke="#67f5df" stroke-width="2" fill="none" marker-end="url(#arr9)"/>
+            <path d="M460 115 C500 115 500 193 520 193" stroke="#67f5df" stroke-width="2" fill="none" marker-end="url(#arr9)"/>
+            <defs>
+              <marker id="arr9" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                <polygon points="0,0 8,4 0,8" fill="#67f5df"/>
+              </marker>
+            </defs>
+          </svg>
+        </div>
+
+        <div class="c7-lab">
+          <div class="c7-title">REAL-TIME PRACTICE LAB: LBS USE CASE</div>
+          <div class="c7-field"><label>Select Scenario</label>
+            <select id="c7-left-lbs-case" class="c7-select">
+              <option value="navigation">Navigation</option>
+              <option value="food">Food Delivery</option>
+              <option value="emergency">Emergency Alert</option>
+              <option value="tracking">Fleet Tracking</option>
+            </select>
+          </div>
+          <div class="c7-live-actions" style="margin-top:8px;">
+            <button class="c7-live-btn" onclick="c7LeftAction('lbs-sim')">Simulate LBS Response</button>
+            <button class="c7-live-btn" onclick="c7LeftAction('lbs-points')">Show Key Features</button>
+          </div>
+          <div class="c7-lab-out" id="c7-left-lbs-out">Lab output: choose scenario and simulate.</div>
+        </div>
+      </div>
+
+      <div class="c7-panel" id="c7-panel-maps">
+        <div class="c7-title">DISPLAYING MAPS IN ANDROID (GOOGLE MAPS SDK)</div>
+        <p class="c7-text">Google Maps integration enables map display, markers, camera movement, geocoding, reverse geocoding, and interaction-driven location features.</p>
+
+        <div class="c7-title">ESSENTIAL REQUIREMENTS</div>
+        <ul class="c7-bullets">
+          <li>Google Cloud project + Maps SDK for Android enabled.</li>
+          <li>API key added via meta-data in AndroidManifest.xml.</li>
+          <li>Permissions: INTERNET, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION.</li>
+          <li>Dependency: play-services-maps in app module.</li>
+        </ul>
+
+        <div class="c7-title">ANDROIDMANIFEST.XML MAP SETUP</div>
+        <pre class="c7-code">&lt;uses-permission android:name="android.permission.INTERNET"/&gt;
+&lt;uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/&gt;
+&lt;uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/&gt;
+
+&lt;meta-data
+    android:name="com.google.android.geo.API_KEY"
+    android:value="YOUR_API_KEY_HERE" /&gt;</pre>
+
+        <div class="c7-title">MAPVIEW LAYOUT EXAMPLE</div>
+        <pre class="c7-code">&lt;com.google.android.gms.maps.MapView
+    android:id="@+id/mapView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" /&gt;</pre>
+
+        <div class="c7-title">MAINACTIVITY MAP INITIALIZATION</div>
+        <pre class="c7-code">mapView = findViewById(R.id.mapView);
+mapView.onCreate(savedInstanceState);
+mapView.getMapAsync(mMap -> {
+    googleMap = mMap;
+    googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+    googleMap.getUiSettings().setZoomControlsEnabled(true);
+});</pre>
+
+        <div class="c7-title">MAP TYPES (EXAMPLES)</div>
+        <pre class="c7-code">googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+googleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+googleMap.setMapType(GoogleMap.MAP_TYPE_NONE);</pre>
+
+        <div class="c7-title">NAVIGATE + MARKER EXAMPLE (BANGALORE)</div>
+        <pre class="c7-code">LatLng bangalore = new LatLng(12.9716, 77.5946);
+googleMap.addMarker(new MarkerOptions().position(bangalore).title("Marker in Bangalore"));
+googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(bangalore, 12));</pre>
+
+        <div class="c7-title">GEOCODING + REVERSE GEOCODING EXAMPLE</div>
+        <pre class="c7-code">Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+List&lt;Address&gt; list = geocoder.getFromLocationName("Bangalore, India", 1);
+
+googleMap.setOnMapClickListener(latLng -> {
+    List&lt;Address&gt; result = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+    if (result != null &amp;&amp; !result.isEmpty()) {
+        googleMap.addMarker(new MarkerOptions().position(latLng).title(result.get(0).getAddressLine(0)));
+    }
+});</pre>
+
+        <div class="c7-lab">
+          <div class="c7-title">REAL-TIME PRACTICE LAB: MAP ACTIONS</div>
+          <div class="c7-live-actions">
+            <button class="c7-live-btn" onclick="c7LeftAction('maps-cycle')">Cycle Map Type</button>
+            <button class="c7-live-btn" onclick="c7LeftAction('maps-bangalore')">Navigate to Bangalore</button>
+          </div>
+          <div class="c7-live-actions" style="margin-top:7px;">
+            <button class="c7-live-btn" onclick="c7LeftAction('maps-marker')">Add Bangalore Marker</button>
+            <button class="c7-live-btn" onclick="c7LeftAction('maps-reverse')">Reverse Geocode Tap</button>
+          </div>
+          <div class="c7-lab-out" id="c7-left-maps-out">Lab output: waiting for map action.</div>
+        </div>
+      </div>
+
+      <div class="c7-panel" id="c7-panel-location">
+        <div class="c7-title">GETTING LOCATION DATA</div>
+        <p class="c7-text">Android location data can come from GPS, cell tower triangulation, and Wi-Fi positioning. LocationManager coordinates provider usage based on availability and permission state.</p>
+
+        <div class="c7-title">LOCATION TECHNOLOGIES COMPARISON</div>
+        <table class="c7-mini-table">
+          <tr><th>Technology</th><th>Accuracy</th><th>Works Best</th><th>Limitation</th></tr>
+          <tr><td>GPS</td><td>High</td><td>Outdoor open sky</td><td>Weak indoors</td></tr>
+          <tr><td>Cell Tower</td><td>Medium</td><td>Urban areas</td><td>Less precise than GPS</td></tr>
+          <tr><td>Wi-Fi</td><td>Low-Medium</td><td>Indoor regions</td><td>Depends on network availability</td></tr>
+        </table>
+
+        <div class="c7-title">LOCATIONMANAGER FLOW</div>
+        <ol class="c7-bullets">
+          <li>Request ACCESS_FINE_LOCATION runtime permission.</li>
+          <li>Enable MyLocation layer on map if granted.</li>
+          <li>Listen for location change updates.</li>
+          <li>Update marker and camera with latest coordinates.</li>
+        </ol>
+
+        <pre class="c7-code">if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        == PackageManager.PERMISSION_GRANTED) {
+    googleMap.setMyLocationEnabled(true);
+    googleMap.setOnMyLocationChangeListener(location -> {
+        LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
+        googleMap.addMarker(new MarkerOptions().position(current).title("You are here"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 15));
+    });
+}</pre>
+
+        <div class="c7-title">MONITORING A LOCATION (PROXIMITY ALERT)</div>
+        <p class="c7-text">Location monitoring checks whether the user enters/exits a target region. In classic Android flow, LocationManager.addProximityAlert() uses latitude, longitude, radius, expiration, and PendingIntent to trigger actions.</p>
+        <pre class="c7-code">double latitude = 12.95899;
+double longitude = 77.56113;
+float radius = 5.0f;
+long expiration = -1;
+
+Intent intent = new Intent(this, MainActivity.class);
+intent.setAction("com.example.locationmonitoringdemo.PROXIMITY_ALERT");
+PendingIntent pi = PendingIntent.getActivity(this, 0, intent,
+        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+
+locationManager.addProximityAlert(latitude, longitude, radius, expiration, pi);</pre>
+
+        <div class="c7-title">OUTPUT UNDERSTANDING</div>
+        <ul class="c7-bullets">
+          <li>Outside region: app continues showing monitoring state.</li>
+          <li>Inside defined radius: proximity action triggers alert dialog/message.</li>
+          <li>Useful for geofence notifications, attendance zones, and local reminders.</li>
+        </ul>
+
+        <div class="c7-lab">
+          <div class="c7-title">REAL-TIME PRACTICE LAB: LOCATION MONITORING</div>
+          <div class="c7-lab-grid">
+            <div class="c7-field"><label>Target Radius (meters)</label><input id="c7-left-loc-radius" class="c7-input" value="5"></div>
+            <div class="c7-field"><label>Current Distance (meters)</label><input id="c7-left-loc-distance" class="c7-input" value="18"></div>
+          </div>
+          <div class="c7-live-actions" style="margin-top:8px;">
+            <button class="c7-live-btn" onclick="c7LeftAction('loc-start')">Start Monitor</button>
+            <button class="c7-live-btn" onclick="c7LeftAction('loc-check')">Check Enter/Exit</button>
+          </div>
+          <div class="c7-lab-out" id="c7-left-loc-out">Lab output: monitor not started.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mobile-live c7-live" style="--live-accent:#13a78e">
+      <div class="ml-top">INTERACTIVE LEARNING MODEL</div>
+      <div class="ml-phone">
+        <div class="ml-appbar">CH7 LIVE EXPLAINER</div>
+        <div class="ml-body">
+          <div class="ml-method" id="c7-live-method">SMS Messaging</div>
+          <div class="ml-tag" id="c7-live-tag">Tap chapter tabs to switch topic and observe the live explanation flow.</div>
+          <div class="ml-what" id="c7-live-what">Use Run Example to simulate key behavior for the selected topic.</div>
+          <div class="ml-visual" id="c7-live-visual">Ready: select a chapter topic.</div>
+          <div class="c7-live-actions">
+            <button class="c7-live-btn" onclick="c7RunExample()">Run Example</button>
+            <button class="c7-live-btn" onclick="c7NextStep()">Next Step</button>
+          </div>
+          <div class="c7-live-dyn" id="c7-live-dynamic"></div>
+          <div class="ml-event" id="c7-live-event">EVENT: waiting for interaction...</div>
+          <pre class="c7-code" id="c7-live-code">Code preview appears here</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="s6-dialog-overlay" id="s6-about-overlay">
   <div class="s6-about-dialog" role="dialog" aria-modal="true" aria-label="About Android Sudoku">
     <div class="s6-about-head">
@@ -5212,6 +5902,366 @@ function initSudokuChapter() {
   s6ShowTab('intro');
 }
 
+const c7Topics = {
+  sms: {
+    method:'SMS Messaging',
+    tag:'SmsManager-based mobile text sending with runtime permission handling.',
+    what:'Flow: user input -> permission -> SmsManager send -> delivery state.',
+    visual:'Topic Visual: SEND_SMS permission gate controls programmatic SMS transmission.',
+    code:'SmsManager smsManager = SmsManager.getDefault();\nsmsManager.sendTextMessage(phone, null, message, null, null);',
+    steps:[
+      'Step 1: Declare SEND_SMS in manifest.',
+      'Step 2: Request runtime permission.',
+      'Step 3: Trigger sendTextMessage().',
+      'Step 4: Show delivery result.'
+    ]
+  },
+  email: {
+    method:'Sending Email',
+    tag:'Intent-based email composition using installed mail client.',
+    what:'Flow: collect recipient/subject/body -> build ACTION_SEND intent -> launch client.',
+    visual:'Topic Visual: Android app pre-fills email fields and hands control to Gmail/mail app.',
+    code:'Intent i = new Intent(Intent.ACTION_SEND);\ni.setType("message/rfc822");\ni.putExtra(Intent.EXTRA_EMAIL, new String[]{to});\ni.putExtra(Intent.EXTRA_SUBJECT, subject);\ni.putExtra(Intent.EXTRA_TEXT, body);',
+    steps:[
+      'Step 1: Read email address/subject/message.',
+      'Step 2: Build ACTION_SEND intent.',
+      'Step 3: Add intent extras.',
+      'Step 4: open email client with resolveActivity().'
+    ]
+  },
+  lbs: {
+    method:'Location-Based Services',
+    tag:'Context-aware services using geographic position and spatial data.',
+    what:'Flow: positioning input -> location engine -> app features (maps, geofence, alerts).',
+    visual:'Topic Visual: GPS/Wi-Fi/Cell data powers map, route, tracking, and nearby recommendations.',
+    code:'// LBS stack\nPositioning -> Coordinates -> GIS/Rules -> User-facing service',
+    steps:[
+      'Step 1: Acquire location coordinates.',
+      'Step 2: Process with app context.',
+      'Step 3: Trigger location-aware action.',
+      'Step 4: Update user UI in real time.'
+    ]
+  },
+  maps: {
+    method:'Displaying Maps',
+    tag:'Google Maps SDK integration with API key, MapView, and camera control.',
+    what:'Flow: configure API key/permissions -> init MapView -> render and interact with map.',
+    visual:'Topic Visual: marker placement + camera zoom + map type toggle + geocoding support.',
+    code:'LatLng b = new LatLng(12.9716, 77.5946);\ngoogleMap.addMarker(new MarkerOptions().position(b));\ngoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(b, 12));',
+    steps:[
+      'Step 1: Enable Maps SDK and add API key.',
+      'Step 2: Add MapView in layout.',
+      'Step 3: Initialize map in onMapReady().',
+      'Step 4: Add markers and camera movement.'
+    ]
+  },
+  location: {
+    method:'Getting and Monitoring Location',
+    tag:'LocationManager flow for current location and proximity monitoring.',
+    what:'Flow: request ACCESS_FINE_LOCATION -> start updates -> monitor geofence radius.',
+    visual:'Topic Visual: live location marker update and proximity alert trigger near target zone.',
+    code:'locationManager.addProximityAlert(lat, lng, 5f, -1, pendingIntent);',
+    steps:[
+      'Step 1: Ask location permission.',
+      'Step 2: Enable location updates.',
+      'Step 3: Add proximity alert.',
+      'Step 4: Show alert on enter/exit region.'
+    ]
+  }
+};
+
+let c7ActiveTab = 'sms';
+let c7StepIndex = 0;
+const c7State = {
+  smsPermission:false,
+  smsSent:0,
+  mapType:'NORMAL',
+  marker:false,
+  monitorOn:false,
+  distance:120
+};
+
+function c7ShowTab(tab) {
+  c7ActiveTab = tab;
+  c7StepIndex = 0;
+  document.querySelectorAll('.c7-tab').forEach((b)=>b.classList.remove('active'));
+  document.querySelectorAll('.c7-panel').forEach((p)=>p.classList.remove('active'));
+  const tabEl = document.getElementById(`c7-tab-${tab}`);
+  const panelEl = document.getElementById(`c7-panel-${tab}`);
+  if(tabEl) tabEl.classList.add('active');
+  if(panelEl) panelEl.classList.add('active');
+  c7RenderLive();
+}
+
+function c7RenderLive() {
+  const topic = c7Topics[c7ActiveTab] || c7Topics.sms;
+  const method = document.getElementById('c7-live-method');
+  const tag = document.getElementById('c7-live-tag');
+  const what = document.getElementById('c7-live-what');
+  const visual = document.getElementById('c7-live-visual');
+  const code = document.getElementById('c7-live-code');
+  const event = document.getElementById('c7-live-event');
+  if(method) method.textContent = topic.method;
+  if(tag) tag.textContent = topic.tag;
+  if(what) what.textContent = topic.what;
+  if(visual) visual.innerHTML = `<div class="c7-status">${topic.visual}</div>`;
+  if(code) code.textContent = topic.code;
+  if(event) event.textContent = `EVENT: topic switched to ${topic.method}`;
+  c7RenderDynamic();
+}
+
+function c7RunExample() {
+  const topic = c7Topics[c7ActiveTab] || c7Topics.sms;
+  if(c7ActiveTab === 'sms') c7Action('sms-send');
+  if(c7ActiveTab === 'email') c7Action('email-open');
+  if(c7ActiveTab === 'lbs') c7Action('lbs-reco');
+  if(c7ActiveTab === 'maps') c7Action('maps-bangalore');
+  if(c7ActiveTab === 'location') c7Action('loc-enter');
+  const event = document.getElementById('c7-live-event');
+  if(event) event.textContent = `EVENT: running ${topic.method} live simulation`;
+}
+
+function c7NextStep() {
+  const topic = c7Topics[c7ActiveTab] || c7Topics.sms;
+  c7StepIndex = (c7StepIndex + 1) % topic.steps.length;
+  const visual = document.getElementById('c7-live-visual');
+  const event = document.getElementById('c7-live-event');
+  if(visual) visual.innerHTML = `<div class="c7-status">Next: ${topic.steps[c7StepIndex]}</div>`;
+  if(event) event.textContent = `EVENT: moved to step ${c7StepIndex + 1} in ${topic.method}`;
+}
+
+function c7RenderDynamic() {
+  const host = document.getElementById('c7-live-dynamic');
+  if(!host) return;
+  if(c7ActiveTab === 'sms') {
+    host.innerHTML = `<div class="c7-field"><label>Phone Number</label><input id="c7-sms-phone" class="c7-input" value="8026603535"></div>
+    <div class="c7-field"><label>Message</label><input id="c7-sms-msg" class="c7-input" value="When MAD book will be published?"></div>
+    <div class="c7-live-actions"><button class="c7-live-btn" onclick="c7Action('sms-perm')">Grant SMS Permission</button><button class="c7-live-btn" onclick="c7Action('sms-send')">Send SMS</button></div>
+    <div class="c7-status" id="c7-sms-status">Permission: ${c7State.smsPermission ? 'GRANTED' : 'NOT GRANTED'} | Sent count: ${c7State.smsSent}</div>`;
+  } else if(c7ActiveTab === 'email') {
+    host.innerHTML = `<div class="c7-field"><label>To</label><input id="c7-mail-to" class="c7-input" value="skyward.publishers@gmail.com"></div>
+    <div class="c7-field"><label>Subject</label><input id="c7-mail-sub" class="c7-input" value="Books Enquiry"></div>
+    <div class="c7-live-actions"><button class="c7-live-btn" onclick="c7Action('email-compose')">Compose Intent</button><button class="c7-live-btn" onclick="c7Action('email-open')">Open Client</button></div>
+    <div class="c7-status">Real-time example: Intent extras are read live from your fields.</div>`;
+  } else if(c7ActiveTab === 'lbs') {
+    host.innerHTML = `<div class="c7-field"><label>Location Source</label><select id="c7-lbs-source" class="c7-select"><option>GPS</option><option>Cell Tower</option><option>Wi-Fi</option></select></div>
+    <div class="c7-live-actions"><button class="c7-live-btn" onclick="c7Action('lbs-track')">Track User</button><button class="c7-live-btn" onclick="c7Action('lbs-reco')">Nearby Recommendation</button></div>
+    <div class="c7-pillrow"><span class="c7-chip">Map</span><span class="c7-chip">Navigation</span><span class="c7-chip">POI</span><span class="c7-chip">Geofence</span></div>`;
+  } else if(c7ActiveTab === 'maps') {
+    host.innerHTML = `<div class="c7-live-actions"><button class="c7-live-btn" onclick="c7Action('maps-type')">Toggle Map Type</button><button class="c7-live-btn" onclick="c7Action('maps-marker')">Add Marker</button></div>
+    <div class="c7-live-actions"><button class="c7-live-btn" onclick="c7Action('maps-bangalore')">Zoom Bangalore</button><button class="c7-live-btn" onclick="c7Action('maps-reverse')">Reverse Geocode Tap</button></div>
+    <div class="c7-status">MapType: ${c7State.mapType} | Marker: ${c7State.marker ? 'ADDED' : 'NOT ADDED'}</div>`;
+  } else if(c7ActiveTab === 'location') {
+    host.innerHTML = `<div class="c7-live-actions"><button class="c7-live-btn" onclick="c7Action('loc-start')">Start Monitoring</button><button class="c7-live-btn" onclick="c7Action('loc-enter')">Simulate Enter Radius</button></div>
+    <div class="c7-live-actions"><button class="c7-live-btn" onclick="c7Action('loc-exit')">Simulate Exit Radius</button><button class="c7-live-btn" onclick="c7Action('loc-move')">Move User +20m</button></div>
+    <div class="c7-status">Monitoring: ${c7State.monitorOn ? 'ON' : 'OFF'} | Distance to geofence center: ${c7State.distance}m</div>`;
+  }
+}
+
+function c7Action(action) {
+  const visual = document.getElementById('c7-live-visual');
+  const code = document.getElementById('c7-live-code');
+  const event = document.getElementById('c7-live-event');
+  if(!visual || !code || !event) return;
+
+  if(action === 'sms-perm') {
+    c7State.smsPermission = true;
+    visual.innerHTML = '<div class="c7-status">Runtime Permission Granted: Manifest.permission.SEND_SMS</div>';
+    code.textContent = 'ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, 1);';
+    event.textContent = 'EVENT: permission result -> GRANTED';
+  }
+  if(action === 'sms-send') {
+    const phone = document.getElementById('c7-sms-phone')?.value || 'N/A';
+    const msg = document.getElementById('c7-sms-msg')?.value || '';
+    if(!c7State.smsPermission) {
+      visual.innerHTML = '<div class="c7-status">SMS Failed: permission not granted.</div>';
+      event.textContent = 'EVENT: send blocked by permission gate';
+    } else {
+      c7State.smsSent += 1;
+      visual.innerHTML = `<div class="c7-status">SMS sent to ${phone}<br>Message: ${msg}</div>`;
+      code.textContent = `SmsManager sms = SmsManager.getDefault();\nsms.sendTextMessage("${phone}", null, "${msg}", null, null);`;
+      event.textContent = 'EVENT: SMS dispatched -> awaiting delivery report';
+    }
+  }
+
+  if(action === 'email-compose') {
+    const to = document.getElementById('c7-mail-to')?.value || 'to@example.com';
+    const sub = document.getElementById('c7-mail-sub')?.value || 'Subject';
+    visual.innerHTML = `<div class="c7-status">Intent built with EXTRA_EMAIL, EXTRA_SUBJECT, EXTRA_TEXT for ${to}</div>`;
+    code.textContent = `Intent i = new Intent(Intent.ACTION_SEND);\ni.setType("message/rfc822");\ni.putExtra(Intent.EXTRA_EMAIL, new String[]{"${to}"});\ni.putExtra(Intent.EXTRA_SUBJECT, "${sub}");`;
+    event.textContent = 'EVENT: email intent composed';
+  }
+  if(action === 'email-open') {
+    visual.innerHTML = '<div class="c7-status">Email client opened with pre-filled values (simulation).</div>';
+    event.textContent = 'EVENT: startActivity(emailIntent)';
+  }
+
+  if(action === 'lbs-track') {
+    const src = document.getElementById('c7-lbs-source')?.value || 'GPS';
+    visual.innerHTML = `<div class="c7-status">Tracking started using ${src}. Location stream updates route and context.</div>`;
+    code.textContent = '// Source selected: ' + src + '\n// Provider -> coordinates -> context-aware response';
+    event.textContent = `EVENT: ${src} provider update -> LBS engine`; 
+  }
+  if(action === 'lbs-reco') {
+    visual.innerHTML = '<div class="c7-status">Nearby suggestions: Restaurant (250m), ATM (300m), Bus Stop (420m).</div>';
+    event.textContent = 'EVENT: location matched with POI dataset';
+  }
+
+  if(action === 'maps-type') {
+    const order = ['NORMAL', 'SATELLITE', 'TERRAIN', 'HYBRID'];
+    const idx = order.indexOf(c7State.mapType);
+    c7State.mapType = order[(idx + 1) % order.length];
+    visual.innerHTML = `<div class="c7-status">Map type switched to ${c7State.mapType}</div>`;
+    code.textContent = `googleMap.setMapType(GoogleMap.MAP_TYPE_${c7State.mapType});`;
+    event.textContent = 'EVENT: map type toggled';
+  }
+  if(action === 'maps-marker') {
+    c7State.marker = true;
+    visual.innerHTML = '<div class="c7-status">Marker added at LatLng(12.9716, 77.5946)</div>';
+    code.textContent = 'googleMap.addMarker(new MarkerOptions().position(new LatLng(12.9716, 77.5946)).title("Marker in Bangalore"));';
+    event.textContent = 'EVENT: marker placed on map';
+  }
+  if(action === 'maps-bangalore') {
+    visual.innerHTML = '<div class="c7-status">Camera animated to Bangalore with zoom level 12.</div>';
+    code.textContent = 'googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(12.9716, 77.5946), 12));';
+    event.textContent = 'EVENT: animateCamera() called';
+  }
+  if(action === 'maps-reverse') {
+    visual.innerHTML = '<div class="c7-status">Map tap reverse-geocoded to: Vidhana Soudha, Bengaluru</div>';
+    code.textContent = 'List<Address> a = geocoder.getFromLocation(lat, lng, 1);\nmarker.title(a.get(0).getAddressLine(0));';
+    event.textContent = 'EVENT: onMapClick -> reverse geocoding';
+  }
+
+  if(action === 'loc-start') {
+    c7State.monitorOn = true;
+    visual.innerHTML = '<div class="c7-status">Location monitoring enabled. Proximity alert radius: 5m</div>';
+    code.textContent = 'locationManager.addProximityAlert(lat, lng, 5f, -1, pendingIntent);';
+    event.textContent = 'EVENT: geofence monitoring started';
+  }
+  if(action === 'loc-enter') {
+    c7State.distance = 3;
+    visual.innerHTML = '<div class="c7-status">Proximity Alert: You are near the specified location!</div>';
+    event.textContent = 'EVENT: user entered geofence radius';
+  }
+  if(action === 'loc-exit') {
+    c7State.distance = 38;
+    visual.innerHTML = '<div class="c7-status">User moved outside target radius. Monitoring continues.</div>';
+    event.textContent = 'EVENT: user exited geofence radius';
+  }
+  if(action === 'loc-move') {
+    c7State.distance += 20;
+    visual.innerHTML = `<div class="c7-status">User moved. Current distance: ${c7State.distance}m from target center.</div>`;
+    event.textContent = 'EVENT: location update callback received';
+  }
+
+  c7RenderDynamic();
+}
+
+function c7LeftAction(action) {
+  const smsOut = document.getElementById('c7-left-sms-out');
+  const emailOut = document.getElementById('c7-left-email-out');
+  const lbsOut = document.getElementById('c7-left-lbs-out');
+  const mapsOut = document.getElementById('c7-left-maps-out');
+  const locOut = document.getElementById('c7-left-loc-out');
+
+  if(action === 'sms-permission') {
+    c7State.smsPermission = true;
+    if(smsOut) smsOut.textContent = 'Permission granted. You can now send SMS using SmsManager.';
+    c7Action('sms-perm');
+  }
+  if(action === 'sms-send') {
+    const phone = document.getElementById('c7-left-sms-phone')?.value || 'N/A';
+    const msg = document.getElementById('c7-left-sms-msg')?.value || '';
+    if(!c7State.smsPermission) {
+      if(smsOut) smsOut.textContent = 'Send blocked: request SEND_SMS permission first.';
+      return;
+    }
+    const parts = Math.max(1, Math.ceil(msg.length / 160));
+    if(smsOut) smsOut.textContent = `SMS ready to send to ${phone}. Message length=${msg.length}. Parts=${parts}.`;
+    c7Action('sms-send');
+  }
+
+  if(action === 'email-compose') {
+    const to = document.getElementById('c7-left-mail-to')?.value || '';
+    const sub = document.getElementById('c7-left-mail-sub')?.value || '';
+    const body = document.getElementById('c7-left-mail-body')?.value || '';
+    if(emailOut) emailOut.textContent = `Intent composed with To=${to}, Subject=${sub}, Body length=${body.length}.`;
+    c7Action('email-compose');
+  }
+  if(action === 'email-send') {
+    if(emailOut) emailOut.textContent = 'Email client launch simulated with pre-filled values.';
+    c7Action('email-open');
+  }
+
+  if(action === 'lbs-sim') {
+    const key = document.getElementById('c7-left-lbs-case')?.value || 'navigation';
+    const map = {
+      navigation:'Route optimized using live traffic and current GPS location.',
+      food:'Nearby restaurants ranked by distance and delivery ETA.',
+      emergency:'Emergency contact notified with current coordinates.',
+      tracking:'Fleet vehicle nearest to destination selected automatically.'
+    };
+    if(lbsOut) lbsOut.textContent = map[key] || map.navigation;
+    c7Action('lbs-track');
+  }
+  if(action === 'lbs-points') {
+    if(lbsOut) lbsOut.textContent = 'LBS features: map integration, geocoding, geofence alerts, POI, real-time tracking.';
+    c7Action('lbs-reco');
+  }
+
+  if(action === 'maps-cycle') {
+    c7Action('maps-type');
+    if(mapsOut) mapsOut.textContent = `Map type changed to ${c7State.mapType}.`;
+  }
+  if(action === 'maps-bangalore') {
+    c7Action('maps-bangalore');
+    if(mapsOut) mapsOut.textContent = 'Camera moved to Bangalore (12.9716, 77.5946) at zoom 12.';
+  }
+  if(action === 'maps-marker') {
+    c7Action('maps-marker');
+    if(mapsOut) mapsOut.textContent = 'Marker placed: Marker in Bangalore.';
+  }
+  if(action === 'maps-reverse') {
+    c7Action('maps-reverse');
+    if(mapsOut) mapsOut.textContent = 'Reverse geocode result: Vidhana Soudha, Bengaluru.';
+  }
+
+  if(action === 'loc-start') {
+    c7Action('loc-start');
+    if(locOut) locOut.textContent = 'Location monitor started with configured geofence radius.';
+  }
+  if(action === 'loc-check') {
+    const radius = Number(document.getElementById('c7-left-loc-radius')?.value || 5);
+    const distance = Number(document.getElementById('c7-left-loc-distance')?.value || 999);
+    c7State.distance = distance;
+    if(distance <= radius) {
+      c7Action('loc-enter');
+      if(locOut) locOut.textContent = `Inside geofence: distance ${distance}m <= radius ${radius}m.`;
+    } else {
+      c7Action('loc-exit');
+      if(locOut) locOut.textContent = `Outside geofence: distance ${distance}m > radius ${radius}m.`;
+    }
+  }
+}
+
+function c7InitLeftLabs() {
+  const smsOut = document.getElementById('c7-left-sms-out');
+  const emailOut = document.getElementById('c7-left-email-out');
+  const lbsOut = document.getElementById('c7-left-lbs-out');
+  const mapsOut = document.getElementById('c7-left-maps-out');
+  const locOut = document.getElementById('c7-left-loc-out');
+  if(smsOut) smsOut.textContent = 'Lab output: permission not requested yet.';
+  if(emailOut) emailOut.textContent = 'Lab output: ready to compose intent.';
+  if(lbsOut) lbsOut.textContent = 'Lab output: choose scenario and simulate.';
+  if(mapsOut) mapsOut.textContent = 'Lab output: waiting for map action.';
+  if(locOut) locOut.textContent = 'Lab output: monitor not started.';
+}
+
+function initChapter7() {
+  c7ShowTab('sms');
+  c7InitLeftLabs();
+}
+
 function updateFeaturePreview(containerId, featureIndex, stateLabel) {
   const meta = previewMeta[containerId];
   if(!meta) return;
@@ -6023,6 +7073,7 @@ buildWebSettingsLab();
 buildWebStepsLab();
 initPersistenceLab();
 initSudokuChapter();
+initChapter7();
 // Initialize WebView browser with first page
 webviewNavigate('google');
 if(glideSimDone) {
