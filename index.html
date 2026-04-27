@@ -3591,6 +3591,16 @@ smsManager.sendTextMessage(phoneNumber, null, message, null, null);</pre>
           <tr><td>Intent.EXTRA_TEXT</td><td>String</td><td>Email body text</td><td>Please share MAD book availability.</td></tr>
         </table>
 
+        <div class="c7-title">MIME TYPE MEANING TABLE</div>
+        <table class="c7-mini-table">
+          <tr><th>MIME Type</th><th>Meaning</th><th>Real-Time Example</th></tr>
+          <tr><td>text/plain</td><td>Normal text</td><td>Simple message body in email compose screen</td></tr>
+          <tr><td>image/jpeg</td><td>Image file</td><td>Attach a photo of assignment cover page</td></tr>
+          <tr><td>video/mp4</td><td>Video file</td><td>Share a recorded presentation video</td></tr>
+          <tr><td>application/pdf</td><td>PDF document</td><td>Send a PDF note or book chapter to publisher</td></tr>
+          <tr><td>message/rfc822</td><td>Email message</td><td>Open email client for composing a mail</td></tr>
+        </table>
+
         <div class="c7-title">EMAIL FLOW TABLE</div>
         <table class="c7-mini-table">
           <tr><th>Step</th><th>Application Action</th><th>Student View</th></tr>
@@ -3604,7 +3614,7 @@ smsManager.sendTextMessage(phoneNumber, null, message, null, null);</pre>
         <ol class="c7-bullets">
           <li>Create UI fields: email address, subject, message.</li>
           <li>Create Intent with ACTION_SEND.</li>
-          <li>Set type to message/rfc822.</li>
+          <li>Set type to text/plain.</li>
           <li>Add extras: EXTRA_EMAIL, EXTRA_SUBJECT, EXTRA_TEXT.</li>
           <li>Check resolveActivity() before startActivity().</li>
         </ol>
