@@ -3621,7 +3621,7 @@ smsManager.sendTextMessage(phoneNumber, null, message, null, null);</pre>
 
         <div class="c7-title">EXAMPLE: EMAIL SEND CODE</div>
         <pre class="c7-code">Intent emailIntent = new Intent(Intent.ACTION_SEND);
-emailIntent.setType("message/rfc822");
+emailIntent.setType("text/plain");
 emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddress});
 emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
 emailIntent.putExtra(Intent.EXTRA_TEXT, message);
